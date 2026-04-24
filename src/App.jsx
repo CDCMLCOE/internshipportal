@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 // Pages
 import Home from './pages/Home';
 import About from './pages/About';
+import PrincipalMessage from './pages/PrincipalMessage';
 import Help from './pages/Help';
 import LegalPrivacy from './pages/LegalPrivacy';
 import LegalTerms from './pages/LegalTerms';
@@ -21,6 +22,7 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/principal-message" element={<PrincipalMessage />} />
         <Route path="/help" element={<Help />} />
         <Route path="/privacy" element={<LegalPrivacy />} />
         <Route path="/terms" element={<LegalTerms />} />
