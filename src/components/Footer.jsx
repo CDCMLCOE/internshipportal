@@ -5,17 +5,20 @@ import logoUrl from '../assets/logo.png';
 const Footer = () => {
   return (
     <footer className="bg-mistral-black text-brand-ivory pt-20 pb-10 px-8">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
         {/* Brand Column */}
-        <div className="col-span-1 md:col-span-1">
-          <div className="flex items-center gap-3 mb-6">
-            <img src={logoUrl} alt="MES Logo" className="h-12 w-auto object-contain" />
-            <div className="flex flex-col">
-              <span className="font-heading font-semibold text-lg leading-tight text-white">MES MLCOE</span>
-              <span className="text-[10px] uppercase tracking-widest text-white/40">Internship Portal</span>
+        <div className="col-span-1 md:col-span-1 lg:col-span-2 pr-4">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="bg-white p-2 rounded-xl shadow-sm">
+              <img src={logoUrl} alt="MES Logo" className="h-14 w-auto object-contain" />
+            </div>
+            <div className="flex flex-col mt-1">
+              <span className="font-heading font-semibold text-xl leading-tight text-white tracking-wide">MES MLCOE</span>
+              <span className="text-xs text-white/70 font-medium mt-1">Mukunddas Lohia College of Engineering</span>
+              <span className="text-[10px] uppercase tracking-widest text-mistral-orange mt-2 font-bold">Internship Portal</span>
             </div>
           </div>
-          <p className="text-sm text-brand-ivory/60 leading-relaxed max-w-xs">
+          <p className="text-sm text-brand-ivory/60 leading-relaxed max-w-sm mb-6">
             Empowering students with real-world experience through strategic industry partnerships and career guidance.
           </p>
         </div>
@@ -51,7 +54,7 @@ const Footer = () => {
         </div>
 
         {/* Portals */}
-        <div>
+        <div className="lg:justify-self-end">
           <h4 className="font-heading font-semibold text-sm uppercase tracking-widest mb-6 text-white">Social Connect</h4>
           <div className="flex gap-4">
             <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-mistral-orange hover:text-white transition-all duration-300 group">

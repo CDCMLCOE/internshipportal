@@ -34,20 +34,13 @@ const Navbar = () => {
             </svg>
           </button>
 
-          {/* Home Link (Logo replacement conceptually) */}
-          <Link 
-            to="/" 
-            className={`hidden md:block transition-colors duration-200 uppercase tracking-widest text-sm font-semibold ${isActive('/') ? 'text-mistral-orange' : 'text-mistral-black hover:text-mistral-orange'}`}
-          >
-            Home
-          </Link>
-          
-          {/* Mobile Home Link */}
-          <Link 
-            to="/" 
-            className={`md:hidden transition-colors duration-200 uppercase tracking-widest text-sm font-bold ${isActive('/') ? 'text-mistral-orange' : 'text-mistral-black hover:text-mistral-orange'}`}
-          >
-            Portal
+          {/* Logo Link */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <img src={logoUrl} alt="MES MLCOE Logo" className="h-10 md:h-12 object-contain group-hover:opacity-80 transition-opacity" />
+            <div className="hidden lg:flex flex-col">
+              <span className="font-heading font-bold text-sm uppercase tracking-wider text-mistral-black leading-tight group-hover:text-mistral-orange transition-colors">MES MLCOE</span>
+              <span className="text-[10px] uppercase tracking-widest text-mistral-black/60 font-semibold group-hover:text-mistral-orange transition-colors">Internship Portal</span>
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
