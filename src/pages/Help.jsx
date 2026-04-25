@@ -27,13 +27,13 @@ const Help = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.6 }}
-      className="pt-40 pb-20 px-8 max-w-4xl mx-auto"
+      className="pt-28 sm:pt-36 md:pt-40 pb-16 md:pb-20 px-4 md:px-8 max-w-4xl mx-auto"
     >
       <div className="mb-20">
-        <h1 className="font-heading font-semibold text-5xl md:text-6xl tracking-tight text-mistral-black mb-6">
+        <h1 className="font-heading font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-mistral-black mb-4 md:mb-6">
           How can we help?
         </h1>
-        <p className="text-xl text-mistral-black/60 leading-relaxed font-sans">
+        <p className="text-base md:text-xl text-mistral-black/60 leading-relaxed font-sans">
           Everything you need to know about the MES MLCOE Internship Portal.
         </p>
       </div>
@@ -55,7 +55,7 @@ const Help = () => {
           </div>
         </section>
 
-        <section className="bg-brand-yellow/20 p-12 border border-brand-yellow/50">
+        <section className="bg-brand-yellow/20 p-6 md:p-12 border border-brand-yellow/50 rounded-xl">
           <h2 className="font-heading font-semibold text-2xl uppercase tracking-wider text-mistral-black mb-6">Need more assistance?</h2>
           <p className="text-mistral-black/70 mb-8">
             Our Training & Placement Office is here to support you. You can reach out to us via email or visit the office during working hours.

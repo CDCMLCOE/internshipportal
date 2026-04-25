@@ -116,14 +116,15 @@ const Dashboard = () => {
         className="space-y-6"
       >
         <div className="pt-2 pb-2">
-          <h2 className="font-heading font-extrabold text-4xl md:text-5xl uppercase tracking-tight mb-4 text-mistral-black flex items-center gap-4">
-            Welcome Back, <span className="text-mistral-orange">Student</span>
+          <h2 className="font-heading font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase tracking-tight mb-3 text-mistral-black leading-tight">
+            Welcome Back,{' '}
+            <span className="text-mistral-orange">Student</span>
           </h2>
-          <p className="text-mistral-black/70 font-sans text-lg md:text-xl font-medium">What are you looking for today?</p>
+          <p className="text-mistral-black/70 font-sans text-sm sm:text-base md:text-lg lg:text-xl font-medium">What are you looking for today?</p>
         </div>
 
-        <div className="space-y-6">
-          <h3 className="font-heading font-bold text-2xl text-mistral-black">Current Available Internships</h3>
+        <div className="space-y-4 md:space-y-6">
+          <h3 className="font-heading font-bold text-lg sm:text-xl md:text-2xl text-mistral-black">Current Available Internships</h3>
           
           {/* Filters */}
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">

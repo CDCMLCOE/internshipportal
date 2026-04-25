@@ -150,8 +150,8 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="pt-6 border-t border-mistral-black/10 flex justify-end">
-               <button type="button" className="bg-mistral-black text-white rounded-lg px-8 py-3 uppercase tracking-widest font-semibold text-sm hover:bg-mistral-orange hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
+            <div className="pt-6 border-t border-mistral-black/10 flex flex-col sm:flex-row justify-end">
+               <button type="button" className="w-full sm:w-auto bg-mistral-black text-white rounded-lg px-8 py-3 uppercase tracking-widest font-semibold text-sm hover:bg-mistral-orange hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
                  Save Changes
                </button>
             </div>

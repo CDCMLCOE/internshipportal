@@ -10,13 +10,13 @@ const PrincipalMessage = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.6 }}
-      className="pt-32 pb-16 px-8 max-w-7xl mx-auto"
+      className="pt-28 sm:pt-36 md:pt-32 pb-12 md:pb-16 px-4 md:px-8 max-w-7xl mx-auto"
     >
       <div className="text-center mb-12">
-        <h1 className="font-heading font-semibold text-5xl md:text-6xl tracking-tight text-mistral-black mb-4">
+        <h1 className="font-heading font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-mistral-black mb-4">
           Principal's Message
         </h1>
-        <p className="text-xl text-mistral-black/60 leading-relaxed max-w-3xl mx-auto font-sans">
+        <p className="text-base md:text-xl text-mistral-black/60 leading-relaxed max-w-3xl mx-auto font-sans">
           A vision for excellence and innovation in engineering education.
         </p>
       </div>
@@ -28,7 +28,7 @@ const PrincipalMessage = () => {
         <div className="relative z-10 flex flex-col md:flex-row gap-8 lg:gap-16">
           {/* Left Column: Image & Details */}
           <div className="w-full md:w-1/3 lg:w-1/4 flex flex-col items-center text-center">
-            <div className="w-56 h-56 lg:w-64 lg:h-64 rounded-2xl overflow-hidden mb-6 border-4 border-mistral-orange/20 shadow-lg bg-mistral-black/5 flex items-center justify-center text-mistral-black/30">
+            <div className="w-44 h-44 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-2xl overflow-hidden mb-6 border-4 border-mistral-orange/20 shadow-lg bg-mistral-black/5 flex items-center justify-center text-mistral-black/30">
               <img 
                 src={principalImg} 
                 alt="Prof. Dr. Makrand Jadhav" 

@@ -4,7 +4,7 @@ import logoUrl from '../assets/logo.png';
 
 const Footer = () => {
   return (
-    <footer className="bg-mistral-black text-brand-ivory pt-20 pb-10 px-8">
+    <footer className="bg-mistral-black text-brand-ivory pt-14 md:pt-20 pb-8 md:pb-10 px-4 md:px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
         {/* Brand Column */}
         <div className="col-span-1 md:col-span-1 lg:col-span-2 pr-4">
@@ -81,7 +81,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[12px] text-brand-ivory/40 uppercase tracking-widest font-medium">
+      <div className="max-w-7xl mx-auto pt-8 md:pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4 text-[11px] md:text-[12px] text-brand-ivory/40 uppercase tracking-widest font-medium text-center">
         <p>© {new Date().getFullYear()} Maharashtra Education Society. All rights reserved.</p>
         <div className="flex gap-8">
           <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>

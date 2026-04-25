@@ -8,13 +8,13 @@ const LegalPrivacy = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.6 }}
-      className="pt-40 pb-20 px-8 max-w-4xl mx-auto"
+      className="pt-28 sm:pt-36 md:pt-40 pb-16 md:pb-20 px-4 md:px-8 max-w-4xl mx-auto"
     >
       <div className="mb-16">
-        <h1 className="font-heading font-semibold text-5xl md:text-6xl tracking-tight text-mistral-black mb-6">
+        <h1 className="font-heading font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-mistral-black mb-4 md:mb-6">
           Privacy Policy.
         </h1>
-        <p className="text-xl text-mistral-black/60 leading-relaxed font-sans">
+        <p className="text-base md:text-xl text-mistral-black/60 leading-relaxed font-sans">
           Your privacy is important to us. This policy outlines how we handle and protect your personal information within the MES MLCOE Internship Portal.
         </p>
       </div>
