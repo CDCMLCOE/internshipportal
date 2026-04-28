@@ -20,6 +20,13 @@ import Dashboard from './pages/student/Dashboard';
 import Application from './pages/student/Application';
 import Profile from './pages/student/Profile';
 
+// Admin Pages
+import AdminLayout from './layouts/AdminLayout';
+import AdminDashboard from './pages/admin/Dashboard';
+import AdminInternships from './pages/admin/Internships';
+import AdminApplicants from './pages/admin/Applicants';
+import AdminUsers from './pages/admin/Users';
+
 // Main Public Layout
 const MainLayout = () => {
   return (
@@ -55,6 +62,15 @@ function AnimatedRoutes() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="application" element={<Application />} />
           <Route path="profile" element={<Profile />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="internships" element={<AdminInternships />} />
+          <Route path="applicants" element={<AdminApplicants />} />
+          <Route path="users" element={<AdminUsers />} />
         </Route>
       </Routes>
     </AnimatePresence>
