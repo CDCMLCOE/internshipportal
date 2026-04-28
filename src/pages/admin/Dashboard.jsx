@@ -46,9 +46,9 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 gap-8">
         {/* Recent Activity */}
-        <div className="lg:col-span-2 bg-brand-ivory border border-mistral-black/10 shadow-sm p-6 space-y-6">
+        <div className="bg-brand-ivory border border-mistral-black/10 shadow-sm p-6 space-y-6">
           <div className="flex justify-between items-center border-b border-mistral-black/5 pb-4">
             <h3 className="font-heading font-bold uppercase tracking-wider text-sm">Recent Activity</h3>
             <button className="text-[10px] uppercase tracking-widest font-bold text-mistral-orange hover:underline">View All</button>
@@ -63,30 +63,6 @@ const AdminDashboard = () => {
                 <span className="text-[10px] uppercase font-bold text-mistral-black/30">{activity.time}</span>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="bg-mistral-black p-6 space-y-6 shadow-xl">
-          <h3 className="font-heading font-bold uppercase tracking-wider text-sm text-white">Quick Actions</h3>
-          <div className="flex flex-col gap-3">
-            <button className="w-full py-3 bg-mistral-orange text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-mistral-black transition-all duration-300">
-              Post New Internship
-            </button>
-            <button className="w-full py-3 bg-brand-ivory text-mistral-black text-xs font-bold uppercase tracking-widest hover:bg-brand-yellow transition-all duration-300 border border-white/10">
-              Export Applicants (CSV)
-            </button>
-            <button className="w-full py-3 bg-brand-ivory/10 text-white/60 text-xs font-bold uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all duration-300 border border-white/5">
-              System Settings
-            </button>
-          </div>
-          
-          <div className="mt-8 p-4 bg-white/5 border border-white/10">
-             <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold mb-2">System Status</p>
-             <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <p className="text-xs text-white font-medium uppercase tracking-tight">All systems operational</p>
-             </div>
           </div>
         </div>
       </div>

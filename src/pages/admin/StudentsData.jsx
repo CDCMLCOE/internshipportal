@@ -1,67 +1,49 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const AdminApplicants = () => {
+const StudentsData = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('All');
   const [isBranchSubMenuOpen, setIsBranchSubMenuOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const applicants = [
-    { id: 1, name: 'John Doe', role: 'Full Stack Developer', college: 'MES Pune', gpa: '3.8', status: 'Pending', branch: 'Computer Engineering' },
-    { id: 2, name: 'Jane Smith', role: 'UI/UX Designer', college: 'COEP Pune', gpa: '3.9', status: 'Reviewed', branch: 'Information Technology' },
-    { id: 3, name: 'Bob Johnson', role: 'Full Stack Developer', college: 'VIT Pune', gpa: '3.5', status: 'Rejected', branch: 'Computer Engineering' },
-    { id: 4, name: 'Alice Williams', role: 'Data Scientist', college: 'PICT Pune', gpa: '4.0', status: 'Shortlisted', branch: 'E&TC' },
-    { id: 5, name: 'Charlie Brown', role: 'ML Engineer', college: 'MES Pune', gpa: '3.7', status: 'Pending', branch: 'CSE - ai&ml' },
+  const students = [
+    { id: 1, name: 'John Doe', role: 'Full Stack Developer', college: 'MES Pune', gpa: '3.8', branch: 'Computer Engineering' },
+    { id: 2, name: 'Jane Smith', role: 'UI/UX Designer', college: 'COEP Pune', gpa: '3.9', branch: 'Information Technology' },
+    { id: 3, name: 'Bob Johnson', role: 'Full Stack Developer', college: 'VIT Pune', gpa: '3.5', branch: 'Computer Engineering' },
+    { id: 4, name: 'Alice Williams', role: 'Data Scientist', college: 'PICT Pune', gpa: '4.0', branch: 'E&TC' },
+    { id: 5, name: 'Charlie Brown', role: 'ML Engineer', college: 'MES Pune', gpa: '3.7', branch: 'CSE - ai&ml' },
   ];
 
-  const statusFilters = ['Shortlisted', 'Reviewed', 'Pending', 'Rejected'];
   const branches = ['Computer Engineering', 'CSE - ai&ml', 'Information Technology', 'E&TC'];
 
-  const filteredApplicants = applicants.filter(app => {
-    const matchesFilter = activeFilter === 'All' 
-      ? true 
-      : branches.includes(activeFilter)
-        ? app.branch === activeFilter
-        : app.status === activeFilter;
-    
-    const matchesSearch = app.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          app.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          app.branch.toLowerCase().includes(searchQuery.toLowerCase());
-    
+  const filteredStudents = students.filter(student => {
+    const matchesFilter = activeFilter === 'All' || student.branch === activeFilter;
+    const matchesSearch = student.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          student.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          student.branch.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case 'Pending': return 'bg-yellow-100 text-yellow-800';
-      case 'Reviewed': return 'bg-blue-100 text-blue-800';
-      case 'Shortlisted': return 'bg-green-100 text-green-800';
-      case 'Rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   return (
     <div className="space-y-8">
-      {/* Integrated Header with Search and Filter */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div>
-          <h2 className="text-3xl font-heading font-bold uppercase tracking-tight text-mistral-black leading-none">Applicant Tracking</h2>
-          <p className="text-mistral-black/60 font-medium mt-2">Review and manage student applications for all internships.</p>
+          <h2 className="text-3xl font-heading font-bold uppercase tracking-tight">Students Data</h2>
+          <p className="text-mistral-black/60 font-medium">View and manage student profiles and academic records.</p>
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-4 w-full lg:w-auto">
           {/* Search Bar */}
           <div className="relative w-full md:w-80 group">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg className="h-4 w-4 text-mistral-black/40 group-focus-within:text-mistral-orange transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-4 h-4 text-mistral-black/40 group-focus-within:text-mistral-orange transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
             <input
               type="text"
-              placeholder="Search applicants, roles or branches..."
+              placeholder="Search students, roles or branches..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="block w-full pl-10 pr-3 py-2.5 bg-brand-ivory border border-mistral-black/10 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all placeholder:text-mistral-black/20"
@@ -90,7 +72,6 @@ const AdminApplicants = () => {
                   className="absolute right-0 mt-2 w-56 bg-brand-ivory border border-mistral-black/10 shadow-xl z-50 overflow-visible"
                 >
                   <div className="py-1">
-                    {/* Branch Menu Item */}
                     <div 
                       className="relative"
                       onMouseEnter={() => setIsBranchSubMenuOpen(true)}
@@ -107,7 +88,6 @@ const AdminApplicants = () => {
                         </svg>
                       </button>
 
-                      {/* Submenu */}
                       <AnimatePresence>
                         {isBranchSubMenuOpen && (
                           <motion.div
@@ -136,22 +116,6 @@ const AdminApplicants = () => {
                       </AnimatePresence>
                     </div>
 
-                    {/* Status Filters */}
-                    {statusFilters.map((filter) => (
-                      <button
-                        key={filter}
-                        onClick={() => {
-                          setActiveFilter(filter);
-                          setIsFilterOpen(false);
-                        }}
-                        className={`w-full text-left px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors border-b border-mistral-black/5 last:border-0 ${
-                          activeFilter === filter ? 'bg-mistral-black text-white' : 'text-mistral-black hover:bg-brand-yellow'
-                        }`}
-                      >
-                        {filter}
-                      </button>
-                    ))}
-
                     <button
                       onClick={() => {
                         setActiveFilter('All');
@@ -170,10 +134,10 @@ const AdminApplicants = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        {filteredApplicants.length > 0 ? (
-          filteredApplicants.map((applicant, index) => (
+        {filteredStudents.length > 0 ? (
+          filteredStudents.map((student, index) => (
             <motion.div
-              key={applicant.id}
+              key={student.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -181,25 +145,22 @@ const AdminApplicants = () => {
             >
               <div className="flex items-center gap-6">
                 <div className="w-16 h-16 bg-brand-cream border border-mistral-black/10 flex items-center justify-center font-bold text-xl uppercase text-mistral-black/40">
-                  {applicant.name.split(' ').map(n => n[0]).join('')}
+                  {student.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-lg font-bold uppercase tracking-tight">{applicant.name}</span>
+                  <span className="text-lg font-bold uppercase tracking-tight">{student.name}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-mistral-orange uppercase tracking-widest">{applicant.role}</span>
-                    <span className="text-[10px] text-mistral-black/40 uppercase font-bold tracking-tighter">[{applicant.branch}]</span>
+                    <span className="text-xs font-bold text-mistral-orange uppercase tracking-widest">{student.role}</span>
+                    <span className="text-[10px] text-mistral-black/40 uppercase font-bold tracking-tighter">[{student.branch}]</span>
                   </div>
-                  <span className="text-xs text-mistral-black/60 mt-1">{applicant.college} • GPA: {applicant.gpa}</span>
+                  <span className="text-xs text-mistral-black/60 mt-1">{student.college} • GPA: {student.gpa}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-4 w-full md:w-auto">
-                <span className={`px-4 py-1.5 uppercase tracking-widest text-[10px] font-bold ${getStatusStyle(applicant.status)}`}>
-                  {applicant.status}
-                </span>
                 <div className="flex-grow md:flex-grow-0 flex gap-2">
                   <button className="flex-1 md:flex-none px-4 py-2 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors">
-                    Review Profile
+                    View Profile
                   </button>
                   <button className="p-2 border border-mistral-black/10 hover:bg-brand-yellow transition-colors">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -212,7 +173,7 @@ const AdminApplicants = () => {
           ))
         ) : (
           <div className="text-center py-20 bg-brand-ivory border border-dashed border-mistral-black/20">
-            <p className="text-mistral-black/40 font-bold uppercase tracking-widest">No applicants found for this filter</p>
+            <p className="text-mistral-black/40 font-bold uppercase tracking-widest">No students found matching your criteria</p>
           </div>
         )}
       </div>
@@ -220,4 +181,4 @@ const AdminApplicants = () => {
   );
 };
 
-export default AdminApplicants;
+export default StudentsData;

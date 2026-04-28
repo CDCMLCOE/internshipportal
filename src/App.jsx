@@ -24,7 +24,9 @@ import Profile from './pages/student/Profile';
 import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminInternships from './pages/admin/Internships';
+import AdminInternshipAccess from './pages/admin/InternshipAccess';
 import AdminApplicants from './pages/admin/Applicants';
+import AdminStudentsData from './pages/admin/StudentsData';
 import AdminUsers from './pages/admin/Users';
 
 // Main Public Layout
@@ -69,7 +71,9 @@ function AnimatedRoutes() {
           <Route index element={<AdminDashboard />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="internships" element={<AdminInternships />} />
+          <Route path="internship-access" element={<AdminInternshipAccess />} />
           <Route path="applicants" element={<AdminApplicants />} />
+          <Route path="students" element={<AdminStudentsData />} />
           <Route path="users" element={<AdminUsers />} />
         </Route>
       </Routes>
