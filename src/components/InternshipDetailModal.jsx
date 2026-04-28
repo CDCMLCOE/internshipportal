@@ -136,7 +136,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship }) => {
               {/* Perks & Benefits */}
               <div className="mb-8">
                 <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-mistral-black/40 mb-4">Perks & Benefits</h3>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {internship.perks?.map((perk, i) => (
                     <div key={i} className="flex items-center gap-2.5 bg-white border border-mistral-black/5 px-3.5 py-2.5 rounded-lg">
                       <svg className="w-4 h-4 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
