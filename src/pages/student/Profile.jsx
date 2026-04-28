@@ -1,7 +1,17 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Profile = () => {
+  const [additionalLinks, setAdditionalLinks] = useState([]);
+
+  const addLink = () => {
+    setAdditionalLinks([...additionalLinks, { platform: '', url: '' }]);
+  };
+
+  const removeLink = (index) => {
+    setAdditionalLinks(additionalLinks.filter((_, i) => i !== index));
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -59,7 +69,8 @@ const Profile = () => {
         </div>
         
         <div className="p-8">
-          <form className="space-y-8">
+          <form className="space-y-12">
+            {/* Core Details Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Date of Birth</label>
@@ -83,15 +94,7 @@ const Profile = () => {
                 <input 
                   type="tel" 
                   placeholder="+91 "
-                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Education</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. B.Tech Computer Engineering"
-                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm"
+                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black"
                 />
               </div>
 
@@ -100,58 +103,161 @@ const Profile = () => {
                 <input 
                   type="text" 
                   placeholder="e.g. Frontend Developer, Data Scientist"
-                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm"
+                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black"
                 />
               </div>
+            </div>
+
+            {/* Address & About Section */}
+            <div className="space-y-8 pt-8 border-t border-mistral-black/5">
               <div className="space-y-2">
-                <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Social Media / Portfolio Link</label>
-                <input 
-                  type="url" 
-                  placeholder="https://linkedin.com/in/username"
-                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm"
-                />
+                <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Address</label>
+                <textarea 
+                  rows="3"
+                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base resize-none shadow-sm text-mistral-black"
+                  placeholder="Enter your full residential address"
+                ></textarea>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">About</label>
+                <textarea 
+                  rows="4"
+                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base resize-none shadow-sm text-mistral-black"
+                  placeholder="Tell us a little about yourself, your skills, and what kind of internship you are looking for."
+                ></textarea>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Address</label>
-              <textarea 
-                rows="3"
-                className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base resize-none shadow-sm"
-                placeholder="Enter your full residential address"
-              ></textarea>
+            {/* Professional Profiles Section */}
+            <div className="space-y-8 pt-8 border-t border-mistral-black/5">
+              <div className="space-y-6">
+                <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Social & Professional Profiles</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="block text-[10px] uppercase tracking-widest font-bold text-mistral-black/40">LinkedIn Profile</label>
+                    <input 
+                      type="url" 
+                      placeholder="https://linkedin.com/in/username"
+                      className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm text-mistral-black shadow-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-[10px] uppercase tracking-widest font-bold text-mistral-black/40">GitHub Profile</label>
+                    <input 
+                      type="url" 
+                      placeholder="https://github.com/username"
+                      className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm text-mistral-black shadow-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="block text-[10px] uppercase tracking-widest font-bold text-mistral-black/40">Portfolio / Website</label>
+                    <input 
+                      type="url" 
+                      placeholder="https://yourportfolio.com"
+                      className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm text-mistral-black shadow-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6 pt-6 border-t border-mistral-black/5">
+                <div className="flex items-center justify-between">
+                  <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Other Professional Links</label>
+                  <button 
+                    type="button"
+                    onClick={addLink}
+                    className="text-[10px] font-bold uppercase tracking-widest text-mistral-orange hover:text-mistral-black transition-colors flex items-center gap-2"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4" /></svg>
+                    Add Another Link
+                  </button>
+                </div>
+
+                <AnimatePresence>
+                  {additionalLinks.map((link, index) => (
+                    <motion.div 
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="grid grid-cols-1 md:grid-cols-2 gap-8 relative pb-6 border-b border-mistral-black/5 last:border-0 last:pb-0"
+                    >
+                      <div className="space-y-2">
+                        <label className="block text-[10px] uppercase tracking-widest font-bold text-mistral-black/40">Platform Name</label>
+                        <input 
+                          type="text"
+                          placeholder="e.g. Behance"
+                          className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm"
+                        />
+                      </div>
+                      <div className="space-y-2 relative">
+                        <label className="block text-[10px] uppercase tracking-widest font-bold text-mistral-black/40">URL</label>
+                        <div className="flex gap-3">
+                          <input 
+                            type="url"
+                            placeholder="https://..."
+                            className="flex-1 bg-white border border-mistral-black/15 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm"
+                          />
+                          <button 
+                            type="button"
+                            onClick={() => removeLink(index)}
+                            className="text-mistral-black/20 hover:text-red-500 transition-colors"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">About</label>
-              <textarea 
-                rows="4"
-                className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base resize-none shadow-sm"
-                placeholder="Tell us a little about yourself, your skills, and what kind of internship you are looking for."
-              ></textarea>
-            </div>
+            {/* Document Uploads Section */}
+            <div className="space-y-8 pt-8 border-t border-mistral-black/10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Resume (PDF)</label>
+                  <div className="relative w-full">
+                    <input 
+                      type="file" 
+                      accept=".pdf"
+                      className="block w-full text-base text-mistral-black/60
+                        file:mr-4 file:py-2.5 file:px-6
+                        file:rounded-lg file:border-0
+                        file:text-sm file:font-bold file:uppercase file:tracking-widest
+                        file:bg-brand-cream file:text-mistral-black
+                        hover:file:bg-brand-yellow/30 file:transition-colors file:cursor-pointer
+                        cursor-pointer border border-mistral-black/15 rounded-lg bg-white shadow-sm"
+                    />
+                  </div>
+                </div>
 
-            <div className="space-y-2">
-              <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Resume (PDF)</label>
-              <div className="flex items-center gap-4">
-                <div className="relative w-full sm:w-auto">
-                  <input 
-                    type="file" 
-                    accept=".pdf"
-                    className="block w-full text-base text-mistral-black/60
-                      file:mr-4 file:py-2.5 file:px-6
-                      file:rounded-lg file:border-0
-                      file:text-sm file:font-bold file:uppercase file:tracking-widest
-                      file:bg-brand-cream file:text-mistral-black
-                      hover:file:bg-brand-yellow/30 file:transition-colors file:cursor-pointer
-                      cursor-pointer border border-mistral-black/15 rounded-lg bg-white shadow-sm"
-                  />
+                <div className="space-y-2">
+                  <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Certificate (PDF/Image)</label>
+                  <div className="relative w-full">
+                    <input 
+                      type="file" 
+                      accept=".pdf,image/*"
+                      className="block w-full text-base text-mistral-black/60
+                        file:mr-4 file:py-2.5 file:px-6
+                        file:rounded-lg file:border-0
+                        file:text-sm file:font-bold file:uppercase file:tracking-widest
+                        file:bg-brand-cream file:text-mistral-black
+                        hover:file:bg-brand-yellow/30 file:transition-colors file:cursor-pointer
+                        cursor-pointer border border-mistral-black/15 rounded-lg bg-white shadow-sm"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 border-t border-mistral-black/10 flex flex-col sm:flex-row justify-end">
-               <button type="button" className="w-full sm:w-auto bg-mistral-black text-white rounded-lg px-8 py-3 uppercase tracking-widest font-semibold text-sm hover:bg-mistral-orange hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
+            {/* Form Actions */}
+            <div className="pt-8 border-t border-mistral-black/10 flex flex-col sm:flex-row justify-end">
+               <button type="button" className="w-full sm:w-auto bg-mistral-black text-white rounded-lg px-10 py-3 uppercase tracking-widest font-semibold text-sm hover:bg-mistral-orange hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
                  Save Changes
                </button>
             </div>

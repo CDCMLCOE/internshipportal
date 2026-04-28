@@ -67,7 +67,7 @@ const Help = () => {
             </div>
             <div className="flex-1">
               <span className="block text-[10px] uppercase tracking-widest font-bold text-mistral-black/40 mb-2">Office Location</span>
-              <p className="text-lg font-semibold text-mistral-black">Room 102, Main Building, Karve Road Campus.</p>
+              <p className="text-lg font-semibold text-mistral-black">CTS, 30, F.P.28, Karve Road, Pune 411004</p>
             </div>
           </div>
         </section>
