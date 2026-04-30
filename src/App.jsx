@@ -19,6 +19,8 @@ import StudentLayout from './layouts/StudentLayout';
 import Dashboard from './pages/student/Dashboard';
 import Application from './pages/student/Application';
 import Profile from './pages/student/Profile';
+import Assignments from './pages/student/Assignments';
+
 
 // Admin Pages
 import AdminLayout from './layouts/AdminLayout';
@@ -65,6 +67,8 @@ function AnimatedRoutes() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="application" element={<Application />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="assignments" element={<Assignments />} />
+
         </Route>
 
         {/* Admin Routes */}

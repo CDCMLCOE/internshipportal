@@ -4,34 +4,6 @@ import InternshipDetailModal from '../../components/InternshipDetailModal';
 
 const INTERNSHIPS = [
   {
-    id: 1,
-    title: "Software Engineering Intern",
-    company: "TECHCORP INDIA",
-    location: "Pune, Bangalore",
-    stipend: "₹ 15,000 - 25,000 /month",
-    type: "Internship",
-    duration: "6 Months",
-    deadline: "May 30, 2026",
-    aboutCompany: "TechCorp India is a leading software development company specializing in enterprise-grade solutions, cloud infrastructure, and AI-powered platforms. Founded in 2012, they have delivered over 200+ products to clients across 15 countries with a team of 500+ engineers.",
-    roleDescription: "As a Software Engineering Intern, you will work closely with senior engineers to design, develop, and test software features for production systems. You'll participate in agile sprints, code reviews, and have the opportunity to contribute to open-source internal tools. This role provides hands-on experience across the full software development lifecycle.",
-    requirements: [
-      "Currently pursuing B.E./B.Tech in CSE, IT, or related field",
-      "Proficiency in at least one programming language (Java, Python, or JavaScript)",
-      "Understanding of data structures, algorithms, and OOP concepts",
-      "Familiarity with Git version control",
-      "Strong problem-solving and communication skills"
-    ],
-    perks: [
-      "Certificate of completion",
-      "Letter of recommendation",
-      "Flexible working hours",
-      "Pre-placement offer opportunity",
-      "Mentorship program",
-      "Free lunch & snacks"
-    ],
-    skills: ["Java", "Python", "React", "Node.js", "Git", "SQL"]
-  },
-  {
     id: 2,
     title: "Data Science Intern",
     company: "DATAVISION ANALYTICS",
@@ -89,7 +61,9 @@ const INTERNSHIPS = [
   }
 ];
 
-const FILTERS = ["AIML", "CSE", "IT", "Web Dev", "ENTC", "Engineering", "Data Science", "Design"];
+
+const FILTERS = ["AIML", "CSE", "IT", "ENTC", "Engineering", "Data Science", "Design"];
+
 
 const Dashboard = () => {
   const [activeFilter, setActiveFilter] = useState("CSE");
