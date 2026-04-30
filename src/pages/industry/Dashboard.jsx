@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 const IndustryDashboard = () => {
   const stats = [
     { label: 'My Active Listings', value: '4', icon: '💼', color: 'bg-brand-yellow' },
-    { label: 'Total Applicants', value: '48', icon: '👥', color: 'bg-blue-100' },
-    { label: 'Shortlisted', value: '12', icon: '✅', color: 'bg-mistral-black' },
-    { label: 'Positions Filled', value: '3', icon: '📈', color: 'bg-brand-cream' },
+    { label: 'Total Applicants', value: '48', icon: '👥', color: 'bg-brand-cream' },
+    { label: 'Shortlisted', value: '12', icon: '✅', color: 'bg-mistral-black text-white' },
+    { label: 'Positions Filled', value: '3', icon: '📈', color: 'bg-mistral-orange text-white' },
   ];
 
   const recentActivity = [
@@ -32,7 +32,7 @@ const IndustryDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm flex items-center gap-4 group hover:border-blue-400 transition-all duration-300"
+            className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm flex items-center gap-4 group hover:border-mistral-orange transition-all duration-300"
           >
             <div className={`w-12 h-12 ${stat.color} flex items-center justify-center text-2xl border border-mistral-black/10 shadow-inner`}>
               {stat.icon}
@@ -51,11 +51,11 @@ const IndustryDashboard = () => {
         <div className="bg-brand-ivory border border-mistral-black/10 shadow-sm p-6 space-y-6">
           <div className="flex justify-between items-center border-b border-mistral-black/5 pb-4">
             <h3 className="font-heading font-bold uppercase tracking-wider text-sm">Recent Activity</h3>
-            <button className="text-[10px] uppercase tracking-widest font-bold text-blue-600 hover:underline">View All</button>
+            <button className="text-[10px] uppercase tracking-widest font-bold text-mistral-orange hover:underline">View All</button>
           </div>
           <div className="space-y-4">
             {recentActivity.map((activity) => (
-              <div key={activity.id} className="flex justify-between items-start p-4 hover:bg-brand-cream/50 transition-colors border-l-2 border-transparent hover:border-blue-500">
+              <div key={activity.id} className="flex justify-between items-start p-4 hover:bg-brand-cream/50 transition-colors border-l-2 border-transparent hover:border-mistral-orange">
                 <div>
                   <p className="font-bold text-sm uppercase tracking-tight">{activity.action}</p>
                   <p className="text-xs text-mistral-black/60">{activity.details}</p>

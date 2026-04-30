@@ -79,7 +79,7 @@ const IndustryInternships = () => {
         <div>
           <h2 className="text-3xl font-heading font-bold uppercase tracking-tight">Manage Internships</h2>
           <p className="text-mistral-black/60 font-medium mt-1">
-            Showing listings for <span className="text-blue-600 font-bold">{myCompany}</span>. You can add, edit, or remove your own listings.
+            Showing listings for <span className="text-mistral-orange font-bold">{myCompany}</span>. You can add, edit, or remove your own listings.
           </p>
         </div>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full lg:w-auto">
@@ -91,7 +91,7 @@ const IndustryInternships = () => {
             </div>
             <input type="text" placeholder="Search your listings..." value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2.5 bg-brand-ivory border border-mistral-black/10 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-mistral-black/20" />
+              className="block w-full pl-10 pr-3 py-2.5 bg-brand-ivory border border-mistral-black/10 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all placeholder:text-mistral-black/20" />
           </div>
 
           <div className="relative w-full md:w-auto">
@@ -100,7 +100,7 @@ const IndustryInternships = () => {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
               </svg>
-              Filter: <span className="text-blue-600">{activeFilter}</span>
+              Filter: <span className="text-mistral-orange">{activeFilter}</span>
             </button>
             <AnimatePresence>
               {isFilterOpen && (
@@ -110,7 +110,7 @@ const IndustryInternships = () => {
                   <div className="flex justify-end p-2 border-b border-mistral-black/5 bg-brand-cream/20">
                     <button 
                       onClick={() => setIsFilterOpen(false)}
-                      className="p-1 hover:bg-mistral-black/5 rounded-full transition-colors text-mistral-black/40 hover:text-blue-600"
+                      className="p-1 hover:bg-mistral-black/5 rounded-full transition-colors text-mistral-black/40 hover:text-mistral-orange"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
@@ -131,7 +131,7 @@ const IndustryInternships = () => {
                       </button>
                     ))}
                     <button onClick={() => { setActiveFilter('All'); setIsFilterOpen(false); }}
-                      className="w-full text-left px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
+                      className="w-full text-left px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-mistral-orange hover:bg-mistral-orange hover:text-white transition-colors">
                       Clear Filters
                     </button>
                   </div>

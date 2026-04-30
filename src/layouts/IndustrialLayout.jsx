@@ -28,8 +28,8 @@ const IndustrialLayout = () => {
           <Link to="/" className="flex items-center gap-3 group">
             <img src={logoUrl} alt="MES MLCOE Logo" className="h-10 md:h-12 object-contain group-hover:opacity-80 transition-opacity" />
             <div className="flex flex-col text-left">
-              <span className="font-heading font-bold text-sm uppercase tracking-wider text-mistral-black leading-tight group-hover:text-blue-600 transition-colors">MES MLCOE</span>
-              <span className="text-[9px] uppercase tracking-widest text-blue-600 font-semibold">Industry Portal</span>
+              <span className="font-heading font-bold text-sm uppercase tracking-wider text-mistral-black leading-tight group-hover:text-mistral-orange transition-colors">MES MLCOE</span>
+              <span className="text-[9px] uppercase tracking-widest text-mistral-black/60 font-semibold group-hover:text-mistral-orange transition-colors">Industry Portal</span>
             </div>
           </Link>
         </div>
@@ -38,9 +38,9 @@ const IndustrialLayout = () => {
           <Link
             to="/industry/dashboard"
             className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${
-              isActive('/industry/dashboard') || isActive('/industry/dashboard')
-                ? 'bg-mistral-black text-white'
-                : 'text-mistral-black hover:bg-blue-50 hover:text-blue-700'
+              isActive('/industry/dashboard')
+                ? 'bg-mistral-orange text-white shadow-sm'
+                : 'text-mistral-black hover:bg-brand-yellow/30'
             }`}
           >
             Dashboard
@@ -49,8 +49,8 @@ const IndustrialLayout = () => {
             to="/industry/internships"
             className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${
               isActive('/industry/internships')
-                ? 'bg-mistral-black text-white'
-                : 'text-mistral-black hover:bg-blue-50 hover:text-blue-700'
+                ? 'bg-mistral-orange text-white shadow-sm'
+                : 'text-mistral-black hover:bg-brand-yellow/30'
             }`}
           >
             Manage Internships
@@ -59,8 +59,8 @@ const IndustrialLayout = () => {
             to="/industry/applicants"
             className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${
               isActive('/industry/applicants')
-                ? 'bg-mistral-black text-white'
-                : 'text-mistral-black hover:bg-blue-50 hover:text-blue-700'
+                ? 'bg-mistral-orange text-white shadow-sm'
+                : 'text-mistral-black hover:bg-brand-yellow/30'
             }`}
           >
             Applicants
@@ -70,7 +70,7 @@ const IndustrialLayout = () => {
         <div className="p-4 border-t border-mistral-black/10">
           <button
             onClick={handleLogout}
-            className="w-full px-4 py-3 text-left uppercase tracking-widest text-xs font-bold text-mistral-black/60 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300 flex items-center justify-between"
+            className="w-full px-4 py-3 text-left uppercase tracking-widest text-xs font-bold text-mistral-black/60 hover:text-mistral-orange hover:bg-mistral-orange/5 transition-all duration-300 flex items-center justify-between"
           >
             <span>Log Out</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,8 +88,8 @@ const IndustrialLayout = () => {
             {company ? `${company} — Industry Portal` : 'Industry Management Control'}
           </h1>
           <div className="flex items-center gap-3">
-            {company && <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 hidden md:block">{company}</span>}
-            <div className="w-10 h-10 bg-blue-600 rounded-full border border-blue-700 flex items-center justify-center font-bold text-white text-sm uppercase">
+            {company && <span className="text-[10px] font-bold uppercase tracking-widest text-mistral-orange hidden md:block">{company}</span>}
+            <div className="w-10 h-10 bg-brand-yellow rounded-full border border-mistral-black/20 flex items-center justify-center font-bold text-mistral-black text-sm uppercase shrink-0 shadow-sm">
               {initials}
             </div>
           </div>
