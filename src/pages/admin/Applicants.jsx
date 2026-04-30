@@ -89,6 +89,14 @@ const AdminApplicants = () => {
                   transition={{ duration: 0.2 }}
                   className="absolute right-0 mt-2 w-56 bg-brand-ivory border border-mistral-black/10 shadow-xl z-50 overflow-visible"
                 >
+                  <div className="flex justify-end p-2 border-b border-mistral-black/5 bg-brand-cream/20">
+                    <button 
+                      onClick={() => setIsFilterOpen(false)}
+                      className="p-1 hover:bg-mistral-black/5 rounded-full transition-colors text-mistral-black/40 hover:text-mistral-orange"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
                   <div className="py-1">
                     {/* Branch Menu Item */}
                     <div 
@@ -200,11 +208,6 @@ const AdminApplicants = () => {
                 <div className="flex-grow md:flex-grow-0 flex gap-2">
                   <button className="flex-1 md:flex-none px-4 py-2 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors">
                     Review Profile
-                  </button>
-                  <button className="p-2 border border-mistral-black/10 hover:bg-brand-yellow transition-colors">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                    </svg>
                   </button>
                 </div>
               </div>

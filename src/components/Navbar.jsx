@@ -86,7 +86,13 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 md:gap-4">
+          <Link 
+            to="/industry-register"
+            className="hidden md:block border border-mistral-black/20 text-mistral-black px-5 md:px-6 py-2.5 md:py-3 uppercase tracking-wide font-normal text-xs md:text-sm hover:bg-mistral-black hover:text-white transition-all duration-300"
+          >
+            Company Register
+          </Link>
           <button 
             onClick={() => setIsLoginOpen(true)}
             className="bg-mistral-black text-white px-5 md:px-6 py-2.5 md:py-3 uppercase tracking-wide font-normal text-xs md:text-sm hover:bg-mistral-orange transition-colors duration-300"
@@ -149,10 +155,17 @@ const Navbar = () => {
             target="_blank" 
             rel="noopener noreferrer"
             onClick={closeMobileMenu}
-            className="uppercase tracking-widest text-sm font-semibold px-8 py-5 text-mistral-black hover:bg-black/5 transition-colors"
+            className="uppercase tracking-widest text-sm font-semibold px-8 py-5 border-b border-mistral-black/5 text-mistral-black hover:bg-black/5 transition-colors"
           >
             Admissions
           </a>
+          <Link 
+            to="/industry-register" 
+            onClick={closeMobileMenu}
+            className="uppercase tracking-widest text-sm font-semibold px-8 py-5 text-mistral-orange hover:bg-mistral-orange/5 transition-colors"
+          >
+            Company Register
+          </Link>
         </div>
       </div>
 

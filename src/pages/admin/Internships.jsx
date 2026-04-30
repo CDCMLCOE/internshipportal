@@ -7,12 +7,16 @@ const AdminInternships = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [internships] = useState([
+  const [internships, setInternships] = useState([
     { id: 1, title: 'Full Stack Developer', company: 'Google', location: 'Mountain View, CA', category: 'Software', status: 'Active' },
     { id: 2, title: 'UI/UX Designer', company: 'Microsoft', location: 'Redmond, WA', category: 'Design', status: 'Active' },
     { id: 3, title: 'Data Scientist', company: 'Amazon', location: 'Seattle, WA', category: 'Data Science', status: 'Closed' },
     { id: 4, title: 'Cloud Engineer', company: 'Infosys', location: 'Bangalore, India', category: 'Cloud', status: 'Active' },
   ]);
+
+  const handleDelete = (id) => {
+    setInternships(internships.filter(job => job.id !== id));
+  };
 
   const categories = ['Software', 'Design', 'Data Science', 'Cloud'];
   const statuses = ['Active', 'Closed'];
@@ -72,6 +76,14 @@ const AdminInternships = () => {
                   transition={{ duration: 0.2 }}
                   className="absolute right-0 mt-2 w-56 bg-brand-ivory border border-mistral-black/10 shadow-xl z-50 overflow-hidden"
                 >
+                  <div className="flex justify-end p-2 border-b border-mistral-black/5 bg-brand-cream/20">
+                    <button 
+                      onClick={() => setIsFilterOpen(false)}
+                      className="p-1 hover:bg-mistral-black/5 rounded-full transition-colors text-mistral-black/40 hover:text-mistral-orange"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
                   <div className="py-1">
                     <div className="px-4 py-2 text-[8px] uppercase tracking-widest font-bold text-mistral-black/40 border-b border-mistral-black/5">Categories</div>
                     {categories.map((cat) => (
@@ -169,7 +181,10 @@ const AdminInternships = () => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                       </button>
-                      <button className="p-2 hover:bg-red-600 hover:text-white transition-all duration-300">
+                      <button 
+                        onClick={() => handleDelete(job.id)}
+                        className="p-2 hover:bg-red-600 hover:text-white transition-all duration-300"
+                      >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>

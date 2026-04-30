@@ -12,6 +12,10 @@ const ManageStudents = () => {
   const [selectedStudentForTask, setSelectedStudentForTask] = useState(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
+  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const [taskSubmissionDate, setTaskSubmissionDate] = useState('');
+  const [studentTasks, setStudentTasks] = useState({});
 
   const students = [
     { id: 1, name: 'John Doe', branch: 'Computer Engineering', status: 'Task complete' },
@@ -79,6 +83,14 @@ const ManageStudents = () => {
                   transition={{ duration: 0.2 }}
                   className="absolute right-0 mt-2 w-56 bg-brand-ivory border border-mistral-black/10 shadow-xl z-50 overflow-visible"
                 >
+                  <div className="flex justify-end p-2 border-b border-mistral-black/5 bg-brand-cream/20">
+                    <button 
+                      onClick={() => setIsFilterOpen(false)}
+                      className="p-1 hover:bg-mistral-black/5 rounded-full transition-colors text-mistral-black/40 hover:text-mistral-orange"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
                   <div className="py-1">
                     {/* Branch Submenu */}
                     <div 
@@ -212,21 +224,17 @@ const ManageStudents = () => {
       <div className="bg-brand-ivory border border-mistral-black/10 overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            {/* Top Row: SR and ACTIONS */}
-            <tr className="bg-mistral-black text-white uppercase tracking-widest">
-              <th className="px-4 pt-6 pb-2 w-20 align-bottom border-r border-white/20"></th>
-              <th className="px-4 pt-6 pb-2 align-bottom border-r border-white/20"></th>
-              <th className="px-2 pt-6 pb-2 border-b border-r border-white/20 text-center text-xs" colSpan={3}>ACTIONS</th>
-              <th className="px-4 pl-24 pt-6 pb-2 align-bottom"></th>
+            {/* Combined Header with Merged Cells for Centering */}
+            <tr className="bg-mistral-black text-white uppercase tracking-widest text-xs">
+              <th rowSpan={2} className="px-4 py-4 border-b border-r border-white/20 w-20 text-center align-middle whitespace-nowrap">SR NO</th>
+              <th rowSpan={2} className="px-4 py-4 border-b border-r border-white/20 text-center align-middle">STUDENT NAMES</th>
+              <th colSpan={3} className="px-2 pt-4 pb-2 border-b border-r border-white/20 text-center">ACTIONS</th>
+              <th rowSpan={2} className="px-4 py-4 border-b border-white/20 text-center align-middle">STATUS</th>
             </tr>
-            {/* Bottom Row: NO, STUDENT NAMES, Sub-Actions, STATUS */}
-            <tr className="bg-mistral-black uppercase tracking-widest">
-              <th className="px-4 py-4 border-b border-r border-white/20 w-20 text-center align-middle text-white text-xs whitespace-nowrap">SR NO</th>
-              <th className="px-4 py-4 border-b border-r border-white/20 align-middle text-white text-xs">STUDENT NAMES</th>
-              <th className="px-2 py-4 border-b border-r border-white/20 text-center align-middle text-brand-yellow/90 w-24 text-[10px] leading-tight">ASSIGN<br/>TASK</th>
-              <th className="px-2 py-4 border-b border-r border-white/20 text-center align-middle text-brand-yellow/90 w-24 text-[10px] leading-tight">EVALUATE<br/>TASK</th>
-              <th className="px-2 py-4 border-b border-r border-white/20 text-center align-middle text-brand-yellow/90 w-24 text-[10px] leading-tight">FINAL<br/>LETTER</th>
-              <th className="px-4 pl-24 py-4 border-b border-white/20 align-middle text-white text-xs">STATUS</th>
+            <tr className="bg-mistral-black uppercase tracking-widest text-[10px]">
+              <th className="px-2 py-3 border-b border-r border-white/20 text-center align-middle text-brand-yellow/90 w-24 leading-tight">ASSIGN<br/>TASK</th>
+              <th className="px-2 py-3 border-b border-r border-white/20 text-center align-middle text-brand-yellow/90 w-24 leading-tight">EVALUATE<br/>TASK</th>
+              <th className="px-2 py-3 border-b border-r border-white/20 text-center align-middle text-brand-yellow/90 w-24 leading-tight">FINAL<br/>LETTER</th>
             </tr>
           </thead>
           <tbody>
@@ -240,8 +248,8 @@ const ManageStudents = () => {
                   className="border-b border-mistral-black/10 hover:bg-brand-cream/50 transition-colors"
                 >
                   <td className="p-4 text-center font-bold text-mistral-black/60 border-r border-mistral-black/10">{index + 1}</td>
-                  <td className="p-4 border-r border-mistral-black/10">
-                    <div className="flex flex-col">
+                  <td className="p-4 text-center border-r border-mistral-black/10">
+                    <div className="flex flex-col items-center">
                       <span className="font-bold uppercase tracking-tight text-base text-mistral-black">{student.name}</span>
                       <span className="text-[10px] uppercase tracking-widest text-mistral-black/40 font-bold mt-1">[{student.branch}]</span>
                     </div>
@@ -268,7 +276,7 @@ const ManageStudents = () => {
                       <FileText className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     </button>
                   </td>
-                  <td className="p-4 pl-24">
+                  <td className="p-4 text-center">
                     <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 border ${
                       student.status === 'Task complete' ? 'bg-emerald-500/10 text-emerald-700 border-emerald-500/30' :
                       student.status === 'Task incomplete' ? 'bg-rose-500/10 text-rose-700 border-rose-500/30' :
@@ -350,17 +358,71 @@ const ManageStudents = () => {
 
               {/* Task Section */}
               <div className="p-6 sm:p-8 bg-brand-cream/30 overflow-y-auto flex-1">
-                <div className="flex items-center justify-between mb-6">
-                  <h4 className="font-heading font-bold text-lg text-mistral-black tracking-tight">Assigned Tasks</h4>
-                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-brand-yellow/30 text-mistral-black border border-brand-yellow">0 Tasks</span>
-                </div>
+                {(() => {
+                  const currentTasks = studentTasks[selectedStudentForTask.id] || [];
+                  return (
+                    <>
+                      <div className="flex items-center justify-between mb-6">
+                        <h4 className="font-heading font-bold text-lg text-mistral-black tracking-tight">Assigned Tasks</h4>
+                        <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-brand-yellow/30 text-mistral-black border border-brand-yellow">
+                          {currentTasks.length} {currentTasks.length === 1 ? 'Task' : 'Tasks'}
+                        </span>
+                      </div>
 
-                <div className="space-y-4 mb-8">
-                  {/* Mock empty state */}
-                  <div className="text-center p-8 border-2 border-dashed border-mistral-black/10 rounded-xl bg-brand-ivory/50">
-                    <p className="text-mistral-black/40 font-bold text-xs uppercase tracking-widest">No tasks assigned yet</p>
-                  </div>
-                </div>
+                      <div className="space-y-3 mb-8">
+                        {currentTasks.length === 0 ? (
+                          <div className="text-center p-8 border-2 border-dashed border-mistral-black/10 rounded-xl bg-brand-ivory/50">
+                            <p className="text-mistral-black/40 font-bold text-xs uppercase tracking-widest">No tasks assigned yet</p>
+                          </div>
+                        ) : (
+                          currentTasks.map((task, i) => (
+                            <motion.div
+                              key={task.id}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, x: -20 }}
+                              transition={{ delay: i * 0.04 }}
+                              className="bg-brand-ivory border border-mistral-black/10 rounded-xl p-4 flex items-start gap-3 shadow-sm group/task"
+                            >
+                              <div className="w-6 h-6 mt-0.5 shrink-0 bg-mistral-orange/10 border border-mistral-orange/30 rounded-full flex items-center justify-center">
+                                <span className="text-[9px] font-bold text-mistral-orange">{i + 1}</span>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-heading font-bold text-sm text-mistral-black tracking-tight">{task.title}</p>
+                                {task.description && (
+                                  <p className="text-xs text-mistral-black/60 font-sans mt-1 leading-relaxed">{task.description}</p>
+                                )}
+                                <div className="flex flex-wrap items-center gap-3 mt-2">
+                                  <p className="text-[10px] text-mistral-black/30 font-bold uppercase tracking-widest">{task.createdAt}</p>
+                                  {task.submissionDate && (
+                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-rose-50 border border-rose-100 rounded text-[9px] font-bold text-rose-600 uppercase tracking-tight">
+                                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                      Deadline: {task.submissionDate}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              <button
+                                title="Delete Task"
+                                onClick={() =>
+                                  setStudentTasks(prev => ({
+                                    ...prev,
+                                    [selectedStudentForTask.id]: prev[selectedStudentForTask.id].filter(t => t.id !== task.id),
+                                  }))
+                                }
+                                className="shrink-0 w-7 h-7 flex items-center justify-center rounded-full opacity-0 group-hover/task:opacity-100 bg-rose-50 hover:bg-rose-500 text-rose-400 hover:text-white border border-rose-200 hover:border-rose-500 transition-all duration-200"
+                              >
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              </button>
+                            </motion.div>
+                          ))
+                        )}
+                      </div>
+                    </>
+                  );
+                })()}
 
                 {/* Add Task Control (Notes App Style) */}
                 <div className="relative">
@@ -394,22 +456,57 @@ const ManageStudents = () => {
                         <input 
                           type="text" 
                           placeholder="Task Title..." 
+                          value={taskTitle}
+                          onChange={(e) => setTaskTitle(e.target.value)}
                           className="w-full bg-transparent border-none text-lg font-heading font-bold text-mistral-black placeholder:text-mistral-black/30 focus:outline-none focus:ring-0 mb-4"
                         />
                         <textarea 
                           placeholder="Task description, instructions, or notes..."
                           rows="4"
-                          className="w-full bg-transparent border-none resize-none text-sm font-sans text-mistral-black/80 placeholder:text-mistral-black/30 focus:outline-none focus:ring-0"
+                          value={taskDescription}
+                          onChange={(e) => setTaskDescription(e.target.value)}
+                          className="w-full bg-transparent border-none resize-none text-sm font-sans text-mistral-black/80 placeholder:text-mistral-black/30 focus:outline-none focus:ring-0 mb-2"
                         />
+                        <div className="flex flex-col gap-1.5 px-1 pb-2">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Submission Deadline</label>
+                          <input 
+                            type="date"
+                            value={taskSubmissionDate}
+                            onChange={(e) => setTaskSubmissionDate(e.target.value)}
+                            className="bg-brand-cream border border-mistral-black/10 rounded px-3 py-2 text-xs font-bold text-mistral-black focus:outline-none focus:border-mistral-orange transition-all"
+                          />
+                        </div>
                         <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-mistral-black/5">
                           <button 
-                            onClick={() => setIsAddingTask(false)}
+                            onClick={() => {
+                              setIsAddingTask(false);
+                              setTaskTitle('');
+                              setTaskDescription('');
+                              setTaskSubmissionDate('');
+                            }}
                             className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-mistral-black/50 hover:text-mistral-black transition-colors"
                           >
                             Cancel
                           </button>
                           <button 
-                            onClick={() => setIsAddingTask(false)}
+                            onClick={() => {
+                              if (!taskTitle.trim()) return;
+                              const newTask = {
+                                id: Date.now(),
+                                title: taskTitle.trim(),
+                                description: taskDescription.trim(),
+                                submissionDate: taskSubmissionDate,
+                                createdAt: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
+                              };
+                              setStudentTasks(prev => ({
+                                ...prev,
+                                [selectedStudentForTask.id]: [...(prev[selectedStudentForTask.id] || []), newTask],
+                              }));
+                              setTaskTitle('');
+                              setTaskDescription('');
+                              setTaskSubmissionDate('');
+                              setIsAddingTask(false);
+                            }}
                             className="px-6 py-2 bg-mistral-black text-white text-xs font-bold uppercase tracking-widest rounded hover:bg-mistral-orange transition-colors shadow-sm"
                           >
                             Save Task

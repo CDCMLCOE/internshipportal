@@ -32,6 +32,14 @@ import AdminStudentsData from './pages/admin/StudentsData';
 import AdminUsers from './pages/admin/Users';
 import AdminManageStudents from './pages/admin/ManageStudents';
 
+// Industry Pages
+import IndustrialLayout from './layouts/IndustrialLayout';
+import IndustryLogin from './pages/industry/Login';
+import IndustryDashboard from './pages/industry/Dashboard';
+import IndustryInternships from './pages/industry/Internships';
+import IndustryApplicants from './pages/industry/Applicants';
+import IndustryRegister from './pages/industry/Register';
+
 // Main Public Layout
 const MainLayout = () => {
   return (
@@ -59,6 +67,7 @@ function AnimatedRoutes() {
           <Route path="/help" element={<Help />} />
           <Route path="/privacy" element={<LegalPrivacy />} />
           <Route path="/terms" element={<LegalTerms />} />
+          <Route path="/industry-register" element={<IndustryRegister />} />
         </Route>
 
         {/* Student Dashboard Routes (No standard Navbar/Footer) */}
@@ -81,6 +90,16 @@ function AnimatedRoutes() {
           <Route path="students" element={<AdminStudentsData />} />
           <Route path="manage-students" element={<AdminManageStudents />} />
           <Route path="users" element={<AdminUsers />} />
+        </Route>
+
+        {/* Industry Login (standalone, no layout) */}
+        <Route path="/industry" element={<IndustryLogin />} />
+
+        {/* Industry Dashboard Routes */}
+        <Route path="/industry" element={<IndustrialLayout />}>
+          <Route path="dashboard" element={<IndustryDashboard />} />
+          <Route path="internships" element={<IndustryInternships />} />
+          <Route path="applicants" element={<IndustryApplicants />} />
         </Route>
       </Routes>
     </AnimatePresence>
