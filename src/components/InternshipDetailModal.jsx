@@ -107,7 +107,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship }) => {
               {/* About the Company */}
               <div className="mb-8">
                 <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-mistral-black/40 mb-3">About the Company</h3>
-                <p className="text-sm leading-relaxed text-mistral-black/70 font-sans">
+                <p className="text-sm leading-relaxed text-mistral-black/70 font-sans max-w-prose">
                   {internship.aboutCompany}
                 </p>
               </div>
@@ -115,7 +115,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship }) => {
               {/* Role Description */}
               <div className="mb-8">
                 <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-mistral-black/40 mb-3">Role Description</h3>
-                <p className="text-sm leading-relaxed text-mistral-black/70 font-sans">
+                <p className="text-sm leading-relaxed text-mistral-black/70 font-sans max-w-prose">
                   {internship.roleDescription}
                 </p>
               </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Outlet, Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 // Components
@@ -101,6 +101,18 @@ function AnimatedRoutes() {
           <Route path="internships" element={<IndustryInternships />} />
           <Route path="applicants" element={<IndustryApplicants />} />
         </Route>
+
+        {/* 404 Fallback */}
+        <Route path="*" element={
+          <div className="min-h-screen bg-brand-ivory flex flex-col items-center justify-center text-center px-6">
+            <h1 className="text-8xl font-heading font-bold text-mistral-black/10 select-none">404</h1>
+            <h2 className="text-2xl font-heading font-bold uppercase tracking-tight text-mistral-black mt-4">Page Not Found</h2>
+            <p className="text-mistral-black/50 text-sm mt-2 max-w-md">The page you are looking for doesn't exist or has been moved.</p>
+            <Link to="/" className="mt-8 px-8 py-3 bg-mistral-black text-white text-xs font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors duration-300">
+              Back to Home
+            </Link>
+          </div>
+        } />
       </Routes>
     </AnimatePresence>
   );

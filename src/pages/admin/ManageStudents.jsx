@@ -14,22 +14,23 @@ const ManageStudents = () => {
   const [selectedStudentForTask, setSelectedStudentForTask] = useState(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [interviewDate, setInterviewDate] = useState('');
   const [studentTasks, setStudentTasks] = useState({});
 
   const students = [
-    { id: 1, name: 'John Doe', branch: 'Computer Engineering', status: 'Task complete' },
-    { id: 2, name: 'Jane Smith', branch: 'Information Technology', status: 'pending' },
+    { id: 1, name: 'John Doe', branch: 'Computer Engineering', status: 'Task Complete' },
+    { id: 2, name: 'Jane Smith', branch: 'Information Technology', status: 'Pending' },
     { id: 3, name: 'Bob Johnson', branch: 'Computer Engineering', status: 'No Task' },
-    { id: 4, name: 'Alice Williams', branch: 'E&TC', status: 'Task complete' },
-    { id: 5, name: 'Charlie Brown', branch: 'CSE - ai&ml', status: 'pending' },
-    { id: 6, name: 'David Miller', branch: 'Information Technology', status: 'Task incomplete' },
+    { id: 4, name: 'Alice Williams', branch: 'E&TC', status: 'Task Complete' },
+    { id: 5, name: 'Charlie Brown', branch: 'CSE - ai&ml', status: 'Pending' },
+    { id: 6, name: 'David Miller', branch: 'Information Technology', status: 'Task Incomplete' },
   ];
 
   const branches = ['Computer Engineering', 'CSE - ai&ml', 'Information Technology', 'E&TC'];
-  const statuses = ['Task complete', 'Task incomplete', 'pending', 'No Task'];
+  const statuses = ['Task Complete', 'Task Incomplete', 'Pending', 'No Task'];
 
   const handleDownloadPDF = (student, task) => {
     const doc = new jsPDF();
@@ -119,7 +120,7 @@ const ManageStudents = () => {
           {/* Search Bar */}
           <div className="relative w-full md:w-80 group">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg className="h-4 h-4 text-mistral-black/40 group-focus-within:text-mistral-orange transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-mistral-black/40 group-focus-within:text-mistral-orange transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -185,7 +186,7 @@ const ManageStudents = () => {
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -10 }}
-                            className="absolute right-full top-0 mr-1 w-56 bg-brand-ivory border border-mistral-black/10 shadow-xl"
+                            className="absolute right-full top-0 mr-2 w-56 bg-brand-ivory border border-mistral-black/10 shadow-xl"
                           >
                             <button
                                 onClick={() => {
@@ -240,7 +241,7 @@ const ManageStudents = () => {
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -10 }}
-                            className="absolute right-full top-0 mr-1 w-56 bg-brand-ivory border border-mistral-black/10 shadow-xl"
+                            className="absolute right-full top-0 mr-2 w-56 bg-brand-ivory border border-mistral-black/10 shadow-xl"
                           >
                             <button
                                 onClick={() => {
@@ -342,15 +343,23 @@ const ManageStudents = () => {
                     </button>
                   </td>
                   <td className="p-4 align-middle border-r border-mistral-black/10">
-                    <button title="Final Internship Letter" className="p-2.5 bg-brand-cream hover:bg-mistral-black hover:text-white transition-all text-mistral-black border border-mistral-black/20 hover:border-mistral-black mx-auto block group">
-                      <FileText className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    <button 
+                      title={student.status === 'Task Complete' ? "Issue Final Internship Letter" : "Cannot issue letter: Student has incomplete tasks"}
+                      disabled={student.status !== 'Task Complete'}
+                      className={`p-2.5 transition-all mx-auto block group border ${
+                        student.status === 'Task Complete' 
+                          ? 'bg-brand-cream hover:bg-mistral-black hover:text-white text-mistral-black border-mistral-black/20 hover:border-mistral-black' 
+                          : 'bg-brand-cream/50 text-mistral-black/20 border-mistral-black/5 cursor-not-allowed'
+                      }`}
+                    >
+                      <FileText className={`w-4 h-4 transition-transform ${student.status === 'Task Complete' ? 'group-hover:scale-110' : ''}`} />
                     </button>
                   </td>
                   <td className="p-4 text-center">
                     <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 border ${
-                      student.status === 'Task complete' ? 'bg-emerald-500/10 text-emerald-700 border-emerald-500/30' :
-                      student.status === 'Task incomplete' ? 'bg-rose-500/10 text-rose-700 border-rose-500/30' :
-                      student.status === 'pending' ? 'bg-brand-yellow/50 text-mistral-black border-brand-yellow' :
+                      student.status === 'Task Complete' ? 'bg-emerald-500/10 text-emerald-700 border-emerald-500/30' :
+                      student.status === 'Task Incomplete' ? 'bg-rose-500/10 text-rose-700 border-rose-500/30' :
+                      student.status === 'Pending' ? 'bg-brand-yellow/50 text-mistral-black border-brand-yellow' :
                       'bg-brand-cream text-mistral-black/60 border-mistral-black/10'
                     }`}>
                       {student.status}
@@ -404,10 +413,10 @@ const ManageStudents = () => {
                 
                 <div className="relative mt-4 flex flex-col sm:flex-row items-center sm:items-start gap-6">
                   {/* Profile Image Circle */}
-                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-brand-ivory bg-brand-cream flex items-center justify-center shrink-0 overflow-hidden shadow-md">
-                    <svg className="w-10 h-10 text-mistral-black/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-brand-ivory bg-mistral-black flex items-center justify-center shrink-0 overflow-hidden shadow-md">
+                    <span className="text-3xl sm:text-4xl font-heading font-bold text-brand-yellow uppercase">
+                      {selectedStudentForTask.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                    </span>
                   </div>
 
                   {/* Student Details */}
@@ -419,7 +428,7 @@ const ManageStudents = () => {
                     <div className="flex flex-col sm:flex-row gap-3 mt-1">
                       <div className="flex items-center justify-center sm:justify-start gap-1.5 text-mistral-black/70">
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                        <span className="font-sans text-xs">student@mlcoe.mespune.in</span>
+                        <span className="font-sans text-xs">{selectedStudentForTask.name.toLowerCase().replace(/\s+/g, '.')}@mlcoe.mespune.in</span>
                       </div>
                     </div>
                   </div>
@@ -437,7 +446,12 @@ const ManageStudents = () => {
                       </div>
 
                       <div className="space-y-3 mb-8">
-                        {currentTasks.length === 0 ? null : (
+                        {currentTasks.length === 0 ? (
+                          <div className="text-center p-8 border-2 border-dashed border-mistral-black/10 rounded-xl bg-brand-ivory/50">
+                            <p className="text-mistral-black/40 font-bold text-xs uppercase tracking-widest">No records yet</p>
+                            <p className="text-mistral-black/30 text-[10px] mt-2 uppercase tracking-wider">Click "Add Blank Pages" below to create the first record</p>
+                          </div>
+                        ) : (
                           currentTasks.map((task, i) => (
                             <motion.div
                               key={task.id}
@@ -565,6 +579,8 @@ const ManageStudents = () => {
                             setTaskDescription('');
                             setInterviewDate('');
                             setIsAddingTask(false);
+                            setToastMessage('Record saved successfully!');
+                            setTimeout(() => setToastMessage(''), 3000);
                           }}
                           className="px-6 py-2 bg-mistral-black text-white text-xs font-bold uppercase tracking-widest rounded hover:bg-mistral-orange transition-colors shadow-sm"
                         >
@@ -577,6 +593,23 @@ const ManageStudents = () => {
               </div>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.95 }}
+            className="fixed bottom-8 right-8 z-[100] flex items-center gap-3 px-6 py-4 bg-mistral-black text-white shadow-2xl border border-white/10 rounded-lg"
+          >
+            <svg className="w-5 h-5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span className="text-xs font-bold uppercase tracking-widest">{toastMessage}</span>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

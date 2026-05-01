@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import logoUrl from '../assets/logo.png';
 import LoginModal from './LoginModal';
 
@@ -103,71 +104,93 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Menu Dropdown */}
-      <div 
-        className={`fixed top-[76px] left-0 right-0 bg-brand-ivory/95 backdrop-blur-xl border-b border-mistral-black/10 z-40 transition-all duration-300 overflow-hidden md:hidden shadow-2xl ${isMobileMenuOpen ? 'max-h-screen opacity-100 py-2' : 'max-h-0 opacity-0'}`}
-      >
-        <div className="flex flex-col">
-          <Link 
-            to="/" 
-            onClick={closeMobileMenu}
-            className={`uppercase tracking-widest text-sm font-semibold px-8 py-5 border-b border-mistral-black/5 transition-colors ${isActive('/') ? 'text-mistral-orange bg-mistral-orange/5' : 'text-mistral-black hover:bg-black/5'}`}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="fixed top-[76px] left-0 right-0 bg-brand-ivory/95 backdrop-blur-xl border-b border-mistral-black/10 z-40 overflow-hidden md:hidden shadow-2xl"
           >
-            Home
-          </Link>
-          
-          <div className="flex flex-col border-b border-mistral-black/5">
-            <button 
-              onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
-              className={`uppercase tracking-widest text-sm font-semibold px-8 py-5 flex justify-between items-center transition-colors ${isActive('/about') || isActive('/principal-message') ? 'text-mistral-orange bg-mistral-orange/5' : 'text-mistral-black hover:bg-black/5'}`}
-            >
-              About Us
-              <svg className={`w-5 h-5 transition-transform duration-200 ${isMobileAboutOpen ? 'rotate-180 text-mistral-orange' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div className={`flex flex-col bg-mistral-black/5 overflow-hidden transition-all duration-300 ${isMobileAboutOpen ? 'max-h-48' : 'max-h-0'}`}>
+            <div className="flex flex-col py-2">
               <Link 
-                to="/about"
+                to="/" 
                 onClick={closeMobileMenu}
-                className={`px-8 py-4 pl-12 text-sm font-semibold uppercase tracking-widest transition-colors ${isActive('/about') ? 'text-mistral-orange bg-mistral-orange/10' : 'text-mistral-black hover:bg-mistral-orange/5'}`}
+                className={`uppercase tracking-widest text-sm font-semibold px-8 py-5 border-b border-mistral-black/5 transition-colors ${isActive('/') ? 'text-mistral-orange bg-mistral-orange/5' : 'text-mistral-black hover:bg-black/5'}`}
               >
-                MES MLCOE
+                Home
               </Link>
+              
+              <div className="flex flex-col border-b border-mistral-black/5">
+                <button 
+                  onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
+                  className={`uppercase tracking-widest text-sm font-semibold px-8 py-5 flex justify-between items-center transition-colors ${isActive('/about') || isActive('/principal-message') ? 'text-mistral-orange bg-mistral-orange/5' : 'text-mistral-black hover:bg-black/5'}`}
+                >
+                  About Us
+                  <motion.svg 
+                    animate={{ rotate: isMobileAboutOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </motion.svg>
+                </button>
+                <AnimatePresence>
+                  {isMobileAboutOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex flex-col bg-mistral-black/5 overflow-hidden"
+                    >
+                      <Link 
+                        to="/about"
+                        onClick={closeMobileMenu}
+                        className={`px-8 py-4 pl-12 text-sm font-semibold uppercase tracking-widest transition-colors ${isActive('/about') ? 'text-mistral-orange bg-mistral-orange/10' : 'text-mistral-black hover:bg-mistral-orange/5'}`}
+                      >
+                        MES MLCOE
+                      </Link>
+                      <Link 
+                        to="/principal-message"
+                        onClick={closeMobileMenu}
+                        className={`px-8 py-4 pl-12 text-sm font-semibold uppercase tracking-widest border-t border-mistral-black/5 transition-colors ${isActive('/principal-message') ? 'text-mistral-orange bg-mistral-orange/10' : 'text-mistral-black hover:bg-mistral-orange/5'}`}
+                      >
+                        Principal's Message
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               <Link 
-                to="/principal-message"
+                to="/help" 
                 onClick={closeMobileMenu}
-                className={`px-8 py-4 pl-12 text-sm font-semibold uppercase tracking-widest border-t border-mistral-black/5 transition-colors ${isActive('/principal-message') ? 'text-mistral-orange bg-mistral-orange/10' : 'text-mistral-black hover:bg-mistral-orange/5'}`}
+                className={`uppercase tracking-widest text-sm font-semibold px-8 py-5 border-b border-mistral-black/5 transition-colors ${isActive('/help') ? 'text-mistral-orange bg-mistral-orange/5' : 'text-mistral-black hover:bg-black/5'}`}
               >
-                Principal's Message
+                Help
+              </Link>
+              <a 
+                href="https://mlcoe.mespune.in/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={closeMobileMenu}
+                className="uppercase tracking-widest text-sm font-semibold px-8 py-5 border-b border-mistral-black/5 text-mistral-black hover:bg-black/5 transition-colors"
+              >
+                Admissions
+              </a>
+              <Link 
+                to="/industry-register" 
+                onClick={closeMobileMenu}
+                className="uppercase tracking-widest text-sm font-semibold px-8 py-5 text-mistral-orange hover:bg-mistral-orange/5 transition-colors"
+              >
+                Company Register
               </Link>
             </div>
-          </div>
-
-          <Link 
-            to="/help" 
-            onClick={closeMobileMenu}
-            className={`uppercase tracking-widest text-sm font-semibold px-8 py-5 border-b border-mistral-black/5 transition-colors ${isActive('/help') ? 'text-mistral-orange bg-mistral-orange/5' : 'text-mistral-black hover:bg-black/5'}`}
-          >
-            Help
-          </Link>
-          <a 
-            href="https://mlcoe.mespune.in/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            onClick={closeMobileMenu}
-            className="uppercase tracking-widest text-sm font-semibold px-8 py-5 border-b border-mistral-black/5 text-mistral-black hover:bg-black/5 transition-colors"
-          >
-            Admissions
-          </a>
-          <Link 
-            to="/industry-register" 
-            onClick={closeMobileMenu}
-            className="uppercase tracking-widest text-sm font-semibold px-8 py-5 text-mistral-orange hover:bg-mistral-orange/5 transition-colors"
-          >
-            Company Register
-          </Link>
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </>

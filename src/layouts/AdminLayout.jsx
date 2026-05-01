@@ -66,7 +66,7 @@ const AdminLayout = () => {
     <div className="min-h-screen bg-brand-cream/30 flex flex-col md:flex-row font-sans text-mistral-black">
       {/* Sidebar */}
       <aside className="w-full md:w-64 bg-brand-ivory border-r border-mistral-black/10 flex flex-col">
-        <div className="p-6 md:p-8 border-b border-mistral-black/10 flex justify-center md:justify-start">
+        <div className="h-20 md:h-24 px-6 md:px-8 border-b border-mistral-black/10 flex items-center justify-center md:justify-start">
           <Link to="/" className="flex items-center gap-3 group">
             <img src={logoUrl} alt="MES MLCOE Logo" className="h-10 md:h-12 object-contain group-hover:opacity-80 transition-opacity" />
             <div className="flex flex-col text-left">
@@ -98,7 +98,7 @@ const AdminLayout = () => {
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Top Header */}
-        <header className="bg-brand-ivory border-b border-mistral-black/10 p-4 md:p-8 flex justify-between items-center z-10 shadow-sm">
+        <header className="h-20 md:h-24 bg-brand-ivory border-b border-mistral-black/10 px-4 md:px-8 flex justify-between items-center z-10 shadow-sm">
           <h1 className="font-heading font-semibold text-xl md:text-2xl uppercase tracking-tight text-mistral-black">Admin Management Control</h1>
           <div className="flex items-center gap-6">
             {/* Inbox Icon */}

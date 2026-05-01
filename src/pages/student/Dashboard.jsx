@@ -183,33 +183,39 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredInternships.map((job) => (
             <div key={job.id} className="bg-white rounded-2xl p-6 border border-mistral-black/10 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col group">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h4 className="font-heading font-bold text-lg text-mistral-black mb-1 leading-tight group-hover:text-mistral-orange transition-colors">{job.title}</h4>
-                  <p className="text-xs text-mistral-black/40 font-bold uppercase tracking-widest">{job.company}</p>
+              <div className="flex justify-between items-start mb-1">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-mistral-black/40 font-bold uppercase tracking-widest mb-2">{job.company}</p>
+                  <h4 className="font-heading font-bold text-xl text-mistral-black leading-tight group-hover:text-mistral-orange transition-colors">{job.title}</h4>
                 </div>
-                <div className="w-10 h-10 bg-mistral-black/5 rounded-lg flex items-center justify-center text-mistral-black/20 font-bold text-xl shrink-0">
+                <div className="w-10 h-10 bg-mistral-black/5 rounded-lg flex items-center justify-center text-mistral-black/20 font-bold text-xl shrink-0 ml-3">
                   {job.company.charAt(0)}
                 </div>
               </div>
 
-              <div className="flex-grow flex flex-col justify-center space-y-4">
+              <div className="flex-grow flex flex-col justify-center space-y-3 mt-4">
                 <div className="flex items-center gap-3 text-sm text-mistral-black/70">
-                  <svg className="w-4 h-4 text-mistral-black/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-mistral-black/30 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   <span>{job.location}</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-mistral-black/70">
-                  <svg className="w-4 h-4 text-mistral-black/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-center gap-3 text-sm font-semibold text-mistral-orange">
+                  <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>{job.stipend}</span>
                 </div>
+                <div className="flex items-center gap-3 text-sm text-mistral-black/50">
+                  <svg className="w-4 h-4 text-mistral-black/30 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>{job.duration}</span>
+                </div>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-mistral-black/5">
+              <div className="flex items-center justify-between pt-4 mt-4 border-t border-mistral-black/5">
                 <span className="bg-mistral-black/5 text-mistral-black px-3 py-1 text-[10px] uppercase tracking-widest font-bold rounded-md">
                   {job.type}
                 </span>

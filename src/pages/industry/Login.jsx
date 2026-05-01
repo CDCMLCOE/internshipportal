@@ -43,7 +43,7 @@ const IndustryLogin = () => {
         {/* Card */}
         <div className="bg-brand-ivory border border-mistral-black/10 shadow-2xl overflow-hidden">
           {/* Header stripe */}
-          <div className="h-2 bg-gradient-to-r from-blue-600 to-blue-400" />
+          <div className="h-2 bg-gradient-to-r from-mistral-orange to-brand-yellow" />
 
           <div className="p-8 sm:p-10">
             {/* Logo + Title */}
@@ -53,7 +53,7 @@ const IndustryLogin = () => {
               </Link>
               <div className="text-center">
                 <h1 className="font-heading font-bold text-xl uppercase tracking-wider text-mistral-black">MES MLCOE</h1>
-                <p className="text-[10px] uppercase tracking-widest font-bold text-blue-600 mt-1">Industry Partner Portal</p>
+                <p className="text-[10px] uppercase tracking-widest font-bold text-mistral-orange mt-1">Industry Partner Portal</p>
               </div>
             </div>
 
@@ -72,7 +72,7 @@ const IndustryLogin = () => {
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                   placeholder="e.g. Google"
-                  className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium text-mistral-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-mistral-black/30"
+                  className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium text-mistral-black focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all placeholder:text-mistral-black/30"
                 />
               </div>
 
@@ -83,7 +83,7 @@ const IndustryLogin = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium text-mistral-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-mistral-black/30"
+                  className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium text-mistral-black focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all placeholder:text-mistral-black/30"
                 />
               </div>
 
@@ -96,7 +96,7 @@ const IndustryLogin = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3.5 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-mistral-black transition-all duration-300 shadow-lg disabled:opacity-60 flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-mistral-orange text-white text-xs font-bold uppercase tracking-widest hover:bg-mistral-black transition-all duration-300 shadow-lg disabled:opacity-60 flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -116,7 +116,7 @@ const IndustryLogin = () => {
               <div className="grid grid-cols-2 gap-2">
                 {Object.keys(INDUSTRY_ACCOUNTS).map(c => (
                   <button key={c} onClick={() => { setCompany(c); setPassword(INDUSTRY_ACCOUNTS[c]); }}
-                    className="text-left px-3 py-2 bg-brand-cream border border-mistral-black/5 hover:border-blue-300 hover:bg-blue-50 transition-all">
+                    className="text-left px-3 py-2 bg-brand-cream border border-mistral-black/5 hover:border-mistral-orange hover:bg-brand-yellow/20 transition-all">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-mistral-black">{c}</p>
                   </button>
                 ))}
@@ -126,7 +126,7 @@ const IndustryLogin = () => {
         </div>
 
         <p className="text-center text-[10px] uppercase tracking-widest font-bold text-mistral-black/30 mt-6">
-          <Link to="/" className="hover:text-blue-600 transition-colors">← Back to Public Portal</Link>
+          <Link to="/" className="hover:text-mistral-orange transition-colors">← Back to Public Portal</Link>
         </p>
       </div>
     </div>

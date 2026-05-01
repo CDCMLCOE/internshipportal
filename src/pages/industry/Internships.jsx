@@ -85,7 +85,7 @@ const IndustryInternships = () => {
         <div className="flex flex-col md:flex-row items-center gap-4 w-full lg:w-auto">
           <div className="relative w-full md:w-72 group">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg className="h-4 w-4 text-mistral-black/40 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-4 w-4 text-mistral-black/40 group-focus-within:text-mistral-orange transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -156,7 +156,7 @@ const IndustryInternships = () => {
           </thead>
           <tbody>
             {filtered.length > 0 ? filtered.map(job => (
-              <motion.tr key={job.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-blue-50/50 transition-colors">
+              <motion.tr key={job.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-brand-cream/50 transition-colors">
                 <td className="p-4 border-b border-mistral-black/5">
                   <span className="font-bold text-sm uppercase tracking-tight">{job.title}</span>
                 </td>
@@ -171,7 +171,7 @@ const IndustryInternships = () => {
                 </td>
                 <td className="p-4 border-b border-mistral-black/5 text-right">
                   <div className="flex justify-end gap-2">
-                    <button onClick={() => openEdit(job)} title="Edit" className="p-2 hover:bg-blue-600 hover:text-white transition-all duration-200">
+                    <button onClick={() => openEdit(job)} title="Edit" className="p-2 hover:bg-mistral-orange hover:text-white transition-all duration-200">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
@@ -198,7 +198,7 @@ const IndustryInternships = () => {
       {/* Add Button */}
       <div className="flex justify-end">
         <button onClick={openAdd}
-          className="bg-blue-600 text-white px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-mistral-black transition-all duration-300 shadow-xl flex items-center gap-3 group">
+          className="bg-mistral-black text-white px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-mistral-orange transition-all duration-300 shadow-xl flex items-center gap-3 group">
           <span>Add New Listing</span>
           <svg className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
@@ -215,7 +215,7 @@ const IndustryInternships = () => {
             <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-lg bg-brand-ivory rounded-xl shadow-2xl overflow-hidden">
-              <div className="h-1.5 bg-gradient-to-r from-blue-600 to-blue-400" />
+              <div className="h-1.5 bg-gradient-to-r from-mistral-orange to-brand-yellow" />
               <div className="p-8">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="font-heading font-bold text-xl text-mistral-black tracking-tight uppercase">
@@ -234,26 +234,26 @@ const IndustryInternships = () => {
                     <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Role Title *</label>
                     <input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
                       placeholder="e.g. Full Stack Developer"
-                      className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+                      className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all" />
                   </div>
                   <div>
                     <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Location *</label>
                     <input type="text" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
                       placeholder="e.g. Mumbai, India"
-                      className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+                      className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Category</label>
                       <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-                        className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-blue-500 transition-all">
+                        className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all">
                         {categories.map(c => <option key={c}>{c}</option>)}
                       </select>
                     </div>
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Status</label>
                       <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-                        className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-blue-500 transition-all">
+                        className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all">
                         {statuses.map(s => <option key={s}>{s}</option>)}
                       </select>
                     </div>
@@ -266,7 +266,7 @@ const IndustryInternships = () => {
                     Cancel
                   </button>
                   <button onClick={handleSave}
-                    className="px-8 py-2.5 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-mistral-black transition-colors shadow-md">
+                    className="px-8 py-2.5 bg-mistral-orange text-white text-xs font-bold uppercase tracking-widest hover:bg-mistral-black transition-colors shadow-md">
                     {editingJob ? 'Save Changes' : 'Add Listing'}
                   </button>
                 </div>

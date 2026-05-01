@@ -106,7 +106,7 @@ const IndustryApplicants = () => {
                     ))}
 
                     <button onClick={() => { setActiveFilter('All'); setIsFilterOpen(false); }}
-                      className="w-full text-left px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
+                      className="w-full text-left px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-mistral-orange hover:bg-mistral-orange hover:text-white transition-colors">
                       Clear Filters
                     </button>
                   </div>
@@ -122,7 +122,7 @@ const IndustryApplicants = () => {
           filteredApplicants.map((applicant, index) => (
             <motion.div key={applicant.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-brand-ivory border border-mistral-black/10 p-6 flex flex-col md:flex-row justify-between items-center gap-6 group hover:border-blue-400 transition-all duration-300">
+              className="bg-brand-ivory border border-mistral-black/10 p-6 flex flex-col md:flex-row justify-between items-center gap-6 group hover:border-mistral-orange transition-all duration-300">
               <div className="flex items-center gap-6">
                 <div className="w-16 h-16 bg-brand-cream border border-mistral-black/10 flex items-center justify-center font-bold text-xl uppercase text-mistral-black/40">
                   {applicant.name.split(' ').map(n => n[0]).join('')}
@@ -130,7 +130,7 @@ const IndustryApplicants = () => {
                 <div className="flex flex-col">
                   <span className="text-lg font-bold uppercase tracking-tight">{applicant.name}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">{applicant.role}</span>
+                    <span className="text-xs font-bold text-mistral-orange uppercase tracking-widest">{applicant.role}</span>
                     <span className="text-[10px] text-mistral-black/40 uppercase font-bold tracking-tighter">[{applicant.branch}]</span>
                   </div>
                   <span className="text-xs text-mistral-black/60 mt-1">{applicant.college} • GPA: {applicant.gpa}</span>
@@ -142,7 +142,7 @@ const IndustryApplicants = () => {
                   {applicant.status}
                 </span>
                 <div className="flex-grow md:flex-grow-0 flex gap-2">
-                  <button className="flex-1 md:flex-none px-4 py-2 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-blue-600 transition-colors">
+                  <button className="flex-1 md:flex-none px-4 py-2 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors">
                     Review Profile
                   </button>
                 </div>
