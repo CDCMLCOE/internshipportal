@@ -231,13 +231,13 @@ const IndustryInternships = () => {
 
                 <div className="space-y-5">
                   <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Role Title *</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Role Title <span className="text-red-500 font-bold">*</span></label>
                     <input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
                       placeholder="e.g. Full Stack Developer"
                       className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all" />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Location *</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Location <span className="text-red-500 font-bold">*</span></label>
                     <input type="text" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
                       placeholder="e.g. Mumbai, India"
                       className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all" />

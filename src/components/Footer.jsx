@@ -30,7 +30,7 @@ const Footer = () => {
             <li><Link to="/" className="hover:text-mistral-orange transition-colors">Home</Link></li>
             <li><Link to="/about" className="hover:text-mistral-orange transition-colors">About MES MLCOE</Link></li>
             <li><Link to="/help" className="hover:text-mistral-orange transition-colors">Support & FAQ</Link></li>
-            <li><a href="#" className="hover:text-mistral-orange transition-colors">Student Guidelines</a></li>
+            <li><Link to="/student-guidelines" className="hover:text-mistral-orange transition-colors">Student Guidelines</Link></li>
           </ul>
         </div>
 
@@ -40,15 +40,17 @@ const Footer = () => {
           <ul className="space-y-4 text-sm text-brand-ivory/60">
             <li className="flex items-start gap-3">
               <span className="mt-1 text-mistral-orange">•</span>
-              <span>CTS, 30, F.P.28, Karve Road, Pune 411004</span>
+              <a href="https://maps.google.com/?q=CTS,+30,+F.P.28,+Karve+Road,+Pune+411004" target="_blank" rel="noopener noreferrer" className="hover:text-mistral-orange transition-colors">
+                CTS, 30, F.P.28, Karve Road, Pune 411004
+              </a>
             </li>
             <li className="flex items-center gap-3">
               <span className="text-mistral-orange">•</span>
-              <span>internships@mlcoe.pune</span>
+              <a href="mailto:internships@mlcoe.pune" className="hover:text-mistral-orange transition-colors">internships@mlcoe.pune</a>
             </li>
             <li className="flex items-center gap-3">
               <span className="text-mistral-orange">•</span>
-              <span>+91759 73637</span>
+              <a href="tel:+9175973637" className="hover:text-mistral-orange transition-colors">+91759 73637</a>
             </li>
           </ul>
         </div>

@@ -47,7 +47,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-8">
             <div className="relative group py-2">
               <button 
-                className={`transition-colors duration-200 uppercase tracking-widest text-sm font-semibold flex items-center gap-1 ${isActive('/about') || isActive('/principal-message') ? 'text-mistral-orange' : 'text-mistral-black group-hover:text-mistral-orange'}`}
+                className={`transition-colors duration-200 uppercase tracking-widest text-[13px] font-semibold flex items-center gap-1 ${isActive('/about') || isActive('/principal-message') ? 'text-mistral-orange' : 'text-mistral-black group-hover:text-mistral-orange'}`}
               >
                 About Us
                 <svg className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -71,8 +71,14 @@ const Navbar = () => {
               </div>
             </div>
             <Link 
+              to="/student-guidelines" 
+              className={`transition-colors duration-200 uppercase tracking-widest text-[13px] font-semibold ${isActive('/student-guidelines') ? 'text-mistral-orange' : 'text-mistral-black hover:text-mistral-orange'}`}
+            >
+              Student Guidelines
+            </Link>
+            <Link 
               to="/help" 
-              className={`transition-colors duration-200 uppercase tracking-widest text-sm font-semibold ${isActive('/help') ? 'text-mistral-orange' : 'text-mistral-black hover:text-mistral-orange'}`}
+              className={`transition-colors duration-200 uppercase tracking-widest text-[13px] font-semibold ${isActive('/help') ? 'text-mistral-orange' : 'text-mistral-black hover:text-mistral-orange'}`}
             >
               Help
             </Link>
@@ -80,7 +86,7 @@ const Navbar = () => {
               href="https://mlcoe.mespune.in/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="transition-colors duration-200 uppercase tracking-widest text-sm font-semibold text-mistral-black hover:text-mistral-orange"
+              className="transition-colors duration-200 uppercase tracking-widest text-[13px] font-semibold text-mistral-black hover:text-mistral-orange"
             >
               Admissions
             </a>
@@ -164,6 +170,13 @@ const Navbar = () => {
                 </AnimatePresence>
               </div>
 
+              <Link 
+                to="/student-guidelines" 
+                onClick={closeMobileMenu}
+                className={`uppercase tracking-widest text-sm font-semibold px-8 py-5 border-b border-mistral-black/5 transition-colors ${isActive('/student-guidelines') ? 'text-mistral-orange bg-mistral-orange/5' : 'text-mistral-black hover:bg-black/5'}`}
+              >
+                Student Guidelines
+              </Link>
               <Link 
                 to="/help" 
                 onClick={closeMobileMenu}

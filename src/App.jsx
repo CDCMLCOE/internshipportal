@@ -13,6 +13,7 @@ import PrincipalMessage from './pages/PrincipalMessage';
 import Help from './pages/Help';
 import LegalPrivacy from './pages/LegalPrivacy';
 import LegalTerms from './pages/LegalTerms';
+import StudentGuidelines from './pages/StudentGuidelines';
 
 // Student Dashboard
 import StudentLayout from './layouts/StudentLayout';
@@ -67,6 +68,7 @@ function AnimatedRoutes() {
           <Route path="/help" element={<Help />} />
           <Route path="/privacy" element={<LegalPrivacy />} />
           <Route path="/terms" element={<LegalTerms />} />
+          <Route path="/student-guidelines" element={<StudentGuidelines />} />
           <Route path="/industry-register" element={<IndustryRegister />} />
         </Route>
 
