@@ -20,7 +20,7 @@ const Profile = () => {
       className="space-y-8 w-full pb-12"
     >
       {/* Profile Header Card */}
-      <div className="bg-brand-ivory border border-mistral-black/10 rounded-xl p-8 shadow-sm relative overflow-hidden">
+      <div className="bg-brand-ivory border border-mistral-black/10 p-8 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-mistral-orange/20 to-brand-yellow/20"></div>
         
         <div className="relative mt-8 flex flex-col sm:flex-row items-center sm:items-start gap-8">
@@ -62,7 +62,7 @@ const Profile = () => {
       </div>
 
       {/* Edit Profile Form */}
-      <div className="bg-brand-ivory border border-mistral-black/10 rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-brand-ivory border border-mistral-black/10 shadow-sm overflow-hidden">
         <div className="p-6 border-b border-mistral-black/10 bg-brand-cream/30">
           <h2 className="font-heading font-semibold text-xl text-mistral-black">Personal Information</h2>
           <p className="text-mistral-black/60 font-sans text-sm mt-1">Update your personal details and resume.</p>
@@ -76,12 +76,12 @@ const Profile = () => {
                 <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Date of Birth</label>
                 <input 
                   type="date" 
-                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black"
+                  className="w-full bg-white border border-mistral-black/15 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black"
                 />
               </div>
               <div className="space-y-2">
                 <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Gender</label>
-                <select className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black">
+                <select className="w-full bg-white border border-mistral-black/15 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black">
                   <option value="">Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
@@ -94,7 +94,7 @@ const Profile = () => {
                 <input 
                   type="tel" 
                   placeholder="+91 "
-                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black"
+                  className="w-full bg-white border border-mistral-black/15 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black"
                 />
               </div>
 
@@ -103,7 +103,7 @@ const Profile = () => {
                 <input 
                   type="text" 
                   placeholder="e.g. Frontend Developer, Data Scientist"
-                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black"
+                  className="w-full bg-white border border-mistral-black/15 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-all font-sans text-base shadow-sm text-mistral-black"
                 />
               </div>
             </div>
@@ -114,7 +114,7 @@ const Profile = () => {
                 <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">Address</label>
                 <textarea 
                   rows="3"
-                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base resize-none shadow-sm text-mistral-black"
+                  className="w-full bg-white border border-mistral-black/15 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-all font-sans text-base resize-none shadow-sm text-mistral-black"
                   placeholder="Enter your full residential address"
                 ></textarea>
               </div>
@@ -123,7 +123,7 @@ const Profile = () => {
                 <label className="block text-sm uppercase tracking-widest font-bold text-mistral-black/60">About</label>
                 <textarea 
                   rows="4"
-                  className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 focus:border-mistral-orange transition-all font-sans text-base resize-none shadow-sm text-mistral-black"
+                  className="w-full bg-white border border-mistral-black/15 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-all font-sans text-base resize-none shadow-sm text-mistral-black"
                   placeholder="Tell us a little about yourself, your skills, and what kind of internship you are looking for."
                 ></textarea>
               </div>
@@ -139,7 +139,7 @@ const Profile = () => {
                     <input 
                       type="url" 
                       placeholder="https://linkedin.com/in/username"
-                      className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm text-mistral-black shadow-sm"
+                      className="w-full bg-white border border-mistral-black/15 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-all text-sm text-mistral-black shadow-sm"
                     />
                   </div>
 
@@ -148,7 +148,7 @@ const Profile = () => {
                     <input 
                       type="url" 
                       placeholder="https://github.com/username"
-                      className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm text-mistral-black shadow-sm"
+                      className="w-full bg-white border border-mistral-black/15 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-all text-sm text-mistral-black shadow-sm"
                     />
                   </div>
 
@@ -157,7 +157,7 @@ const Profile = () => {
                     <input 
                       type="url" 
                       placeholder="https://yourportfolio.com"
-                      className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm text-mistral-black shadow-sm"
+                      className="w-full bg-white border border-mistral-black/15 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-all text-sm text-mistral-black shadow-sm"
                     />
                   </div>
                 </div>
@@ -190,7 +190,7 @@ const Profile = () => {
                         <input 
                           type="text"
                           placeholder="e.g. Behance"
-                          className="w-full bg-white border border-mistral-black/15 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm"
+                          className="w-full bg-white border border-mistral-black/15 px-4 py-2.5 focus:outline-none focus:border-mistral-orange transition-all text-sm"
                         />
                       </div>
                       <div className="space-y-2 relative">
@@ -199,7 +199,7 @@ const Profile = () => {
                           <input 
                             type="url"
                             placeholder="https://..."
-                            className="flex-1 bg-white border border-mistral-black/15 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-mistral-orange/50 transition-all text-sm"
+                            className="flex-1 bg-white border border-mistral-black/15 px-4 py-2.5 focus:outline-none focus:border-mistral-orange transition-all text-sm"
                           />
                           <button 
                             type="button"
@@ -227,11 +227,11 @@ const Profile = () => {
                       accept=".pdf"
                       className="block w-full text-base text-mistral-black/60
                         file:mr-4 file:py-2.5 file:px-6
-                        file:rounded-lg file:border-0
+                        file:border-0
                         file:text-sm file:font-bold file:uppercase file:tracking-widest
                         file:bg-brand-cream file:text-mistral-black
                         hover:file:bg-brand-yellow/30 file:transition-colors file:cursor-pointer
-                        cursor-pointer border border-mistral-black/15 rounded-lg bg-white shadow-sm"
+                        cursor-pointer border border-mistral-black/15 bg-white shadow-sm"
                     />
                   </div>
                 </div>
@@ -244,11 +244,11 @@ const Profile = () => {
                       accept=".pdf,image/*"
                       className="block w-full text-base text-mistral-black/60
                         file:mr-4 file:py-2.5 file:px-6
-                        file:rounded-lg file:border-0
+                        file:border-0
                         file:text-sm file:font-bold file:uppercase file:tracking-widest
                         file:bg-brand-cream file:text-mistral-black
                         hover:file:bg-brand-yellow/30 file:transition-colors file:cursor-pointer
-                        cursor-pointer border border-mistral-black/15 rounded-lg bg-white shadow-sm"
+                        cursor-pointer border border-mistral-black/15 bg-white shadow-sm"
                     />
                   </div>
                 </div>
@@ -257,7 +257,7 @@ const Profile = () => {
 
             {/* Form Actions */}
             <div className="pt-8 border-t border-mistral-black/10 flex flex-col sm:flex-row justify-end">
-               <button type="button" className="w-full sm:w-auto bg-mistral-black text-white rounded-lg px-10 py-3 uppercase tracking-widest font-semibold text-sm hover:bg-mistral-orange hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
+               <button type="button" className="w-full sm:w-auto bg-mistral-black text-white px-10 py-4 uppercase tracking-widest font-bold text-xs hover:bg-mistral-orange transition-all duration-300 shadow-lg">
                  Save Changes
                </button>
             </div>

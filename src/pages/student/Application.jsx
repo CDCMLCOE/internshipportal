@@ -27,13 +27,13 @@ const Application = () => {
       className="space-y-6"
     >
       {/* Page Header */}
-      <div className="bg-brand-ivory border border-mistral-black/10 p-6 md:p-8 shadow-sm rounded-xl">
+      <div className="bg-brand-ivory border border-mistral-black/10 p-6 md:p-8 shadow-sm">
         <h2 className="font-heading font-semibold text-xl md:text-2xl uppercase tracking-tight mb-1">My Applications</h2>
         <p className="text-mistral-black/60 font-sans text-sm">Track the status of your internship applications.</p>
       </div>
 
       {/* ── Desktop Table (md+) ── */}
-      <div className="hidden md:block bg-brand-ivory border border-mistral-black/10 shadow-sm overflow-hidden rounded-xl">
+      <div className="hidden md:block bg-brand-ivory border border-mistral-black/10 shadow-sm overflow-hidden">
         <table className="w-full text-left text-sm font-sans">
           <thead className="bg-mistral-black text-white text-[10px] uppercase tracking-widest">
             <tr>
@@ -69,7 +69,7 @@ const Application = () => {
       {/* ── Mobile Cards (< md) ── */}
       <div className="flex flex-col gap-4 md:hidden">
         {applications.map((app, i) => (
-          <div key={i} className="bg-brand-ivory border border-mistral-black/10 rounded-xl p-5 shadow-sm space-y-3">
+          <div key={i} className="bg-brand-ivory border border-mistral-black/10 p-5 shadow-sm space-y-3">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="font-heading font-bold text-base text-mistral-black leading-tight">{app.company}</p>

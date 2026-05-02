@@ -84,7 +84,7 @@ const AssignmentPage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {ASSIGNMENTS.map((assignment) => (
-          <div key={assignment.id} className="bg-white p-6 border border-mistral-black/10 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-4 group">
+          <div key={assignment.id} className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm hover:border-mistral-orange transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-4 group">
 
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
@@ -137,7 +137,7 @@ const AssignmentPage = () => {
           onClick={() => setSelectedAssignment(null)}
         >
           <div 
-            className="bg-white p-8 max-w-2xl w-full shadow-2xl relative overflow-hidden"
+            className="bg-brand-ivory p-8 max-w-2xl w-full shadow-2xl relative overflow-hidden"
             onClick={e => e.stopPropagation()}
           >
 

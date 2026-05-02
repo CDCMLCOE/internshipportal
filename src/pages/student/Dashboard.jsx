@@ -99,7 +99,7 @@ const Dashboard = () => {
         className="space-y-6"
       >
         <div className="pt-2 pb-2">
-          <h2 className="font-heading font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase tracking-tight mb-3 text-mistral-black leading-tight">
+          <h2 className="font-heading font-bold text-3xl md:text-4xl uppercase tracking-tight mb-2 text-mistral-black leading-tight">
             Welcome Back, <span className="text-mistral-orange">Student</span>
           </h2>
           <p className="text-mistral-black/70 font-sans text-sm sm:text-base md:text-lg lg:text-xl font-medium">
@@ -124,19 +124,19 @@ const Dashboard = () => {
                 placeholder="Search roles or skills..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2.5 bg-brand-ivory border border-mistral-black/10 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-mistral-black/20"
+                className="block w-full pl-10 pr-3 py-2.5 bg-brand-ivory border border-mistral-black/10 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-mistral-orange transition-all placeholder:text-mistral-black/20 shadow-sm"
               />
             </div>
 
             <div className="relative w-full md:w-auto">
               <button 
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="w-full md:w-auto px-6 py-2.5 bg-brand-yellow text-mistral-black text-xs font-bold uppercase tracking-widest border border-mistral-black/10 hover:bg-mistral-black hover:text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
+                className="w-full md:w-auto px-6 py-2.5 bg-mistral-orange text-white text-xs font-bold uppercase tracking-widest border border-mistral-black/10 hover:bg-mistral-black transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                 </svg>
-                Filter: <span className="text-blue-600">{activeFilter}</span>
+                Filter: <span className="text-white/80">{activeFilter}</span>
               </button>
 
               <AnimatePresence>
@@ -182,7 +182,7 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredInternships.map((job) => (
-            <div key={job.id} className="bg-white rounded-2xl p-6 border border-mistral-black/10 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+            <div key={job.id} className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm hover:border-mistral-orange hover:-translate-y-1 transition-all duration-300 flex flex-col group">
               <div className="flex justify-between items-start mb-1">
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] text-mistral-black/40 font-bold uppercase tracking-widest mb-2">{job.company}</p>
@@ -216,12 +216,12 @@ const Dashboard = () => {
               </div>
 
               <div className="flex items-center justify-between pt-4 mt-4 border-t border-mistral-black/5">
-                <span className="bg-mistral-black/5 text-mistral-black px-3 py-1 text-[10px] uppercase tracking-widest font-bold rounded-md">
+                <span className="bg-mistral-black/5 text-mistral-black px-3 py-1 text-[10px] uppercase tracking-widest font-bold border border-mistral-black/5">
                   {job.type}
                 </span>
                 <button 
                   onClick={() => handleViewDetails(job)}
-                  className="text-mistral-orange text-sm font-semibold flex items-center gap-1 hover:gap-2 hover:text-mistral-black transition-all"
+                  className="text-mistral-orange text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 hover:gap-2 hover:text-mistral-black transition-all"
                 >
                   View details 
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -53,12 +53,12 @@ const StudentLayout = () => {
   const isActive = (path) => location.pathname === path || (path === '/student/dashboard' && location.pathname === '/student');
 
   const handleLogout = () => {
-    navigate('/');
+    window.location.href = '/';
   };
 
   const closeSidebar = () => setIsSidebarOpen(false);
 
-  const SidebarContent = () => (
+  const sidebarElements = (
     <>
       {/* Logo */}
       <div className="h-20 md:h-24 px-6 border-b border-mistral-black/10 flex items-center justify-between">
@@ -82,13 +82,13 @@ const StudentLayout = () => {
       </div>
 
       {/* Nav Links */}
-      <nav className="flex-1 py-6 px-3 flex flex-col gap-1">
+      <nav className="flex-1 py-6 px-3 flex flex-col gap-2">
         {NAV_LINKS.map(({ to, label, icon }) => (
           <Link
             key={to}
             to={to}
             onClick={closeSidebar}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs font-bold transition-all duration-300 ${
+            className={`flex items-center gap-3 px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${
               isActive(to)
                 ? 'bg-mistral-orange text-white shadow-sm'
                 : 'text-mistral-black hover:bg-brand-yellow/30'
@@ -103,8 +103,9 @@ const StudentLayout = () => {
       {/* Logout */}
       <div className="p-4 border-t border-mistral-black/10">
         <button
+          type="button"
           onClick={handleLogout}
-          className="w-full px-4 py-3 text-left uppercase tracking-widest text-xs font-bold text-mistral-black/60 hover:text-mistral-orange hover:bg-mistral-orange/5 transition-all duration-300 flex items-center gap-3 rounded-lg"
+          className="w-full px-4 py-3 text-left uppercase tracking-widest text-xs font-bold text-mistral-black/60 hover:text-mistral-orange hover:bg-mistral-orange/5 transition-all duration-300 flex items-center gap-3"
         >
           <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -128,7 +129,7 @@ const StudentLayout = () => {
 
       {/* ── Desktop: Static Sidebar ── */}
       <aside className="hidden md:flex w-64 bg-brand-ivory border-r border-mistral-black/10 flex-col flex-shrink-0 h-screen sticky top-0">
-        <SidebarContent />
+        {sidebarElements}
       </aside>
 
       {/* ── Mobile: Slide-in Drawer ── */}
@@ -137,7 +138,7 @@ const StudentLayout = () => {
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <SidebarContent />
+        {sidebarElements}
       </aside>
 
       {/* ── Main Content Area ── */}
@@ -160,7 +161,7 @@ const StudentLayout = () => {
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 md:w-10 md:h-10 bg-brand-yellow rounded-full border border-mistral-black/20 flex items-center justify-center font-bold text-mistral-black text-sm uppercase shrink-0">
+            <div className="w-9 h-9 md:w-10 md:h-10 bg-mistral-black rounded-full border border-mistral-black/20 flex items-center justify-center font-bold text-white text-sm uppercase shrink-0">
               ST
             </div>
           </div>

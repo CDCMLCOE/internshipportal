@@ -17,7 +17,7 @@ const IndustrialLayout = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('industryCompany');
-    navigate('/industry');
+    window.location.href = '/industry';
   };
 
   return (
@@ -69,6 +69,7 @@ const IndustrialLayout = () => {
 
         <div className="p-4 border-t border-mistral-black/10">
           <button
+            type="button"
             onClick={handleLogout}
             className="w-full px-4 py-3 text-left uppercase tracking-widest text-xs font-bold text-mistral-black/60 hover:text-mistral-orange hover:bg-mistral-orange/5 transition-all duration-300 flex items-center justify-between"
           >
