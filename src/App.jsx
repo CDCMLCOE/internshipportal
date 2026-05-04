@@ -33,9 +33,14 @@ import AdminInternships from './pages/admin/Internships';
 import AdminInternshipAccess from './pages/admin/InternshipAccess';
 import AdminApplicants from './pages/admin/Applicants';
 import AdminStudentsData from './pages/admin/StudentsData';
-import AdminUsers from './pages/admin/Users';
 import AdminManageStudents from './pages/admin/ManageStudents';
 import PendingApprovals from './pages/admin/PendingApprovals';
+
+// Superadmin Pages
+import SuperadminLayout from './layouts/SuperadminLayout';
+import SuperadminDashboard from './pages/superadmin/Dashboard';
+import SuperadminUserManagement from './pages/superadmin/UserManagement';
+import SuperadminManageStudents from './pages/superadmin/ManageStudents';
 
 // Industry Pages
 import IndustrialLayout from './layouts/IndustrialLayout';
@@ -98,8 +103,17 @@ function AnimatedRoutes() {
             <Route path="applicants" element={<AdminApplicants />} />
             <Route path="students" element={<AdminStudentsData />} />
             <Route path="manage-students" element={<AdminManageStudents />} />
-            <Route path="users" element={<AdminUsers />} />
             <Route path="pending-approvals" element={<PendingApprovals />} />
+          </Route>
+        </Route>
+
+        {/* Superadmin Routes */}
+        <Route element={<ProtectedRoute allowedRoles={['superadmin']} redirectTo="/" />}>
+          <Route path="/superadmin" element={<SuperadminLayout />}>
+            <Route index element={<SuperadminDashboard />} />
+            <Route path="dashboard" element={<SuperadminDashboard />} />
+            <Route path="users" element={<SuperadminUserManagement />} />
+            <Route path="students" element={<SuperadminManageStudents />} />
           </Route>
         </Route>
 

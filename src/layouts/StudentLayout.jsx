@@ -164,9 +164,13 @@ const StudentLayout = () => {
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 md:w-10 md:h-10 bg-mistral-black rounded-full border border-mistral-black/20 flex items-center justify-center font-bold text-white text-sm uppercase shrink-0">
+            <Link 
+              to="/student/profile" 
+              className="w-9 h-9 md:w-10 md:h-10 bg-mistral-black rounded-full border border-mistral-black/20 flex items-center justify-center font-bold text-white text-sm uppercase shrink-0 hover:bg-mistral-orange transition-all duration-300 cursor-pointer shadow-sm active:scale-95"
+              title="View Profile"
+            >
               ST
-            </div>
+            </Link>
           </div>
         </header>
 

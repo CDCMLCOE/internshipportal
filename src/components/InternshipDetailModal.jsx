@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const InternshipDetailModal = ({ isOpen, onClose, internship }) => {
+const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = true, showDeadline = true }) => {
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -170,15 +170,17 @@ const InternshipDetailModal = ({ isOpen, onClose, internship }) => {
 
               {/* Footer Actions */}
               <div className="flex flex-col sm:flex-row items-center gap-4">
-                <button
-                  onClick={() => { /* TODO: Handle apply logic */ }}
-                  className="w-full sm:flex-1 bg-mistral-black text-white py-4 uppercase tracking-[0.2em] font-semibold text-sm hover:bg-mistral-orange transition-colors duration-300 flex items-center justify-center gap-3 group"
-                >
-                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Apply Now
-                </button>
+                {showApplyButton && (
+                  <button
+                    onClick={() => { /* TODO: Handle apply logic */ }}
+                    className="w-full sm:flex-1 bg-mistral-black text-white py-4 uppercase tracking-[0.2em] font-semibold text-sm hover:bg-mistral-orange transition-colors duration-300 flex items-center justify-center gap-3 group"
+                  >
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Apply Now
+                  </button>
+                )}
                 <button
                   onClick={onClose}
                   className="w-full sm:w-auto px-8 py-4 border border-mistral-black/10 text-mistral-black/60 uppercase tracking-[0.2em] font-semibold text-sm hover:border-mistral-black/30 hover:text-mistral-black transition-all duration-200"
@@ -188,7 +190,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship }) => {
               </div>
 
               {/* Application Deadline Notice */}
-              {internship.deadline && (
+              {internship.deadline && showDeadline && (
                 <div className="mt-6 flex items-center gap-2 bg-brand-yellow/20 border border-brand-yellow/40 px-4 py-3 rounded-lg">
                   <svg className="w-4 h-4 text-mistral-orange shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />

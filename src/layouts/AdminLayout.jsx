@@ -80,7 +80,6 @@ const AdminLayout = () => {
           <Link to="/admin/students" className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${isActive('/admin/students') ? 'bg-mistral-orange text-white shadow-sm' : 'text-mistral-black hover:bg-brand-yellow/30'}`}>Students Data</Link>
           <Link to="/admin/manage-students" className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${isActive('/admin/manage-students') ? 'bg-mistral-orange text-white shadow-sm' : 'text-mistral-black hover:bg-brand-yellow/30'}`}>Manage Students</Link>
           <Link to="/admin/pending-approvals" className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${isActive('/admin/pending-approvals') ? 'bg-mistral-orange text-white shadow-sm' : 'text-mistral-black hover:bg-brand-yellow/30'}`}>Partner Approvals</Link>
-          <Link to="/admin/users" className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${isActive('/admin/users') ? 'bg-mistral-orange text-white shadow-sm' : 'text-mistral-black hover:bg-brand-yellow/30'}`}>User Management</Link>
         </nav>
 
         <div className="p-4 border-t border-mistral-black/10">
