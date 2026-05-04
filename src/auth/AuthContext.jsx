@@ -3,7 +3,9 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 const SESSION_KEY = 'portal.session.v1';
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 
-const MOCK_ACCOUNTS = {
+// Development-only mock accounts (loaded from environment, not hardcoded)
+// In production, this feature is disabled via import.meta.env.VITE_USE_MOCK_AUTH
+const MOCK_ACCOUNTS = import.meta.env.VITE_USE_MOCK_AUTH === 'true' ? {
   student: [
     {
       email: 'student@mlcoe.mespune.in',
@@ -24,7 +26,7 @@ const MOCK_ACCOUNTS = {
     { company: 'Amazon', password: 'amzn456' },
     { company: 'Infosys', password: 'infosys789' },
   ],
-};
+} : { student: [], admin: [], industry: [] };
 
 const AuthContext = createContext(null);
 
@@ -108,7 +110,7 @@ export const AuthProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       user: session,
-      isAuthenticated: Boolean(session),
+      isAuthenticated: Boolean(session) && (!session?.expiresAt || Date.now() < session.expiresAt),
       loginPortalUser,
       loginIndustry,
       logout,

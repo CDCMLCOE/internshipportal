@@ -89,8 +89,8 @@ const IndustryRegister = () => {
     
     setIsSubmitting(true);
     
-    // Save to pending approvals
-    setTimeout(() => {
+    try {
+      // Save to pending approvals
       addPendingApproval({
         id: Date.now(),
         companyName: formData.companyName,
@@ -108,12 +108,18 @@ const IndustryRegister = () => {
         pocMobile: formData.pocMobile,
         pocAltMobile: formData.pocAltMobile,
         pocLinkedin: formData.pocLinkedin,
+        verificationFile: verificationFile ? verificationFile.name : null,
         status: 'Pending',
+        createdAt: new Date().toISOString(),
       });
       
-      setIsSubmitting(false);
       setIsSuccess(true);
-    }, 1500);
+    } catch (error) {
+      setErrorMsg('Failed to submit registration. Please try again.');
+      console.error('Registration error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClasses = "w-full bg-brand-cream border border-mistral-black/10 px-4 py-3 text-sm font-medium focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all placeholder:text-mistral-black/30";

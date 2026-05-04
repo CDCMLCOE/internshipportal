@@ -58,6 +58,25 @@ const PendingApprovals = () => {
     }
   };
 
+  // Calculate average days from submission to now
+  const calculateAvgDays = () => {
+    if (approvals.length === 0) return 'N/A';
+    const validTimestamps = approvals
+      .map(p => p.createdAt || p.submittedAt)
+      .filter(ts => ts && !isNaN(Date.parse(ts)))
+      .map(ts => (Date.now() - Date.parse(ts)) / (1000 * 60 * 60 * 24));
+    if (validTimestamps.length === 0) return '-';
+    const avg = validTimestamps.reduce((a, b) => a + b, 0) / validTimestamps.length;
+    return avg.toFixed(1);
+  };
+
+  // Calculate "This Week" count using valid timestamp field
+  const thisWeekCount = approvals.filter(p => {
+    const ts = p.createdAt || p.submittedAt;
+    if (!ts || isNaN(Date.parse(ts))) return false;
+    return Date.parse(ts) > Date.now() - 7 * 24 * 60 * 60 * 1000;
+  }).length;
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
@@ -104,9 +123,9 @@ const PendingApprovals = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Total Pending</p><p className="text-3xl font-heading font-bold text-mistral-black">{approvals.length}</p></div>
-        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">This Week</p><p className="text-3xl font-heading font-bold text-mistral-black">{approvals.filter(p => new Date(p.id).getTime() > Date.now() - 7*24*60*60*1000).length}</p></div>
+        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">This Week</p><p className="text-3xl font-heading font-bold text-mistral-black">{thisWeekCount}</p></div>
         <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Companies</p><p className="text-3xl font-heading font-bold text-mistral-black">{new Set(approvals.map(p => p.companyName)).size}</p></div>
-        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Avg. Days</p><p className="text-3xl font-heading font-bold text-mistral-black">2.3</p></div>
+        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Avg. Days</p><p className="text-3xl font-heading font-bold text-mistral-black">{calculateAvgDays()}</p></div>
       </div>
 
       <div className="bg-brand-ivory border border-mistral-black/10 shadow-sm overflow-x-auto">
@@ -138,13 +157,13 @@ const PendingApprovals = () => {
                   </td>
                   <td className="p-4 border-b border-mistral-black/5 text-right">
                     <div className="flex justify-end gap-3">
-                      <button onClick={() => setSelectedRegistration(app)} className="p-2 hover:bg-mistral-black hover:text-white transition-all duration-300">
+                      <button onClick={() => setSelectedRegistration(app)} aria-label="View registration" className="p-2 hover:bg-mistral-black hover:text-white transition-all duration-300">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                       </button>
-                      <button onClick={() => handleApprove(app.id)} className="p-2 hover:bg-emerald-600 hover:text-white transition-all duration-300">
+                      <button onClick={() => handleApprove(app.id)} aria-label="Approve registration" className="p-2 hover:bg-emerald-600 hover:text-white transition-all duration-300">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
                       </button>
-                      <button onClick={() => handleReject(app.id)} className="p-2 hover:bg-red-600 hover:text-white transition-all duration-300">
+                      <button onClick={() => handleReject(app.id)} aria-label="Reject registration" className="p-2 hover:bg-red-600 hover:text-white transition-all duration-300">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                       </button>
                     </div>

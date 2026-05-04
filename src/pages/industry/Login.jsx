@@ -18,19 +18,31 @@ const IndustryLogin = () => {
     }
   }, [user, navigate]);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     setError('');
-    setIsLoading(true);
 
-    const result = loginIndustry({ company, password });
-    if (!result.ok) {
-      setIsLoading(false);
-      setError(result.message);
+    // Validate inputs
+    if (!company.trim() || !password.trim()) {
+      setError('Please enter both company name and password.');
       return;
     }
 
-    navigate('/industry/dashboard');
+    setIsLoading(true);
+
+    try {
+      const result = await loginIndustry({ company, password });
+      if (!result.ok) {
+        setError(result.message);
+        return;
+      }
+      navigate('/industry/dashboard');
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+      console.error('Login error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

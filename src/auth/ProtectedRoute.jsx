@@ -7,14 +7,17 @@ const defaultRedirectFor = (role) => {
   return '/';
 };
 
-const ProtectedRoute = ({ allowedRoles, redirectTo }) => {
+const ProtectedRoute = ({ allowedRoles = [], redirectTo }) => {
   const { user } = useAuth();
   const location = useLocation();
 
-  if (!user || !allowedRoles.includes(user.role)) {
+  const safeAllowedRoles = Array.isArray(allowedRoles) ? allowedRoles : [];
+  const defaultRole = safeAllowedRoles.length > 0 ? safeAllowedRoles[0] : undefined;
+
+  if (!user || !safeAllowedRoles.includes(user.role)) {
     return (
       <Navigate
-        to={redirectTo || defaultRedirectFor(allowedRoles[0])}
+        to={redirectTo || (defaultRole ? defaultRedirectFor(defaultRole) : '/')}
         replace
         state={{ from: location.pathname }}
       />

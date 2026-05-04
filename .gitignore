@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Sensitive data - PII files (student records, credentials, personal information)
+student_rollno_email.json
+**/student_data.json
+**/sensitive-*.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

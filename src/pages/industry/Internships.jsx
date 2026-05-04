@@ -44,10 +44,11 @@ const IndustryInternships = () => {
   const openEdit = (job) => { setEditingJob(job); setForm({ title: job.title, location: job.location, category: job.category, status: job.status }); setIsModalOpen(true); };
   const closeModal = () => { setIsModalOpen(false); setEditingJob(null); setForm(BLANK_FORM); };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.title.trim() || !form.location.trim()) return;
     if (editingJob) {
       setInternships(prev => prev.map(j => j.id === editingJob.id ? { ...j, ...form } : j));
+      closeModal();
     } else {
       const newJob = { 
         id: Date.now(), 
@@ -56,12 +57,20 @@ const IndustryInternships = () => {
         status: 'Pending Admin Approval' // Default status for new industry listings
       };
       
-      // Update local state for immediate feedback (optional, or just wait for approval)
+      // Update local state for immediate feedback
       setInternships(prev => [...prev, newJob]);
 
-      addPendingApproval(newJob);
+      try {
+        await addPendingApproval(newJob);
+        closeModal();
+      } catch (error) {
+        // Rollback the optimistic update
+        setInternships(prev => prev.filter(j => j.id !== newJob.id));
+        // Show error to user (could also use a toast notification)
+        console.error('Failed to add internship:', error);
+        alert('Failed to submit internship. Please try again.');
+      }
     }
-    closeModal();
   };
 
   const handleDelete = (id) => {
