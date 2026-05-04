@@ -14,6 +14,7 @@ import Help from './pages/Help';
 import LegalPrivacy from './pages/LegalPrivacy';
 import LegalTerms from './pages/LegalTerms';
 import StudentGuidelines from './pages/StudentGuidelines';
+import LegalPartnership from './pages/LegalPartnership';
 
 // Student Dashboard
 import StudentLayout from './layouts/StudentLayout';
@@ -68,6 +69,7 @@ function AnimatedRoutes() {
           <Route path="/help" element={<Help />} />
           <Route path="/privacy" element={<LegalPrivacy />} />
           <Route path="/terms" element={<LegalTerms />} />
+          <Route path="/terms-partnership" element={<LegalPartnership />} />
           <Route path="/student-guidelines" element={<StudentGuidelines />} />
           <Route path="/industry-register" element={<IndustryRegister />} />
         </Route>
