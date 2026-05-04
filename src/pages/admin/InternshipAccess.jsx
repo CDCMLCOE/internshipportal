@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../services/supabaseClient';
 
 const InternshipAccess = () => {
   const navigate = useNavigate();
@@ -14,14 +15,43 @@ const InternshipAccess = () => {
     description: '',
     requirements: ''
   });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/admin/internships', {
-      state: {
-        message: `Internship "${formData.title}" is ready to publish once the backend API is connected.`,
-      },
-    });
+    setLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { error } = await supabase
+        .from('internships')
+        .insert([{
+          title: formData.title,
+          company: formData.company,
+          category: formData.category,
+          location: formData.location,
+          duration: formData.duration,
+          stipend: formData.stipend,
+          description: formData.description,
+          requirements: formData.requirements,
+          status: 'Active',
+          created_by: user.id
+        }]);
+
+      if (error) throw error;
+
+      navigate('/admin/internships', {
+        state: {
+          message: `Internship "${formData.title}" has been published successfully.`,
+        },
+      });
+    } catch (error) {
+      console.error('Error publishing internship:', error);
+      alert('Failed to publish internship.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -152,9 +182,10 @@ const InternshipAccess = () => {
         <div className="pt-6 border-t border-mistral-black/5 flex justify-end">
           <button 
             type="submit"
-            className="bg-mistral-black text-white px-10 py-4 uppercase tracking-widest text-xs font-bold hover:bg-mistral-orange transition-all duration-300 shadow-xl"
+            disabled={loading}
+            className="bg-mistral-black text-white px-10 py-4 uppercase tracking-widest text-xs font-bold hover:bg-mistral-orange transition-all duration-300 shadow-xl disabled:opacity-50"
           >
-            Post Internship Listing
+            {loading ? 'Publishing...' : 'Post Internship Listing'}
           </button>
         </div>
       </form>

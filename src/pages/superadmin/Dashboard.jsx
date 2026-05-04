@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { supabase } from '../../services/supabaseClient';
 
 const TypewriterText = ({ text, delay = 0 }) => {
   const [index, setIndex] = useState(0);
@@ -24,23 +25,43 @@ const TypewriterText = ({ text, delay = 0 }) => {
 };
 
 const Dashboard = () => {
-  const stats = [
-    { label: 'Total Users', value: '1,284', change: '+12%', icon: (
+  const [stats, setStats] = useState([
+    { label: 'Total Users', value: '0', change: 'Loading...', icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
       </svg>
     )},
-    { label: 'Active Sessions', value: '156', change: '+5%', icon: (
+    { label: 'Active Listings', value: '0', change: 'Stable', icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
       </svg>
     )},
-    { label: 'System Health', value: '99.9%', change: 'Stable', icon: (
+    { label: 'Pending Approvals', value: '0', change: 'Action Required', icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
       </svg>
     )},
-  ];
+  ]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const { count: userCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+        const { count: internshipCount } = await supabase.from('internships').select('*', { count: 'exact', head: true }).eq('status', 'Active');
+        const { count: pendingCount } = await supabase.from('industry_registrations').select('*', { count: 'exact', head: true }).eq('status', 'Pending');
+
+        setStats(prev => [
+          { ...prev[0], value: userCount?.toString() || '0', change: 'Total Registered' },
+          { ...prev[1], value: internshipCount?.toString() || '0', change: 'Live' },
+          { ...prev[2], value: pendingCount?.toString() || '0', change: 'Waiting Review' },
+        ]);
+      } catch (error) {
+        console.error('Error fetching system stats:', error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="space-y-12">

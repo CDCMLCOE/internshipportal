@@ -1,0 +1,38 @@
+{
+  "projectRoot": "g:/portal",
+  "batchFiles": [
+    { "path": "src/pages/admin/StudentsData.jsx", "language": "javascript", "sizeLines": 211, "fileCategory": "code" },
+    { "path": "src/pages/Help.jsx", "language": "javascript", "sizeLines": 80, "fileCategory": "code" },
+    { "path": "src/pages/Home.jsx", "language": "javascript", "sizeLines": 128, "fileCategory": "code" },
+    { "path": "src/pages/industry/Applicants.jsx", "language": "javascript", "sizeLines": 194, "fileCategory": "code" },
+    { "path": "src/pages/industry/Dashboard.jsx", "language": "javascript", "sizeLines": 75, "fileCategory": "code" },
+    { "path": "src/pages/industry/Internships.jsx", "language": "javascript", "sizeLines": 319, "fileCategory": "code" },
+    { "path": "src/pages/industry/Login.jsx", "language": "javascript", "sizeLines": 136, "fileCategory": "code" },
+    { "path": "src/pages/industry/Register.jsx", "language": "javascript", "sizeLines": 424, "fileCategory": "code" },
+    { "path": "src/pages/LegalPartnership.jsx", "language": "javascript", "sizeLines": 109, "fileCategory": "code" },
+    { "path": "src/pages/LegalPrivacy.jsx", "language": "javascript", "sizeLines": 67, "fileCategory": "code" },
+    { "path": "src/pages/LegalTerms.jsx", "language": "javascript", "sizeLines": 67, "fileCategory": "code" },
+    { "path": "src/pages/PrincipalMessage.jsx", "language": "javascript", "sizeLines": 95, "fileCategory": "code" },
+    { "path": "src/pages/student/Application.jsx", "language": "javascript", "sizeLines": 168, "fileCategory": "code" },
+    { "path": "src/pages/student/Assignments.jsx", "language": "javascript", "sizeLines": 265, "fileCategory": "code" },
+    { "path": "src/pages/student/Dashboard.jsx", "language": "javascript", "sizeLines": 247, "fileCategory": "code" },
+    { "path": "src/pages/student/Profile.jsx", "language": "javascript", "sizeLines": 275, "fileCategory": "code" },
+    { "path": "src/pages/StudentGuidelines.jsx", "language": "javascript", "sizeLines": 56, "fileCategory": "code" },
+    { "path": "src/pages/superadmin/Dashboard.jsx", "language": "javascript", "sizeLines": 112, "fileCategory": "code" },
+    { "path": "src/pages/superadmin/ManageStudents.jsx", "language": "javascript", "sizeLines": 288, "fileCategory": "code" },
+    { "path": "src/pages/superadmin/UserManagement.jsx", "language": "javascript", "sizeLines": 63, "fileCategory": "code" },
+    { "path": "src/services/pendingApprovals.js", "language": "javascript", "sizeLines": 24, "fileCategory": "code" },
+    { "path": "tailwind.config.js", "language": "javascript", "sizeLines": 24, "fileCategory": "code" },
+    { "path": "vite.config.js", "language": "javascript", "sizeLines": 8, "fileCategory": "code" }
+  ],
+  "batchImportData": {
+    "src/pages/admin/StudentsData.jsx": ["src/components/StudentProfileReviewModal.jsx"],
+    "src/pages/industry/Applicants.jsx": ["src/components/StudentProfileReviewModal.jsx"],
+    "src/pages/industry/Internships.jsx": ["src/auth/AuthContext.jsx", "src/services/pendingApprovals.js"],
+    "src/pages/industry/Login.jsx": ["src/auth/AuthContext.jsx"],
+    "src/pages/industry/Register.jsx": ["src/components/CustomDropdown.jsx", "src/services/pendingApprovals.js"],
+    "src/pages/student/Application.jsx": ["src/components/InternshipDetailModal.jsx"],
+    "src/pages/student/Dashboard.jsx": ["src/components/InternshipDetailModal.jsx"],
+    "src/pages/student/Profile.jsx": ["src/auth/AuthContext.jsx"]
+  }
+}

@@ -1,13 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, GraduationCap, Edit, Plus, X, Save, Trash2, ExternalLink } from 'lucide-react';
+import { supabase } from '../../services/supabaseClient';
 
 const ManageStudents = () => {
-  const [students, setStudents] = useState([
-    { id: 1, name: 'John Doe', email: 'john@mlcoe.in', branch: 'Computer Engineering', year: 'Third Year', prn: '2021001234', status: 'Active', gender: 'Male', dob: '2002-05-15', mobile: '+91 9876543210', role: 'Frontend Developer', linkedin: 'https://linkedin.com/in/johndoe', github: 'https://github.com/johndoe' },
-    { id: 2, name: 'Jane Smith', email: 'jane@mlcoe.in', branch: 'Information Technology', year: 'Second Year', prn: '2021005678', status: 'Active', gender: 'Female', dob: '2003-08-20', mobile: '+91 9123456789', role: 'UI/UX Designer', linkedin: 'https://linkedin.com/in/janesmith', github: 'https://github.com/janesmith' },
-    { id: 3, name: 'Alice Williams', email: 'alice@mlcoe.in', branch: 'E&TC', year: 'Fourth Year', prn: '2021009012', status: 'Active', gender: 'Female', dob: '2002-12-10', mobile: '+91 8888888888', role: 'Data Scientist', linkedin: 'https://linkedin.com/in/alicew', github: 'https://github.com/alicew' },
-  ]);
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  const fetchStudents = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .not('role', 'eq', 'admin')
+        .not('role', 'eq', 'superadmin')
+        .order('prn_no', { ascending: true });
+
+      if (error) throw error;
+      
+      const formatted = (data || []).map(p => ({
+        id: p.id,
+        name: p.name,
+        email: p.email,
+        branch: p.branch,
+        year: p.year || 'N/A',
+        prn: p.prn_no,
+        status: 'Active'
+      }));
+      setStudents(formatted);
+    } catch (error) {
+      console.error('Error fetching students:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -22,16 +53,51 @@ const ManageStudents = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleSaveEdit = () => {
-    setStudents(students.map(s => s.id === editFormData.id ? editFormData : s));
-    setIsEditModalOpen(false);
-    setSelectedStudent(null);
+  const handleSaveEdit = async () => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          name: editFormData.name,
+          email: editFormData.email,
+          branch: editFormData.branch,
+          year: editFormData.year,
+          prn_no: editFormData.prn
+        })
+        .eq('id', editFormData.id);
+
+      if (error) throw error;
+      
+      fetchStudents();
+      setIsEditModalOpen(false);
+      setSelectedStudent(null);
+    } catch (error) {
+      console.error('Error saving student:', error);
+      alert('Failed to update student record.');
+    }
   };
 
-  const handleAddStudent = (newData) => {
-    const newId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
-    setStudents([...students, { ...newData, id: newId, status: 'Active' }]);
-    setIsAddModalOpen(false);
+  const handleAddStudent = async (newData) => {
+    // Note: Creating a user in Auth requires admin client or user signup.
+    // For now, we'll just insert into profiles if the user exists in auth.
+    // In a real app, you'd use a service role or invite flow.
+    alert('Student registration should be done via Auth signup for security.');
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this student record?')) return;
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+      fetchStudents();
+    } catch (error) {
+      console.error('Error deleting student:', error);
+      alert('Failed to delete student.');
+    }
   };
 
   const filteredStudents = students.filter(s => 
@@ -109,7 +175,10 @@ const ManageStudents = () => {
                 <Edit className="w-3 h-3" />
                 Edit Profile
               </button>
-              <button className="p-2.5 border border-mistral-black/10 text-mistral-black/20 hover:text-red-500 hover:bg-red-50 transition-all">
+              <button 
+                onClick={() => handleDelete(student.id)}
+                className="p-2.5 border border-mistral-black/10 text-mistral-black/20 hover:text-red-500 hover:bg-red-50 transition-all"
+              >
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>

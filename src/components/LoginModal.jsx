@@ -10,20 +10,35 @@ const LoginModal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     setError('');
+    setLoading(true);
 
-    const result = loginPortalUser({ role, email, password });
-    if (!result.ok) {
-      setError(result.message);
-      return;
+    try {
+      const result = await loginPortalUser({ role, email, password });
+      if (!result.ok) {
+        setError(result.message || 'Login failed. Please try again.');
+        return;
+      }
+
+      onClose();
+      if (role === 'superadmin') {
+        navigate('/superadmin/dashboard');
+      } else if (role === 'admin') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/student/dashboard');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
     }
-
-    onClose();
-    navigate(role === 'admin' ? '/admin/dashboard' : '/student/dashboard');
   };
 
   const handleClose = () => {
@@ -72,6 +87,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                   >
                     <option value="student">Student Portal</option>
                     <option value="admin">Admin Portal</option>
+                    <option value="superadmin">Superadmin Portal</option>
                   </select>
                 </div>
 
@@ -114,8 +130,8 @@ const LoginModal = ({ isOpen, onClose }) => {
                   </div>
                 )}
 
-                <button type="submit" className="w-full bg-mistral-black text-white py-4 uppercase tracking-widest font-semibold text-sm hover:bg-mistral-orange transition-colors duration-300">
-                  Sign In
+                <button type="submit" disabled={loading} className="w-full bg-mistral-black text-white py-4 uppercase tracking-widest font-semibold text-sm hover:bg-mistral-orange transition-colors duration-300 disabled:opacity-60 disabled:cursor-not-allowed">
+                  {loading ? 'Signing In...' : 'Sign In'}
                 </button>
               </form>
             </div>

@@ -1,70 +1,83 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-
-const ASSIGNMENTS = [
-  {
-    id: 1,
-    title: "Weekly Progress Report",
-    course: "Software Development",
-    assignedDate: "May 01, 2026",
-    submissionDate: "May 07, 2026",
-    status: "Pending",
-    description: "Submit your weekly progress report detailing the tasks completed, challenges faced, and goals for the next week.",
-    points: 20
-  },
-  {
-    id: 2,
-    title: "Mid-term Project Review",
-    course: "Web Technology",
-    assignedDate: "May 10, 2026",
-    submissionDate: "May 20, 2026",
-    status: "In Progress",
-    description: "Prepare a demonstration of your current progress on the internship project for review by your mentor.",
-    points: 50
-  },
-  {
-    id: 3,
-    title: "Final Presentation",
-    course: "Data Science",
-    assignedDate: "May 25, 2026",
-    submissionDate: "June 10, 2026",
-    status: "Not Started",
-    description: "Prepare and submit your final presentation slides and documentation for the end-of-internship review.",
-    points: 150
-  },
-  {
-    id: 4,
-    title: "Final Internship Report",
-    course: "Professional Ethics",
-    assignedDate: "June 01, 2026",
-    submissionDate: "June 15, 2026",
-    status: "Not Started",
-    description: "A comprehensive report summarizing your overall internship experience, learnings, and contributions.",
-    points: 100
-  },
-  {
-    id: 5,
-    title: "Peer Code Review",
-    course: "Cloud Computing",
-    assignedDate: "May 15, 2026",
-    submissionDate: "May 22, 2026",
-    status: "Pending",
-    description: "Review and provide constructive feedback on code submissions from your fellow interns.",
-    points: 30
-  }
-];
-
-
-
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '../../services/supabaseClient';
 
 const AssignmentPage = () => {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [selectedFormat, setSelectedFormat] = useState("");
+  const [assignments, setAssignments] = useState([]);
+  const [submissions, setSubmissions] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  const fetchAssignments = async () => {
+    setLoading(true);
+    try {
+      const { data: assignmentsData, error: assError } = await supabase
+        .from('assignments')
+        .select('*')
+        .order('deadline', { ascending: true });
+
+      if (assError) throw assError;
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: submissionsData } = await supabase
+          .from('submissions')
+          .select('assignment_id, status')
+          .eq('student_id', user.id);
+        
+        const subMap = (submissionsData || []).reduce((acc, sub) => {
+          acc[sub.assignment_id] = sub.status;
+          return acc;
+        }, {});
+        setSubmissions(subMap);
+      }
+
+      setAssignments(assignmentsData || []);
+    } catch (error) {
+      console.error('Error fetching assignments:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleViewDetails = (assignment) => {
     setSelectedAssignment(assignment);
-    setSelectedFormat(""); // Reset format when opening new assignment
+    setSelectedFormat(""); 
+  };
+
+  const handleSubmit = async () => {
+    if (!selectedAssignment || !selectedFormat) return;
+    setIsSubmitting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const { error } = await supabase
+        .from('submissions')
+        .insert([{
+          assignment_id: selectedAssignment.id,
+          student_id: user.id,
+          format: selectedFormat,
+          status: 'Submitted'
+        }]);
+
+      if (error) throw error;
+      
+      alert('Assignment submitted successfully!');
+      setSubmissions(prev => ({ ...prev, [selectedAssignment.id]: 'Submitted' }));
+      setSelectedAssignment(null);
+    } catch (error) {
+      console.error('Error submitting assignment:', error);
+      alert('Failed to submit assignment.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
 
@@ -83,17 +96,16 @@ const AssignmentPage = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        {ASSIGNMENTS.map((assignment) => (
+        {assignments.map((assignment) => (
           <div key={assignment.id} className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm hover:border-mistral-orange transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-4 group">
 
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <span className={`px-2 py-1 text-[10px] uppercase tracking-widest font-bold ${
-                  assignment.status === 'Pending' ? 'bg-brand-yellow/20 text-brand-yellow-dark' :
-                  assignment.status === 'In Progress' ? 'bg-blue-100 text-blue-600' :
-                  'bg-gray-100 text-gray-600'
+                  submissions[assignment.id] === 'Submitted' ? 'bg-green-100 text-green-700' :
+                  'bg-brand-yellow/20 text-brand-yellow-dark'
                 }`}>
-                  {assignment.status}
+                  {submissions[assignment.id] || 'Not Started'}
                 </span>
 
                 <span className="text-xs text-mistral-black/40 font-bold uppercase tracking-widest">{assignment.course}</span>
@@ -107,7 +119,7 @@ const AssignmentPage = () => {
                 <svg className="w-4 h-4 text-mistral-black/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <span>{assignment.submissionDate}</span>
+                <span>{new Date(assignment.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
               </div>
             </div>
 
@@ -160,11 +172,11 @@ const AssignmentPage = () => {
             <div className="grid grid-cols-2 gap-6 mb-8">
               <div className="bg-brand-cream/30 p-4 border border-mistral-black/5">
                 <span className="text-[10px] font-bold text-mistral-black/40 uppercase tracking-widest block mb-1">Assigned Date</span>
-                <span className="text-sm font-bold text-mistral-black">{selectedAssignment.assignedDate}</span>
+                <span className="text-sm font-bold text-mistral-black">{new Date(selectedAssignment.assigned_date).toLocaleDateString()}</span>
               </div>
               <div className="bg-brand-cream/30 p-4 border border-mistral-black/5">
                 <span className="text-[10px] font-bold text-mistral-black/40 uppercase tracking-widest block mb-1">Submission Date</span>
-                <span className="text-sm font-bold text-mistral-black">{selectedAssignment.submissionDate}</span>
+                <span className="text-sm font-bold text-mistral-black">{new Date(selectedAssignment.deadline).toLocaleDateString()}</span>
               </div>
             </div>
 
@@ -178,53 +190,18 @@ const AssignmentPage = () => {
             </div>
 
             {/* Conditional Input Fields */}
-            {selectedFormat === 'pdf' && (
+            {selectedFormat && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
                 <div className="flex justify-between items-end mb-2">
-                  <label className="text-[10px] font-bold text-mistral-black/40 uppercase tracking-widest block">Choose PDF File</label>
+                  <label className="text-[10px] font-bold text-mistral-black/40 uppercase tracking-widest block">Choose {selectedFormat.toUpperCase()} File</label>
                   <span className="text-[9px] font-bold text-mistral-orange uppercase tracking-widest">Max Size: 5MB</span>
                 </div>
                 <input 
                   type="file" 
-                  accept=".pdf"
                   className="w-full border border-mistral-black/10 p-4 text-sm font-medium focus:outline-none focus:border-mistral-orange bg-brand-cream/10" 
                 />
               </motion.div>
             )}
-
-
-            {(selectedFormat === 'jpg' || selectedFormat === 'png') && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
-                <div className="flex justify-between items-end mb-2">
-                  <label className="text-[10px] font-bold text-mistral-black/40 uppercase tracking-widest block">Choose Image Files</label>
-                  <span className="text-[9px] font-bold text-mistral-orange uppercase tracking-widest">Max Size: 15MB</span>
-                </div>
-                <input 
-                  type="file" 
-                  accept="image/*"
-                  multiple
-                  className="w-full border border-mistral-black/10 p-4 text-sm font-medium focus:outline-none focus:border-mistral-orange bg-brand-cream/10" 
-                />
-              </motion.div>
-            )}
-
-
-            {selectedFormat === 'ppt' && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
-                <div className="flex justify-between items-end mb-2">
-                  <label className="text-[10px] font-bold text-mistral-black/40 uppercase tracking-widest block">Choose Presentation File (PPT/PPTX)</label>
-                  <span className="text-[9px] font-bold text-mistral-orange uppercase tracking-widest">Max Size: 15MB</span>
-                </div>
-                <input 
-                  type="file" 
-                  accept=".ppt,.pptx"
-                  className="w-full border border-mistral-black/10 p-4 text-sm font-medium focus:outline-none focus:border-mistral-orange bg-brand-cream/10" 
-                />
-              </motion.div>
-            )}
-
-
-
 
             <div className="mt-10 flex flex-col md:flex-row gap-4">
               <div className="relative flex-1 md:flex-none">
@@ -232,6 +209,7 @@ const AssignmentPage = () => {
                   className="w-full bg-white border border-mistral-black/10 px-6 py-4 pr-12 font-bold uppercase tracking-widest text-xs text-mistral-black focus:outline-none focus:border-mistral-orange appearance-none cursor-pointer"
                   value={selectedFormat}
                   onChange={(e) => setSelectedFormat(e.target.value)}
+                  disabled={submissions[selectedAssignment.id] === 'Submitted'}
                 >
                   <option value="" disabled>Select Format</option>
                   <option value="pdf">Pdf</option>
@@ -246,14 +224,18 @@ const AssignmentPage = () => {
                 </div>
               </div>
               
-              <button className="flex-1 bg-mistral-black text-white py-4 font-bold uppercase tracking-widest hover:bg-mistral-orange transition-all duration-300">
-                Submit Assignment
+              <button 
+                onClick={handleSubmit}
+                disabled={isSubmitting || !selectedFormat || submissions[selectedAssignment.id] === 'Submitted'}
+                className={`flex-1 py-4 font-bold uppercase tracking-widest transition-all duration-300 ${
+                  submissions[selectedAssignment.id] === 'Submitted'
+                    ? 'bg-green-600 text-white cursor-not-allowed'
+                    : 'bg-mistral-black text-white hover:bg-mistral-orange'
+                }`}
+              >
+                {isSubmitting ? 'Submitting...' : submissions[selectedAssignment.id] === 'Submitted' ? 'Assignment Submitted' : 'Submit Assignment'}
               </button>
             </div>
-
-
-
-
           </div>
         </motion.div>
       )}

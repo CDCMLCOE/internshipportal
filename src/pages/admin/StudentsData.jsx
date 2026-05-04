@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StudentProfileReviewModal from '../../components/StudentProfileReviewModal';
+import { supabase } from '../../services/supabaseClient';
 
 const StudentsData = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -9,22 +10,44 @@ const StudentsData = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const students = [
-    { id: 1, name: 'John Doe', role: 'Full Stack Developer', college: 'MES Pune', gpa: '3.8', branch: 'Computer Engineering' },
-    { id: 2, name: 'Jane Smith', role: 'UI/UX Designer', college: 'COEP Pune', gpa: '3.9', branch: 'Information Technology' },
-    { id: 3, name: 'Bob Johnson', role: 'Full Stack Developer', college: 'VIT Pune', gpa: '3.5', branch: 'Computer Engineering' },
-    { id: 4, name: 'Alice Williams', role: 'Data Scientist', college: 'PICT Pune', gpa: '4.0', branch: 'E&TC' },
-    { id: 5, name: 'Charlie Brown', role: 'ML Engineer', college: 'MES Pune', gpa: '3.7', branch: 'CSE - ai&ml' },
+  // Exact values from DB
+  const branches = [
+    { value: 'Computer_Engineering', label: 'Computer Engineering' },
+    { value: 'AI_ML', label: 'AI & ML' },
+    { value: 'Information_Technology', label: 'Information Technology' },
+    { value: 'Electronics_and_Telecommunication_Engineering', label: 'E&TC' },
   ];
 
-  const branches = ['Computer Engineering', 'CSE - ai&ml', 'Information Technology', 'E&TC'];
+  useEffect(() => {
+    const fetchStudents = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .not('role', 'eq', 'admin')
+        .not('role', 'eq', 'superadmin')
+        .order('prn_no', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching students:', error);
+      } else {
+        setStudents(data || []);
+      }
+      setLoading(false);
+    };
+    fetchStudents();
+  }, []);
 
   const filteredStudents = students.filter(student => {
     const matchesFilter = activeFilter === 'All' || student.branch === activeFilter;
-    const matchesSearch = student.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          student.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          student.branch.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      (student.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (student.branch || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (student.email || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (student.prn_no || '').toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -47,20 +70,25 @@ const StudentsData = () => {
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div>
           <h2 className="text-3xl font-heading font-bold uppercase tracking-tight">Students Data</h2>
-          <p className="text-mistral-black/60 font-medium">View and manage student profiles and academic records.</p>
+          <p className="text-mistral-black/60 font-medium">
+            View and manage student profiles and academic records.{' '}
+            {!loading && (
+              <span className="text-mistral-orange font-bold">{filteredStudents.length} students</span>
+            )}
+          </p>
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-4 w-full lg:w-auto">
           {/* Search Bar */}
           <div className="relative w-full md:w-80 group">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg className="h-4 h-4 text-mistral-black/40 group-focus-within:text-mistral-orange transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-mistral-black/40 group-focus-within:text-mistral-orange transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
             <input
               type="text"
-              placeholder="Search students, roles or branches..."
+              placeholder="Search by name, branch, email or PRN..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="block w-full pl-10 pr-3 py-2.5 bg-brand-ivory border border-mistral-black/10 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-mistral-orange focus:ring-1 focus:ring-mistral-orange transition-all placeholder:text-mistral-black/20"
@@ -76,7 +104,7 @@ const StudentsData = () => {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
               </svg>
-              Filter: <span className="text-mistral-orange">{activeFilter}</span>
+              Filter: <span className="text-mistral-orange">{activeFilter === 'All' ? 'All' : branches.find(b => b.value === activeFilter)?.label || activeFilter}</span>
             </button>
 
             <AnimatePresence>
@@ -115,17 +143,17 @@ const StudentsData = () => {
                           >
                             {branches.map((branch) => (
                               <button
-                                key={branch}
+                                key={branch.value}
                                 onClick={() => {
-                                  setActiveFilter(branch);
+                                  setActiveFilter(branch.value);
                                   setIsFilterOpen(false);
                                   setIsBranchSubMenuOpen(false);
                                 }}
                                 className={`w-full text-left px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors border-b border-mistral-black/5 last:border-0 ${
-                                  activeFilter === branch ? 'bg-mistral-black text-white' : 'text-mistral-black hover:bg-brand-yellow'
+                                  activeFilter === branch.value ? 'bg-mistral-black text-white' : 'text-mistral-black hover:bg-brand-yellow'
                                 }`}
                               >
-                                {branch}
+                                {branch.label}
                               </button>
                             ))}
                           </motion.div>
@@ -151,26 +179,32 @@ const StudentsData = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        {filteredStudents.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-20 bg-brand-ivory border border-dashed border-mistral-black/20">
+            <p className="text-mistral-black/40 font-bold uppercase tracking-widest animate-pulse">Loading students from database...</p>
+          </div>
+        ) : filteredStudents.length > 0 ? (
           filteredStudents.map((student, index) => (
             <motion.div
               key={student.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: Math.min(index * 0.03, 0.5) }}
               className="bg-brand-ivory border border-mistral-black/10 p-6 flex flex-col md:flex-row justify-between items-center gap-6 group hover:border-mistral-orange transition-all duration-300"
             >
               <div className="flex items-center gap-6">
                 <div className="w-16 h-16 bg-brand-cream border border-mistral-black/10 flex items-center justify-center font-bold text-xl uppercase text-mistral-black/40">
-                  {student.name.split(' ').map(n => n[0]).join('')}
+                  {(student.name || '?').split(' ').map(n => n[0]).join('').substring(0, 2)}
                 </div>
                 <div className="flex flex-col">
                   <span className="text-lg font-bold uppercase tracking-tight">{student.name}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-mistral-orange uppercase tracking-widest">{student.role}</span>
-                    <span className="text-[10px] text-mistral-black/40 uppercase font-bold tracking-tighter">[{student.branch}]</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs font-bold text-mistral-orange uppercase tracking-widest">{student.preferred_role || 'Student'}</span>
+                    <span className="text-[10px] text-mistral-black/40 uppercase font-bold tracking-tighter">[{branches.find(b => b.value === student.branch)?.label || student.branch}]</span>
                   </div>
-                  <span className="text-xs text-mistral-black/60 mt-1">{student.college} • GPA: {student.gpa}</span>
+                  <span className="text-xs text-mistral-black/60 mt-1">
+                    {student.college} • PRN: {student.prn_no}
+                  </span>
                 </div>
               </div>
 

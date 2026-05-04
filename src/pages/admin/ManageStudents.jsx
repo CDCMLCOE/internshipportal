@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ClipboardList, CheckSquare, FileText, Download } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import logoUrl from '../../assets/logo.png';
-
+import { supabase } from '../../services/supabaseClient';
 const ManageStudents = () => {
   const [activeBranchFilter, setActiveBranchFilter] = useState('All');
   const [activeStatusFilter, setActiveStatusFilter] = useState('All');
@@ -20,16 +20,41 @@ const ManageStudents = () => {
   const [interviewDate, setInterviewDate] = useState('');
   const [studentTasks, setStudentTasks] = useState({});
 
-  const students = [
-    { id: 1, name: 'John Doe', branch: 'Computer Engineering', status: 'Task Complete' },
-    { id: 2, name: 'Jane Smith', branch: 'Information Technology', status: 'Pending' },
-    { id: 3, name: 'Bob Johnson', branch: 'Computer Engineering', status: 'No Task' },
-    { id: 4, name: 'Alice Williams', branch: 'E&TC', status: 'Task Complete' },
-    { id: 5, name: 'Charlie Brown', branch: 'CSE - ai&ml', status: 'Pending' },
-    { id: 6, name: 'David Miller', branch: 'Information Technology', status: 'Task Incomplete' },
-  ];
+  const [students, setStudents] = useState([]);
 
-  const branches = ['Computer Engineering', 'CSE - ai&ml', 'Information Technology', 'E&TC'];
+  useEffect(() => {
+    const fetchStudents = async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .not('role', 'eq', 'admin')
+        .not('role', 'eq', 'superadmin')
+        .order('prn_no', { ascending: true });
+      if (error) {
+        console.error('Error fetching students:', error);
+      } else {
+        const formattedData = data.map(profile => ({
+          id: profile.id,
+          name: profile.name,
+          branch: profile.branch,
+          college: profile.college,
+          email: profile.email,
+          prn: profile.prn_no,
+          status: 'Pending', // Default status
+        }));
+        setStudents(formattedData);
+      }
+    };
+    fetchStudents();
+  }, []);
+
+  const branches = ['Computer_Engineering', 'AI_ML', 'Information_Technology', 'Electronics_and_Telecommunication_Engineering'];
+  const branchLabels = {
+    'Computer_Engineering': 'Computer Engineering',
+    'AI_ML': 'AI & ML',
+    'Information_Technology': 'Information Technology',
+    'Electronics_and_Telecommunication_Engineering': 'E&TC',
+  };
   const statuses = ['Task Complete', 'Task Incomplete', 'Pending', 'No Task'];
 
   const handleDownloadPDF = (student, task) => {
@@ -67,7 +92,7 @@ const ManageStudents = () => {
     doc.setTextColor(0, 0, 0);
     doc.text(`Student: ${student.name}`, 20, 60);
     doc.setFontSize(12);
-    doc.text(`Branch: ${student.branch}`, 20, 68);
+    doc.text(`Branch: ${branchLabels[student.branch] || student.branch}`, 20, 68);
     
     // Date Info
     doc.setFontSize(10);
@@ -174,7 +199,7 @@ const ManageStudents = () => {
                           activeBranchFilter !== 'All' ? 'bg-mistral-black text-white' : 'text-mistral-black hover:bg-brand-yellow'
                         }`}
                       >
-                        Branch: {activeBranchFilter === 'All' ? 'All' : 'Selected'}
+                        Branch: {activeBranchFilter === 'All' ? 'All' : branchLabels[activeBranchFilter] || activeBranchFilter}
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
@@ -199,7 +224,7 @@ const ManageStudents = () => {
                               >
                                 All Branches
                               </button>
-                            {branches.map((branch) => (
+                              {branches.map((branch) => (
                               <button
                                 key={branch}
                                 onClick={() => {
@@ -210,7 +235,7 @@ const ManageStudents = () => {
                                   activeBranchFilter === branch ? 'bg-mistral-black text-white' : 'text-mistral-black hover:bg-brand-yellow'
                                 }`}
                               >
-                                {branch}
+                                {branchLabels[branch] || branch}
                               </button>
                             ))}
                           </motion.div>
@@ -322,7 +347,7 @@ const ManageStudents = () => {
                   <td className="p-4 text-center border-r border-mistral-black/10">
                     <div className="flex flex-col items-center">
                       <span className="font-bold uppercase tracking-tight text-base text-mistral-black">{student.name}</span>
-                      <span className="text-[10px] uppercase tracking-widest text-mistral-black/40 font-bold mt-1">[{student.branch}]</span>
+                      <span className="text-[10px] uppercase tracking-widest text-mistral-black/40 font-bold mt-1">[{branchLabels[student.branch] || student.branch}]</span>
                     </div>
                   </td>
                   <td className="p-4 align-middle border-r border-mistral-black/10">
@@ -423,12 +448,12 @@ const ManageStudents = () => {
                   <div className="flex flex-col space-y-2 text-center sm:text-left pt-2 sm:pt-8 flex-1">
                     <div>
                       <h3 className="font-heading font-bold text-2xl text-mistral-black tracking-tight">{selectedStudentForTask.name}</h3>
-                      <p className="text-mistral-orange font-medium text-xs mt-1 uppercase tracking-wider">{selectedStudentForTask.branch}</p>
+                      <p className="text-mistral-orange font-medium text-xs mt-1 uppercase tracking-wider">{branchLabels[selectedStudentForTask.branch] || selectedStudentForTask.branch}</p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3 mt-1">
                       <div className="flex items-center justify-center sm:justify-start gap-1.5 text-mistral-black/70">
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                        <span className="font-sans text-xs">{selectedStudentForTask.name.toLowerCase().replace(/\s+/g, '.')}@mlcoe.mespune.in</span>
+                        <span className="font-sans text-xs">{selectedStudentForTask.email}</span>
                       </div>
                     </div>
                   </div>

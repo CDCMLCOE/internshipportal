@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import logoUrl from '../../assets/logo.png';
 import CustomDropdown from '../../components/CustomDropdown';
-import { addPendingApproval } from '../../services/pendingApprovals';
+import { supabase } from '../../services/supabaseClient';
 
 const IndustryRegister = () => {
   const [formData, setFormData] = useState({
@@ -80,7 +80,7 @@ const IndustryRegister = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -90,28 +90,28 @@ const IndustryRegister = () => {
     setIsSubmitting(true);
     
     try {
-      // Save to pending approvals
-      addPendingApproval({
-        id: Date.now(),
-        companyName: formData.companyName,
-        email: formData.email,
-        industryType: formData.industryType,
-        website: formData.website,
-        yearOfEstablishment: formData.yearOfEstablishment,
-        companySize: formData.companySize,
-        cinGstin: formData.cinGstin,
-        description: formData.description,
-        primaryAddress: formData.primaryAddress,
-        hqLocation: formData.hqLocation,
-        pocName: formData.pocName,
-        pocTitle: formData.pocTitle,
-        pocMobile: formData.pocMobile,
-        pocAltMobile: formData.pocAltMobile,
-        pocLinkedin: formData.pocLinkedin,
-        verificationFile: verificationFile ? verificationFile.name : null,
-        status: 'Pending',
-        createdAt: new Date().toISOString(),
-      });
+      const { error } = await supabase
+        .from('industry_registrations')
+        .insert([{
+          email: formData.email,
+          company_name: formData.companyName,
+          website: formData.website,
+          industry_type: formData.industryType,
+          year_of_establishment: parseInt(formData.yearOfEstablishment),
+          cin_gstin: formData.cinGstin,
+          description: formData.description,
+          company_size: formData.companySize,
+          hq_location: formData.hqLocation,
+          primary_address: formData.primaryAddress,
+          poc_name: formData.pocName,
+          poc_title: formData.pocTitle,
+          poc_mobile: formData.pocMobile,
+          poc_alt_mobile: formData.pocAltMobile,
+          poc_linkedin: formData.pocLinkedin,
+          status: 'Pending'
+        }]);
+
+      if (error) throw error;
       
       setIsSuccess(true);
     } catch (error) {

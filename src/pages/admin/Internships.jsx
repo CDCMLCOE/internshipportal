@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { supabase } from '../../services/supabaseClient';
 
 const AdminInternships = () => {
   const location = useLocation();
@@ -9,23 +10,42 @@ const AdminInternships = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [internships, setInternships] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Clear location.state after consuming the message
   useEffect(() => {
-    if (location.state?.message) {
-      navigate(location.pathname, { replace: true, state: {} });
+    fetchInternships();
+  }, []);
+
+  const fetchInternships = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('internships')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching internships:', error);
+    } else {
+      setInternships(data || []);
     }
-  }, [location.state?.message, location.pathname, navigate]);
+    setLoading(false);
+  };
 
-  const [internships, setInternships] = useState([
-    { id: 1, title: 'Full Stack Developer', company: 'Google', location: 'Mountain View, CA', category: 'Software', status: 'Active' },
-    { id: 2, title: 'UI/UX Designer', company: 'Microsoft', location: 'Redmond, WA', category: 'Design', status: 'Active' },
-    { id: 3, title: 'Data Scientist', company: 'Amazon', location: 'Seattle, WA', category: 'Data Science', status: 'Closed' },
-    { id: 4, title: 'Cloud Engineer', company: 'Infosys', location: 'Bangalore, India', category: 'Cloud', status: 'Active' },
-  ]);
-
-  const handleDelete = (id) => {
-    setInternships(internships.filter(job => job.id !== id));
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this internship?')) {
+      const { error } = await supabase
+        .from('internships')
+        .delete()
+        .eq('id', id);
+      
+      if (error) {
+        console.error('Error deleting internship:', error);
+        alert('Failed to delete internship');
+      } else {
+        fetchInternships();
+      }
+    }
   };
 
   const categories = ['Software', 'Design', 'Data Science', 'Cloud'];

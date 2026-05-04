@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StudentProfileReviewModal from '../../components/StudentProfileReviewModal';
+import { supabase } from '../../services/supabaseClient';
 
 const AdminApplicants = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -9,17 +10,50 @@ const AdminApplicants = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [applicants, setApplicants] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const applicants = [
-    { id: 1, name: 'John Doe', role: 'Full Stack Developer', college: 'MES Pune', gpa: '3.8', status: 'Pending', branch: 'Computer Engineering' },
-    { id: 2, name: 'Jane Smith', role: 'UI/UX Designer', college: 'COEP Pune', gpa: '3.9', status: 'Reviewed', branch: 'Information Technology' },
-    { id: 3, name: 'Bob Johnson', role: 'Full Stack Developer', college: 'VIT Pune', gpa: '3.5', status: 'Rejected', branch: 'Computer Engineering' },
-    { id: 4, name: 'Alice Williams', role: 'Data Scientist', college: 'PICT Pune', gpa: '4.0', status: 'Shortlisted', branch: 'E&TC' },
-    { id: 5, name: 'Charlie Brown', role: 'ML Engineer', college: 'MES Pune', gpa: '3.7', status: 'Pending', branch: 'CSE - ai&ml' },
-  ];
-
-  const statusFilters = ['Shortlisted', 'Reviewed', 'Pending', 'Rejected'];
+  const statusFilters = ['Shortlisted', 'Pending Review', 'Rejected'];
   const branches = ['Computer Engineering', 'CSE - ai&ml', 'Information Technology', 'E&TC'];
+
+  useEffect(() => {
+    fetchApplicants();
+  }, []);
+
+  const fetchApplicants = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('applications')
+        .select(`
+          *,
+          profiles!student_id (*),
+          internships!internship_id (title)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      // Transform for UI
+      const formatted = (data || []).map(app => ({
+        id: app.id,
+        name: app.profiles?.name || 'Unknown',
+        role: app.internships?.title || 'Unknown',
+        college: app.profiles?.college || 'N/A',
+        prn: app.profiles?.prn_no || 'N/A',
+        gpa: 'N/A',
+        status: app.status,
+        branch: app.profiles?.branch || 'N/A',
+        student_id: app.student_id
+      }));
+
+      setApplicants(formatted);
+    } catch (error) {
+      console.error('Error fetching applicants:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredApplicants = applicants.filter(app => {
     const matchesFilter = activeFilter === 'All' 
@@ -33,7 +67,7 @@ const AdminApplicants = () => {
                           app.branch.toLowerCase().includes(searchQuery.toLowerCase());
     
     return matchesFilter && matchesSearch;
-  });
+  }).sort((a, b) => (a.prn || '').localeCompare(b.prn || '', undefined, { numeric: true }));
 
   const getStatusStyle = (status) => {
     switch (status) {

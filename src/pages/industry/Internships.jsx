@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
-import { addPendingApproval } from '../../services/pendingApprovals';
-
-// All internships across companies (simulates a shared DB)
-const ALL_INTERNSHIPS = [
-  { id: 1, title: 'Full Stack Developer', company: 'Google', location: 'Mountain View, CA', category: 'Software', status: 'Active' },
-  { id: 2, title: 'UI/UX Designer', company: 'Microsoft', location: 'Redmond, WA', category: 'Design', status: 'Active' },
-  { id: 3, title: 'Data Scientist', company: 'Amazon', location: 'Seattle, WA', category: 'Data Science', status: 'Closed' },
-  { id: 4, title: 'Cloud Engineer', company: 'Infosys', location: 'Bangalore, India', category: 'Cloud', status: 'Active' },
-  { id: 5, title: 'Android Developer', company: 'Google', location: 'New York, NY', category: 'Software', status: 'Active' },
-  { id: 6, title: 'Data Engineer', company: 'Amazon', location: 'Austin, TX', category: 'Data Science', status: 'Active' },
-];
+import { supabase } from '../../services/supabaseClient';
 
 const categories = ['Software', 'Design', 'Data Science', 'Cloud'];
 const statuses = ['Active', 'Closed'];
 
-const BLANK_FORM = { title: '', location: '', category: 'Software', status: 'Active' };
+const BLANK_FORM = { 
+  title: '', 
+  location: '', 
+  category: 'Software', 
+  status: 'Active',
+  stipend: '',
+  duration: '',
+  deadline: '',
+  about_company: '',
+  role_description: '',
+  requirements: '',
+  skills: ''
+};
 
 const IndustryInternships = () => {
   const { user } = useAuth();
-  const myCompany = user?.company || '';
+  const myCompany = user?.company || 'My Company';
 
-  const [internships, setInternships] = useState(
-    ALL_INTERNSHIPS.filter(j => j.company === myCompany)
-  );
+  const [internships, setInternships] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('All');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,49 +35,116 @@ const IndustryInternships = () => {
   const [form, setForm] = useState(BLANK_FORM);
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
 
+  useEffect(() => {
+    fetchInternships();
+  }, []);
+
+  const fetchInternships = async () => {
+    setLoading(true);
+    try {
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (!currentUser) return;
+
+      const { data, error } = await supabase
+        .from('internships')
+        .select('*')
+        .eq('created_by', currentUser.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setInternships(data || []);
+    } catch (error) {
+      console.error('Error fetching internships:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filtered = internships.filter(job => {
-    const matchesFilter = activeFilter === 'All' || job.category === activeFilter || job.status === activeFilter;
+    const matchesFilter = activeFilter === 'All' || job.type === activeFilter || job.status === activeFilter;
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           job.location.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
   const openAdd = () => { setEditingJob(null); setForm(BLANK_FORM); setIsModalOpen(true); };
-  const openEdit = (job) => { setEditingJob(job); setForm({ title: job.title, location: job.location, category: job.category, status: job.status }); setIsModalOpen(true); };
+  const openEdit = (job) => { 
+    setEditingJob(job); 
+    setForm({ 
+      title: job.title, 
+      location: job.location, 
+      category: job.type, 
+      status: job.status,
+      stipend: job.stipend,
+      duration: job.duration,
+      deadline: job.deadline,
+      about_company: job.about_company,
+      role_description: job.role_description,
+      requirements: (job.requirements || []).join('\n'),
+      skills: (job.skills || []).join(', ')
+    }); 
+    setIsModalOpen(true); 
+  };
   const closeModal = () => { setIsModalOpen(false); setEditingJob(null); setForm(BLANK_FORM); };
 
   const handleSave = async () => {
     if (!form.title.trim() || !form.location.trim()) return;
-    if (editingJob) {
-      setInternships(prev => prev.map(j => j.id === editingJob.id ? { ...j, ...form } : j));
-      closeModal();
-    } else {
-      const newJob = { 
-        id: Date.now(), 
-        company: myCompany, 
-        ...form, 
-        status: 'Pending Admin Approval' // Default status for new industry listings
-      };
-      
-      // Update local state for immediate feedback
-      setInternships(prev => [...prev, newJob]);
+    
+    try {
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (!currentUser) return;
 
-      try {
-        await addPendingApproval(newJob);
-        closeModal();
-      } catch (error) {
-        // Rollback the optimistic update
-        setInternships(prev => prev.filter(j => j.id !== newJob.id));
-        // Show error to user (could also use a toast notification)
-        console.error('Failed to add internship:', error);
-        alert('Failed to submit internship. Please try again.');
+      const internshipData = {
+        title: form.title,
+        company: myCompany,
+        location: form.location,
+        type: form.category,
+        status: form.status,
+        stipend: form.stipend,
+        duration: form.duration,
+        deadline: form.deadline,
+        about_company: form.about_company,
+        role_description: form.role_description,
+        requirements: form.requirements.split('\n').filter(r => r.trim()),
+        skills: form.skills.split(',').map(s => s.trim()).filter(s => s),
+        created_by: currentUser.id
+      };
+
+      if (editingJob) {
+        const { error } = await supabase
+          .from('internships')
+          .update(internshipData)
+          .eq('id', editingJob.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('internships')
+          .insert([internshipData]);
+        if (error) throw error;
       }
+      
+      fetchInternships();
+      closeModal();
+    } catch (error) {
+      console.error('Failed to save internship:', error);
+      alert('Failed to save internship. Please try again.');
     }
   };
 
-  const handleDelete = (id) => {
-    setInternships(prev => prev.filter(j => j.id !== id));
-    setDeleteConfirmId(null);
+  const handleDelete = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('internships')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      
+      fetchInternships();
+      setDeleteConfirmId(null);
+    } catch (error) {
+      console.error('Failed to delete internship:', error);
+      alert('Failed to delete internship.');
+    }
   };
 
   return (
@@ -220,7 +289,7 @@ const IndustryInternships = () => {
               className="absolute inset-0 bg-mistral-black/60 backdrop-blur-sm" onClick={closeModal} />
             <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg bg-brand-ivory rounded-xl shadow-2xl overflow-hidden">
+              className="relative w-full max-w-xl bg-brand-ivory rounded-xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
               <div className="h-1.5 bg-gradient-to-r from-mistral-orange to-brand-yellow" />
               <div className="p-8">
                 <div className="flex items-center justify-between mb-6">
@@ -250,6 +319,25 @@ const IndustryInternships = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Stipend <span className="text-red-500 font-bold">*</span></label>
+                      <input type="text" value={form.stipend} onChange={e => setForm(f => ({ ...f, stipend: e.target.value }))}
+                        placeholder="e.g. ₹ 15,000 /month"
+                        className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Duration <span className="text-red-500 font-bold">*</span></label>
+                      <input type="text" value={form.duration} onChange={e => setForm(f => ({ ...f, duration: e.target.value }))}
+                        placeholder="e.g. 6 Months"
+                        className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Application Deadline <span className="text-red-500 font-bold">*</span></label>
+                    <input type="date" value={form.deadline} onChange={e => setForm(f => ({ ...f, deadline: e.target.value }))}
+                      className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
                       <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Category</label>
                       <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
                         className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all">
@@ -263,6 +351,27 @@ const IndustryInternships = () => {
                         {statuses.map(s => <option key={s}>{s}</option>)}
                       </select>
                     </div>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">About Company</label>
+                    <textarea value={form.about_company} onChange={e => setForm(f => ({ ...f, about_company: e.target.value }))}
+                      rows="3" className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all resize-none" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Role Description</label>
+                    <textarea value={form.role_description} onChange={e => setForm(f => ({ ...f, role_description: e.target.value }))}
+                      rows="3" className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all resize-none" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Requirements (one per line)</label>
+                    <textarea value={form.requirements} onChange={e => setForm(f => ({ ...f, requirements: e.target.value }))}
+                      rows="3" className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all resize-none" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/50 block mb-1.5">Skills (comma separated)</label>
+                    <input type="text" value={form.skills} onChange={e => setForm(f => ({ ...f, skills: e.target.value }))}
+                      placeholder="React, Node.js, SQL"
+                      className="w-full px-4 py-3 bg-brand-cream border border-mistral-black/10 text-sm font-medium focus:outline-none focus:border-mistral-orange transition-all" />
                   </div>
                 </div>
 

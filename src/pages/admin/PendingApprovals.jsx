@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getPendingApprovals, setPendingApprovals as updateStorage, pendingApprovalsEventName } from '../../services/pendingApprovals';
+import { supabase } from '../../services/supabaseClient';
 
 const PendingApprovals = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -9,44 +9,66 @@ const PendingApprovals = () => {
   const [selectedRegistration, setSelectedRegistration] = useState(null);
   const [statusMessage, setStatusMessage] = useState('');
   const [approvals, setApprovals] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = () => setApprovals(getPendingApprovals());
-    load();
-    const handleUpdate = () => load();
-    window.addEventListener(pendingApprovalsEventName, handleUpdate);
-    return () => window.removeEventListener(pendingApprovalsEventName, handleUpdate);
+    fetchApprovals();
   }, []);
 
-  const handleApprove = (id) => {
-    const current = getPendingApprovals();
-    const approved = current.find(p => p.id === id);
-    if (!approved) return;
-    const updated = current.filter(p => p.id !== id);
-    setApprovals(updated);
-    updateStorage(updated);
-    setStatusMessage(`Registration for "${approved.companyName}" approved.`);
-    setSelectedRegistration(null);
+  const fetchApprovals = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('industry_registrations')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching registrations:', error);
+    } else {
+      setApprovals(data || []);
+    }
+    setLoading(false);
   };
 
-  const handleReject = (id) => {
-    const current = getPendingApprovals();
-    const rejected = current.find(p => p.id === id);
-    if (!rejected) return;
-    const updated = current.filter(p => p.id !== id);
-    setApprovals(updated);
-    updateStorage(updated);
-    setStatusMessage(`Registration for "${rejected.companyName}" rejected.`);
-    setSelectedRegistration(null);
+  const handleApprove = async (id) => {
+    const { error } = await supabase
+      .from('industry_registrations')
+      .update({ status: 'Approved' })
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error approving registration:', error);
+      alert('Failed to approve registration');
+    } else {
+      setStatusMessage('Registration approved successfully.');
+      fetchApprovals();
+      setSelectedRegistration(null);
+    }
+  };
+
+  const handleReject = async (id) => {
+    const { error } = await supabase
+      .from('industry_registrations')
+      .update({ status: 'Rejected' })
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error rejecting registration:', error);
+      alert('Failed to reject registration');
+    } else {
+      setStatusMessage('Registration rejected successfully.');
+      fetchApprovals();
+      setSelectedRegistration(null);
+    }
   };
 
 
 
   const filteredApprovals = approvals.filter(app => {
     const matchesFilter = activeFilter === 'All' ? true : app.status === activeFilter;
-    const matchesSearch = app.companyName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch = app.company_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           app.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          app.industryType?.toLowerCase().includes(searchQuery.toLowerCase());
+                          app.industry_type?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -122,10 +144,10 @@ const PendingApprovals = () => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Total Pending</p><p className="text-3xl font-heading font-bold text-mistral-black">{approvals.length}</p></div>
-        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">This Week</p><p className="text-3xl font-heading font-bold text-mistral-black">{thisWeekCount}</p></div>
-        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Companies</p><p className="text-3xl font-heading font-bold text-mistral-black">{new Set(approvals.map(p => p.companyName)).size}</p></div>
-        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Avg. Days</p><p className="text-3xl font-heading font-bold text-mistral-black">{calculateAvgDays()}</p></div>
+        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Total Pending</p><p className="text-3xl font-heading font-bold text-mistral-black">{loading ? '...' : approvals.length}</p></div>
+        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">This Week</p><p className="text-3xl font-heading font-bold text-mistral-black">{loading ? '...' : thisWeekCount}</p></div>
+        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Companies</p><p className="text-3xl font-heading font-bold text-mistral-black">{loading ? '...' : new Set(approvals.map(p => p.company_name)).size}</p></div>
+        <div className="bg-brand-ivory border border-mistral-black/10 p-4"><p className="text-[10px] font-bold uppercase tracking-widest text-mistral-black/40">Avg. Days</p><p className="text-3xl font-heading font-bold text-mistral-black">{loading ? '...' : calculateAvgDays()}</p></div>
       </div>
 
       <div className="bg-brand-ivory border border-mistral-black/10 shadow-sm overflow-x-auto">
@@ -144,10 +166,10 @@ const PendingApprovals = () => {
               filteredApprovals.map((app) => (
                 <motion.tr key={app.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="group hover:bg-mistral-orange/5 transition-colors">
                   <td className="p-4 border-b border-mistral-black/5">
-                    <span className="font-bold text-sm uppercase tracking-tight">{app.companyName}</span>
+                    <span className="font-bold text-sm uppercase tracking-tight">{app.company_name}</span>
                   </td>
                   <td className="p-4 border-b border-mistral-black/5">
-                    <span className="text-[10px] uppercase font-bold px-2 py-1 bg-brand-yellow/30 text-mistral-black">{app.industryType}</span>
+                    <span className="text-[10px] uppercase font-bold px-2 py-1 bg-brand-yellow/30 text-mistral-black">{app.industry_type}</span>
                   </td>
                   <td className="p-4 border-b border-mistral-black/5">
                     <span className="text-xs font-medium">{app.email}</span>
@@ -186,7 +208,7 @@ const PendingApprovals = () => {
                 <div className="flex justify-between items-start mb-8">
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-mistral-orange mb-2 block">Registration Request</span>
-                    <h3 className="text-3xl font-heading font-bold uppercase text-mistral-black">{selectedRegistration.companyName}</h3>
+                    <h3 className="text-3xl font-heading font-bold uppercase text-mistral-black">{selectedRegistration.company_name}</h3>
                   </div>
                   <button onClick={() => setSelectedRegistration(null)} className="p-2 hover:bg-mistral-black/5 transition-colors"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
                 </div>
@@ -194,7 +216,7 @@ const PendingApprovals = () => {
                 <div className="grid grid-cols-2 gap-8 mb-8">
                   <div className="space-y-1">
                     <p className="text-[8px] font-bold uppercase tracking-widest text-mistral-black/40">Industry Type</p>
-                    <p className="font-bold text-mistral-black uppercase tracking-tight">{selectedRegistration.industryType}</p>
+                    <p className="font-bold text-mistral-black uppercase tracking-tight">{selectedRegistration.industry_type}</p>
                   </div>
                   <div className="space-y-1">
                     <p className="text-[8px] font-bold uppercase tracking-widest text-mistral-black/40">Email Address</p>

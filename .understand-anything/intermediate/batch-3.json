@@ -1,0 +1,283 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/pages/admin/StudentsData.jsx",
+      "type": "file",
+      "name": "StudentsData.jsx",
+      "filePath": "src/pages/admin/StudentsData.jsx",
+      "summary": "Administrative interface for viewing and filtering student records with profile review capabilities.",
+      "tags": ["page", "admin", "student-data"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/Help.jsx",
+      "type": "file",
+      "name": "Help.jsx",
+      "filePath": "src/pages/Help.jsx",
+      "summary": "FAQ and help page for users of the internship portal.",
+      "tags": ["page", "documentation", "faq"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/pages/Home.jsx",
+      "type": "file",
+      "name": "Home.jsx",
+      "filePath": "src/pages/Home.jsx",
+      "summary": "Landing page with typewriter hero section, statistics, and partner company showcase.",
+      "tags": ["page", "landing-page", "ui"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/industry/Applicants.jsx",
+      "type": "file",
+      "name": "Applicants.jsx",
+      "filePath": "src/pages/industry/Applicants.jsx",
+      "summary": "Industry partner view for managing applicants to their specific internship postings.",
+      "tags": ["page", "industry", "applicant-management"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/industry/Dashboard.jsx",
+      "type": "file",
+      "name": "Dashboard.jsx",
+      "filePath": "src/pages/industry/Dashboard.jsx",
+      "summary": "Industry-specific dashboard with recruitment metrics and recent activity.",
+      "tags": ["page", "industry", "dashboard"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/industry/Internships.jsx",
+      "type": "file",
+      "name": "Internships.jsx",
+      "filePath": "src/pages/industry/Internships.jsx",
+      "summary": "Internship management for industry partners, including posting and editing roles.",
+      "tags": ["page", "industry", "internship-management"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/pages/industry/Login.jsx",
+      "type": "file",
+      "name": "Login.jsx",
+      "filePath": "src/pages/industry/Login.jsx",
+      "summary": "Dedicated login page for industry partners.",
+      "tags": ["page", "industry", "auth"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/industry/Register.jsx",
+      "type": "file",
+      "name": "Register.jsx",
+      "filePath": "src/pages/industry/Register.jsx",
+      "summary": "Onboarding registration form for new industry partners, including file uploads for verification.",
+      "tags": ["page", "industry", "registration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/pages/LegalPartnership.jsx",
+      "type": "file",
+      "name": "LegalPartnership.jsx",
+      "filePath": "src/pages/LegalPartnership.jsx",
+      "summary": "Legal documentation regarding partnership terms and conditions.",
+      "tags": ["page", "legal", "partnership"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/LegalPrivacy.jsx",
+      "type": "file",
+      "name": "LegalPrivacy.jsx",
+      "filePath": "src/pages/LegalPrivacy.jsx",
+      "summary": "Privacy policy page for the internship portal.",
+      "tags": ["page", "legal", "privacy"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/LegalTerms.jsx",
+      "type": "file",
+      "name": "LegalTerms.jsx",
+      "filePath": "src/pages/LegalTerms.jsx",
+      "summary": "Terms of service documentation.",
+      "tags": ["page", "legal", "terms"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/PrincipalMessage.jsx",
+      "type": "file",
+      "name": "PrincipalMessage.jsx",
+      "filePath": "src/pages/PrincipalMessage.jsx",
+      "summary": "Official message from the institution's principal regarding the internship program.",
+      "tags": ["page", "official", "message"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/student/Application.jsx",
+      "type": "file",
+      "name": "Application.jsx",
+      "filePath": "src/pages/student/Application.jsx",
+      "summary": "Student view for tracking submitted internship applications and their statuses.",
+      "tags": ["page", "student", "applications"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/student/Assignments.jsx",
+      "type": "file",
+      "name": "Assignments.jsx",
+      "filePath": "src/pages/student/Assignments.jsx",
+      "summary": "Student interface for accessing and submitting course-related assignments.",
+      "tags": ["page", "student", "assignments"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/student/Dashboard.jsx",
+      "type": "file",
+      "name": "Dashboard.jsx",
+      "filePath": "src/pages/student/Dashboard.jsx",
+      "summary": "Student main dashboard featuring available internships and recommended roles.",
+      "tags": ["page", "student", "dashboard"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/student/Profile.jsx",
+      "type": "file",
+      "name": "Profile.jsx",
+      "filePath": "src/pages/student/Profile.jsx",
+      "summary": "Comprehensive student profile editor with identity pre-filling and dynamic links.",
+      "tags": ["page", "student", "profile"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/pages/StudentGuidelines.jsx",
+      "type": "file",
+      "name": "StudentGuidelines.jsx",
+      "filePath": "src/pages/StudentGuidelines.jsx",
+      "summary": "Guidelines and instructions for students participating in internships.",
+      "tags": ["page", "student", "guidelines"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/superadmin/Dashboard.jsx",
+      "type": "file",
+      "name": "Dashboard.jsx",
+      "filePath": "src/pages/superadmin/Dashboard.jsx",
+      "summary": "High-level administrative dashboard with system-wide analytics.",
+      "tags": ["page", "superadmin", "dashboard"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/superadmin/ManageStudents.jsx",
+      "type": "file",
+      "name": "ManageStudents.jsx",
+      "filePath": "src/pages/superadmin/ManageStudents.jsx",
+      "summary": "Superadmin interface for comprehensive student record management.",
+      "tags": ["page", "superadmin", "student-management"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/pages/superadmin/UserManagement.jsx",
+      "type": "file",
+      "name": "UserManagement.jsx",
+      "filePath": "src/pages/superadmin/UserManagement.jsx",
+      "summary": "Superadmin view for managing system users and roles.",
+      "tags": ["page", "superadmin", "user-management"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/services/pendingApprovals.js",
+      "type": "file",
+      "name": "pendingApprovals.js",
+      "filePath": "src/services/pendingApprovals.js",
+      "summary": "Service for managing and persisting pending administrative approvals in localStorage.",
+      "tags": ["service", "persistence", "approvals"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tailwind.config.js",
+      "type": "file",
+      "name": "tailwind.config.js",
+      "filePath": "tailwind.config.js",
+      "summary": "Tailwind CSS configuration, defining brand colors, fonts, and theme extensions.",
+      "tags": ["config", "styling", "tailwind"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:vite.config.js",
+      "type": "file",
+      "name": "vite.config.js",
+      "filePath": "vite.config.js",
+      "summary": "Vite build tool configuration, including React plugin integration.",
+      "tags": ["config", "build", "vite"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/pages/admin/StudentsData.jsx",
+      "target": "file:src/components/StudentProfileReviewModal.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/industry/Applicants.jsx",
+      "target": "file:src/components/StudentProfileReviewModal.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/industry/Internships.jsx",
+      "target": "file:src/auth/AuthContext.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/industry/Internships.jsx",
+      "target": "file:src/services/pendingApprovals.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/industry/Login.jsx",
+      "target": "file:src/auth/AuthContext.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/industry/Register.jsx",
+      "target": "file:src/components/CustomDropdown.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/industry/Register.jsx",
+      "target": "file:src/services/pendingApprovals.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/student/Application.jsx",
+      "target": "file:src/components/InternshipDetailModal.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/student/Dashboard.jsx",
+      "target": "file:src/components/InternshipDetailModal.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/student/Profile.jsx",
+      "target": "file:src/auth/AuthContext.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

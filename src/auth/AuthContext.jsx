@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { supabase } from '../services/supabaseClient';
 
 const SESSION_KEY = 'portal.session.v1';
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
@@ -11,6 +12,11 @@ const MOCK_ACCOUNTS = import.meta.env.VITE_USE_MOCK_AUTH === 'true' ? {
       email: 'student@mlcoe.mespune.in',
       password: 'student123',
       name: 'Student User',
+      firstName: 'Student',
+      lastName: 'User',
+      prn: '2212345678',
+      branch: 'B.Tech in Computer Engineering',
+      institution: 'MES MLCOE',
     },
   ],
   admin: [
@@ -25,14 +31,22 @@ const MOCK_ACCOUNTS = import.meta.env.VITE_USE_MOCK_AUTH === 'true' ? {
     { company: 'Microsoft', password: 'ms2024' },
     { company: 'Amazon', password: 'amzn456' },
     { company: 'Infosys', password: 'infosys789' },
+    { company: 'Amazon', password: 'amzn' },
   ],
-} : { student: [], admin: [], industry: [] };
+  superadmin: [
+    {
+      email: 'superadmin@mlcoe.in',
+      password: 'superadmin123',
+      name: 'Superadmin User',
+    },
+  ],
+} : { student: [], admin: [], industry: [], superadmin: [] };
 
 const AuthContext = createContext(null);
 
 const isValidSession = (session) => {
   if (!session || typeof session !== 'object') return false;
-  if (!['student', 'admin', 'industry'].includes(session.role)) return false;
+  if (!['student', 'admin', 'industry', 'superadmin'].includes(session.role)) return false;
   if (!session.expiresAt || Date.now() > session.expiresAt) return false;
   if (session.role === 'industry' && !session.company) return false;
   return Boolean(session.name);
@@ -63,18 +77,37 @@ const normalize = (value) => value.trim().toLowerCase();
 export const AuthProvider = ({ children }) => {
   const [session, setSession] = useState(() => readSession());
 
-  const loginPortalUser = useCallback(({ role, email, password }) => {
-    const accounts = MOCK_ACCOUNTS[role] || [];
-    const account = accounts.find((candidate) => normalize(candidate.email) === normalize(email || ''));
+  const loginPortalUser = useCallback(async ({ role, email, password }) => {
+    if (import.meta.env.VITE_USE_MOCK_AUTH === 'true') {
+      const accounts = MOCK_ACCOUNTS[role] || [];
+      const account = accounts.find((candidate) => normalize(candidate.email) === normalize(email || ''));
 
-    if (!account || account.password !== password) {
-      return { ok: false, message: 'Invalid email or password.' };
+      if (!account || account.password !== password) {
+        return { ok: false, message: 'Invalid email or password.' };
+      }
+
+      const nextSession = {
+        ...account,
+        role,
+        expiresAt: Date.now() + SESSION_TTL_MS,
+      };
+      persistSession(nextSession);
+      setSession(nextSession);
+      return { ok: true, session: nextSession };
     }
 
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      return { ok: false, message: error.message };
+    }
+
+    const { data: profile } = await supabase.from('profiles').select('*').eq('id', data.user.id).single();
+
     const nextSession = {
+      ...profile,
+      email: data.user.email,
+      name: profile?.name || data.user.email,
       role,
-      name: account.name,
-      email: account.email,
       expiresAt: Date.now() + SESSION_TTL_MS,
     };
     persistSession(nextSession);

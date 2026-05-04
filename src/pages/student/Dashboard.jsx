@@ -1,65 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import InternshipDetailModal from '../../components/InternshipDetailModal';
-
-const INTERNSHIPS = [
-  {
-    id: 2,
-    title: "Data Science Intern",
-    company: "DATAVISION ANALYTICS",
-    location: "Work from home",
-    stipend: "₹ 20,000 /month",
-    type: "Internship",
-    duration: "3 Months",
-    deadline: "June 15, 2026",
-    aboutCompany: "DataVision Analytics is a fast-growing data analytics firm that helps Fortune 500 companies unlock insights from their data. They specialize in machine learning, predictive analytics, and business intelligence dashboards. Their clients include top players in finance, healthcare, and e-commerce.",
-    roleDescription: "Join the Data Science team to work on real-world machine learning projects including recommendation engines, natural language processing pipelines, and predictive models. You will clean, analyze, and visualize large datasets while collaborating with domain experts to deliver actionable insights.",
-    requirements: [
-      "Pursuing B.E./B.Tech in CSE, IT, AIML, or related discipline",
-      "Strong foundation in statistics and linear algebra",
-      "Experience with Python (NumPy, Pandas, Scikit-learn)",
-      "Basic understanding of machine learning algorithms",
-      "Familiarity with data visualization tools (Matplotlib, Seaborn, or Tableau)"
-    ],
-    perks: [
-      "Work from home",
-      "Certificate of completion",
-      "Performance-based bonus",
-      "Letter of recommendation",
-      "Exposure to real datasets",
-      "Publication opportunity"
-    ],
-    skills: ["Python", "TensorFlow", "Pandas", "SQL", "Tableau", "NLP"]
-  },
-  {
-    id: 3,
-    title: "Electronics Design Intern",
-    company: "ELECTROSYS SOLUTIONS",
-    location: "Pune",
-    stipend: "₹ 12,000 - 18,000 /month",
-    type: "Internship",
-    duration: "4 Months",
-    deadline: "May 10, 2026",
-    aboutCompany: "ElectroSys Solutions is a premier electronics design house focused on IoT devices, embedded systems, and PCB prototyping. They partner with major automotive and consumer electronics companies to develop next-generation hardware products. Their R&D lab in Pune houses state-of-the-art testing equipment.",
-    roleDescription: "Work alongside hardware engineers on the design, simulation, and prototyping of embedded systems and IoT devices. You'll gain experience with PCB design, microcontroller programming, and hardware debugging. The role includes hands-on lab work with oscilloscopes, logic analyzers, and soldering stations.",
-    requirements: [
-      "Currently pursuing B.E./B.Tech in ENTC, Electrical, or related field",
-      "Knowledge of analog and digital circuit design",
-      "Familiarity with microcontrollers (Arduino, ESP32, or STM32)",
-      "Basic understanding of PCB design tools (KiCad or Eagle)",
-      "Ability to read and interpret datasheets and schematics"
-    ],
-    perks: [
-      "Hands-on lab access",
-      "Certificate of completion",
-      "Letter of recommendation",
-      "Travel allowance",
-      "Project ownership",
-      "PPO for top performers"
-    ],
-    skills: ["Embedded C", "Arduino", "PCB Design", "MATLAB", "IoT", "Verilog"]
-  }
-];
+import { supabase } from '../../services/supabaseClient';
 
 const CATEGORIES = ["All", "Software", "Web Development", "Data Science", "Hardware", "UI/UX Design", "Marketing"];
 
@@ -69,6 +11,28 @@ const Dashboard = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedInternship, setSelectedInternship] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [internships, setInternships] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchInternships = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('internships')
+        .select('*')
+        .eq('status', 'Active')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching internships:', error);
+      } else {
+        setInternships(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchInternships();
+  }, []);
 
   const handleViewDetails = (internship) => {
     setSelectedInternship(internship);
@@ -80,13 +44,13 @@ const Dashboard = () => {
     setTimeout(() => setSelectedInternship(null), 350);
   };
 
-  const filteredInternships = INTERNSHIPS.filter(job => {
+  const filteredInternships = internships.filter(job => {
     const matchesFilter = activeFilter === "All" || 
                          job.title.toLowerCase().includes(activeFilter.toLowerCase()) || 
-                         job.skills.some(s => s.toLowerCase().includes(activeFilter.toLowerCase()));
+                         (job.skills && job.skills.some(s => s.toLowerCase().includes(activeFilter.toLowerCase())));
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         job.skills.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()));
+                         (job.skills && job.skills.some(s => s.toLowerCase().includes(searchQuery.toLowerCase())));
     return matchesFilter && matchesSearch;
   });
 

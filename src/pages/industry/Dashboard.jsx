@@ -1,21 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Users, UserCheck, TrendingUp } from 'lucide-react';
+import { supabase } from '../../services/supabaseClient';
 
 const IndustryDashboard = () => {
-  const stats = [
-    { label: 'My Active Listings', value: '4', icon: GraduationCap, color: 'bg-mistral-orange text-white' },
-    { label: 'Total Applicants', value: '48', icon: Users, color: 'bg-mistral-orange text-white' },
-    { label: 'Shortlisted', value: '12', icon: UserCheck, color: 'bg-mistral-orange text-white' },
-    { label: 'Positions Filled', value: '3', icon: TrendingUp, color: 'bg-mistral-orange text-white' },
-  ];
+  const [stats, setStats] = useState([
+    { label: 'My Active Listings', value: '0', icon: GraduationCap, color: 'bg-mistral-orange text-white' },
+    { label: 'Total Applicants', value: '0', icon: Users, color: 'bg-mistral-orange text-white' },
+    { label: 'Shortlisted', value: '0', icon: UserCheck, color: 'bg-mistral-orange text-white' },
+    { label: 'Positions Filled', value: '0', icon: TrendingUp, color: 'bg-mistral-orange text-white' },
+  ]);
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const recentActivity = [
-    { id: 1, action: 'New Application Received', details: 'John Doe applied for Full Stack Developer', time: '2 hours ago' },
-    { id: 2, action: 'Applicant Shortlisted', details: 'Alice Williams shortlisted for Data Scientist', time: '4 hours ago' },
-    { id: 3, action: 'Internship Listing Updated', details: 'Cloud Engineer role requirements updated', time: 'Yesterday' },
-    { id: 4, action: 'New Internship Posted', details: 'ML Engineer role is now live on portal', time: '2 days ago' },
-  ];
+  useEffect(() => {
+    const fetchStats = async () => {
+      setLoading(true);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        // Fetch user's internships
+        const { data: myInternships, error: intError } = await supabase
+          .from('internships')
+          .select('id, status')
+          .eq('created_by', user.id);
+
+        if (intError) throw intError;
+
+        const activeCount = myInternships.filter(i => i.status === 'Active').length;
+        const myInternshipIds = myInternships.map(i => i.id);
+
+        // Fetch applicants for these internships
+        const { data: applicants, error: appError } = await supabase
+          .from('applications')
+          .select('status')
+          .in('internship_id', myInternshipIds);
+
+        if (appError) throw appError;
+
+        const totalApplicants = applicants.length;
+        const shortlisted = applicants.filter(a => a.status === 'Shortlisted').length;
+        const filled = applicants.filter(a => a.status === 'Accepted').length;
+
+        setStats([
+          { label: 'My Active Listings', value: activeCount.toString(), icon: GraduationCap, color: 'bg-mistral-orange text-white' },
+          { label: 'Total Applicants', value: totalApplicants.toString(), icon: Users, color: 'bg-mistral-orange text-white' },
+          { label: 'Shortlisted', value: shortlisted.toString(), icon: UserCheck, color: 'bg-mistral-orange text-white' },
+          { label: 'Positions Filled', value: filled.toString(), icon: TrendingUp, color: 'bg-mistral-orange text-white' },
+        ]);
+
+        // Mock activity for now until we have an activity log table
+        setRecentActivity([
+          { id: 1, action: 'Dashboard Updated', details: 'Real-time stats are now live.', time: 'Just now' },
+        ]);
+
+      } catch (error) {
+        console.error('Error fetching industry stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="space-y-8">

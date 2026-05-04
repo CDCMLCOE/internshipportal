@@ -1,11 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '../services/supabaseClient';
 
 const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = true, showDeadline = true }) => {
+  const [isApplying, setIsApplying] = useState(false);
+  const [applySuccess, setApplySuccess] = useState(false);
+
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      setApplySuccess(false);
     } else {
       document.body.style.overflow = '';
     }
@@ -18,6 +24,37 @@ const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = 
     if (isOpen) window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isOpen, onClose]);
+
+  const handleApply = async () => {
+    setIsApplying(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not logged in');
+
+      const { error } = await supabase
+        .from('applications')
+        .insert([{
+          internship_id: internship.id,
+          student_id: user.id,
+          status: 'Pending Review'
+        }]);
+
+      if (error) {
+        if (error.code === '23505') {
+          alert('You have already applied for this internship!');
+        } else {
+          throw error;
+        }
+      } else {
+        setApplySuccess(true);
+      }
+    } catch (error) {
+      console.error('Apply error:', error);
+      alert('Failed to apply. Please try again.');
+    } finally {
+      setIsApplying(false);
+    }
+  };
 
   if (!internship) return null;
 
@@ -108,7 +145,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = 
               <div className="mb-8">
                 <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-mistral-black/40 mb-3">About the Company</h3>
                 <p className="text-sm leading-relaxed text-mistral-black/70 font-sans max-w-prose">
-                  {internship.aboutCompany}
+                  {internship.about_company}
                 </p>
               </div>
 
@@ -116,7 +153,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = 
               <div className="mb-8">
                 <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-mistral-black/40 mb-3">Role Description</h3>
                 <p className="text-sm leading-relaxed text-mistral-black/70 font-sans max-w-prose">
-                  {internship.roleDescription}
+                  {internship.role_description}
                 </p>
               </div>
 
@@ -172,13 +209,31 @@ const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = 
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 {showApplyButton && (
                   <button
-                    onClick={() => { /* TODO: Handle apply logic */ }}
-                    className="w-full sm:flex-1 bg-mistral-black text-white py-4 uppercase tracking-[0.2em] font-semibold text-sm hover:bg-mistral-orange transition-colors duration-300 flex items-center justify-center gap-3 group"
+                    onClick={handleApply}
+                    disabled={isApplying || applySuccess}
+                    className={`w-full sm:flex-1 py-4 uppercase tracking-[0.2em] font-semibold text-sm transition-colors duration-300 flex items-center justify-center gap-3 group ${
+                      applySuccess 
+                        ? 'bg-green-600 text-white cursor-default' 
+                        : 'bg-mistral-black text-white hover:bg-mistral-orange'
+                    }`}
                   >
-                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Apply Now
+                    {isApplying ? (
+                      <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>
+                    ) : applySuccess ? (
+                      <>
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Applied Successfully
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Apply Now
+                      </>
+                    )}
                   </button>
                 )}
                 <button

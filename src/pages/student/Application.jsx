@@ -1,69 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import InternshipDetailModal from '../../components/InternshipDetailModal';
+import { supabase } from '../../services/supabaseClient';
 
 const Application = () => {
   const [selectedInternship, setSelectedInternship] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const applications = [
-    {
-      id: 1,
-      title: 'Frontend Developer Intern',
-      company: 'TechCorp Solutions',
-      location: 'Bangalore / Remote',
-      stipend: '₹ 15,000 /month',
-      type: 'Full-time',
-      duration: '6 Months',
-      date: 'Oct 24, 2023',
-      status: 'Pending Review',
-      statusClass: 'bg-brand-yellow/30 text-mistral-black',
-      aboutCompany: "TechCorp Solutions is a leading software development company specializing in modern web and mobile applications for global clients. We pride ourselves on innovation and quality engineering.",
-      roleDescription: "We are looking for a Frontend Developer Intern who is passionate about building beautiful, responsive, and functional user interfaces using React.js. You will work closely with our design and engineering teams.",
-      requirements: [
-        "Proficiency in React.js and modern JavaScript (ES6+)",
-        "Strong understanding of CSS and Tailwind CSS",
-        "Experience with animation libraries like Framer Motion is a plus",
-        "Good communication and teamwork skills"
-      ],
-      perks: [
-        "Certificate of Completion",
-        "Letter of Recommendation",
-        "Flexible working hours",
-        "Exposure to real-world projects"
-      ],
-      skills: ["React", "JavaScript", "Tailwind", "Framer Motion", "CSS"],
-      deadline: "Oct 30, 2023"
-    },
-    {
-      id: 2,
-      title: 'Data Science Intern',
-      company: 'InnovateX',
-      location: 'Hyderabad',
-      stipend: '₹ 25,000 /month',
-      type: 'Part-time',
-      duration: '3 Months',
-      date: 'Sep 15, 2023',
-      status: 'Rejected',
-      statusClass: 'bg-red-100 text-red-700',
-      aboutCompany: "InnovateX is at the forefront of AI and Data Science innovation, helping businesses leverage their data to make informed decisions through advanced analytics and machine learning.",
-      roleDescription: "Join our data science team to help build predictive models and analyze complex datasets. You will be responsible for data cleaning, visualization, and implementing basic machine learning algorithms.",
-      requirements: [
-        "Strong knowledge of Python and SQL",
-        "Experience with data libraries like Pandas, NumPy, and Scikit-learn",
-        "Good understanding of statistical modeling",
-        "Ability to present findings clearly"
-      ],
-      perks: [
-        "Certificate of Completion",
-        "Potential PPO (Pre-Placement Offer)",
-        "One-on-one Mentorship",
-        "Modern office environment"
-      ],
-      skills: ["Python", "SQL", "Pandas", "Machine Learning", "Statistics"],
-      deadline: "Sep 20, 2023"
-    },
-  ];
+  useEffect(() => {
+    const fetchApplications = async () => {
+      setLoading(true);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data, error } = await supabase
+          .from('applications')
+          .select(`
+            *,
+            internships!internship_id (*)
+          `)
+          .eq('student_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        
+        // Transform data for UI
+        const formatted = (data || []).map(app => ({
+          ...app.internships,
+          date: new Date(app.created_at).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          }),
+          status: app.status,
+          statusClass: getStatusClass(app.status),
+          application_id: app.id
+        }));
+
+        setApplications(formatted);
+      } catch (error) {
+        console.error('Error fetching applications:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchApplications();
+  }, []);
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'Pending Review': return 'bg-brand-yellow/30 text-mistral-black';
+      case 'Shortlisted': return 'bg-emerald-100 text-emerald-700';
+      case 'Rejected': return 'bg-red-100 text-red-700';
+      default: return 'bg-mistral-black/5 text-mistral-black/60';
+    }
+  };
 
   const handleViewDetails = (app) => {
     setSelectedInternship(app);

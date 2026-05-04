@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { supabase } from '../../services/supabaseClient';
 
 const UserManagement = () => {
-  const users = [
-    { id: 1, name: 'Main Superadmin', email: 'superadmin@mlcoe.in', role: 'Super Admin', status: 'Active' },
-    { id: 4, name: 'System Admin', email: 'sysadmin@mlcoe.in', role: 'Super Admin', status: 'Active' },
-  ];
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .order('name', { ascending: true });
+
+        if (error) throw error;
+        setUsers(data || []);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <div className="space-y-10">
