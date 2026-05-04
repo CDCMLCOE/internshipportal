@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import StudentProfileReviewModal from '../../components/StudentProfileReviewModal';
 
 const IndustryApplicants = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('All');
   const [isBranchSubMenuOpen, setIsBranchSubMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const applicants = [
     { id: 1, name: 'John Doe', role: 'Full Stack Developer', college: 'MES Pune', gpa: '3.8', status: 'Pending', branch: 'Computer Engineering' },
@@ -35,6 +38,20 @@ const IndustryApplicants = () => {
       case 'Shortlisted': return 'bg-mistral-orange/10 text-mistral-orange font-bold';
       case 'Rejected': return 'bg-red-50 text-red-600 font-bold';
       default: return 'bg-mistral-black/5 text-mistral-black';
+    }
+  };
+
+  const handleNext = () => {
+    const currentIndex = filteredApplicants.findIndex(app => app.id === selectedStudent?.id);
+    if (currentIndex < filteredApplicants.length - 1) {
+      setSelectedStudent(filteredApplicants[currentIndex + 1]);
+    }
+  };
+
+  const handlePrev = () => {
+    const currentIndex = filteredApplicants.findIndex(app => app.id === selectedStudent?.id);
+    if (currentIndex > 0) {
+      setSelectedStudent(filteredApplicants[currentIndex - 1]);
     }
   };
 
@@ -142,7 +159,13 @@ const IndustryApplicants = () => {
                   {applicant.status}
                 </span>
                 <div className="flex-grow md:flex-grow-0 flex gap-2">
-                  <button className="flex-1 md:flex-none px-4 py-2 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors">
+                  <button 
+                    onClick={() => {
+                      setSelectedStudent(applicant);
+                      setIsProfileModalOpen(true);
+                    }}
+                    className="flex-1 md:flex-none px-4 py-2 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors"
+                  >
                     Review Profile
                   </button>
                 </div>
@@ -155,6 +178,14 @@ const IndustryApplicants = () => {
           </div>
         )}
       </div>
+
+      <StudentProfileReviewModal 
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        student={selectedStudent}
+        onNext={filteredApplicants.findIndex(app => app.id === selectedStudent?.id) < filteredApplicants.length - 1 ? handleNext : null}
+        onPrev={filteredApplicants.findIndex(app => app.id === selectedStudent?.id) > 0 ? handlePrev : null}
+      />
     </div>
   );
 };

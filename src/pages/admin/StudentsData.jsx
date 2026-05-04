@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import StudentProfileReviewModal from '../../components/StudentProfileReviewModal';
 
 const StudentsData = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isBranchSubMenuOpen, setIsBranchSubMenuOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const students = [
     { id: 1, name: 'John Doe', role: 'Full Stack Developer', college: 'MES Pune', gpa: '3.8', branch: 'Computer Engineering' },
@@ -24,6 +27,20 @@ const StudentsData = () => {
                           student.branch.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
+
+  const handleNext = () => {
+    const currentIndex = filteredStudents.findIndex(s => s.id === selectedStudent?.id);
+    if (currentIndex < filteredStudents.length - 1) {
+      setSelectedStudent(filteredStudents[currentIndex + 1]);
+    }
+  };
+
+  const handlePrev = () => {
+    const currentIndex = filteredStudents.findIndex(s => s.id === selectedStudent?.id);
+    if (currentIndex > 0) {
+      setSelectedStudent(filteredStudents[currentIndex - 1]);
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -159,13 +176,14 @@ const StudentsData = () => {
 
               <div className="flex items-center gap-4 w-full md:w-auto">
                 <div className="flex-grow md:flex-grow-0 flex gap-2">
-                  <button className="flex-1 md:flex-none px-4 py-2 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors">
+                  <button 
+                    onClick={() => {
+                      setSelectedStudent(student);
+                      setIsProfileModalOpen(true);
+                    }}
+                    className="flex-1 md:flex-none px-4 py-2 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors"
+                  >
                     View Profile
-                  </button>
-                  <button className="p-2 border border-mistral-black/10 hover:bg-brand-yellow transition-colors">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                    </svg>
                   </button>
                 </div>
               </div>
@@ -177,6 +195,14 @@ const StudentsData = () => {
           </div>
         )}
       </div>
+
+      <StudentProfileReviewModal 
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        student={selectedStudent}
+        onNext={filteredStudents.findIndex(s => s.id === selectedStudent?.id) < filteredStudents.length - 1 ? handleNext : null}
+        onPrev={filteredStudents.findIndex(s => s.id === selectedStudent?.id) > 0 ? handlePrev : null}
+      />
     </div>
   );
 };

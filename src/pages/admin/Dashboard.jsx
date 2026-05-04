@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { GraduationCap, Users, UserCheck, TrendingUp } from 'lucide-react';
 
 const AdminDashboard = () => {
   const stats = [
-    { label: 'Total Internships', value: '12', icon: '💼', color: 'bg-brand-yellow' },
-    { label: 'Active Applicants', value: '48', icon: '👥', color: 'bg-mistral-orange' },
-    { label: 'Verified Students', value: '156', icon: '✅', color: 'bg-mistral-black' },
-    { label: 'New This Week', value: '5', icon: '📈', color: 'bg-brand-cream' },
+    { label: 'Total Internships', value: '12', icon: GraduationCap, color: 'bg-mistral-orange text-white' },
+    { label: 'Active Applicants', value: '48', icon: Users, color: 'bg-mistral-orange text-white' },
+    { label: 'Verified Students', value: '156', icon: UserCheck, color: 'bg-mistral-orange text-white' },
+    { label: 'New This Week', value: '5', icon: TrendingUp, color: 'bg-mistral-orange text-white' },
   ];
 
   const recentActivity = [
@@ -34,8 +35,8 @@ const AdminDashboard = () => {
             transition={{ delay: index * 0.1 }}
             className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm flex items-center gap-4 group hover:border-mistral-orange transition-all duration-300"
           >
-            <div className={`w-12 h-12 ${stat.color} flex items-center justify-center text-2xl border border-mistral-black/10 shadow-inner`}>
-              {stat.icon}
+            <div className={`w-12 h-12 ${stat.color} flex items-center justify-center border border-mistral-black/5 shadow-inner`}>
+              <stat.icon size={20} strokeWidth={2.5} />
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-widest font-bold text-mistral-black/40">{stat.label}</p>

@@ -91,9 +91,10 @@ const Footer = () => {
       {/* Bottom Bar */}
       <div className="max-w-7xl mx-auto pt-8 md:pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4 text-[11px] md:text-[12px] text-brand-ivory/40 uppercase tracking-widest font-medium text-center">
         <p>© {new Date().getFullYear()} Maharashtra Education Society. All rights reserved.</p>
-        <div className="flex gap-8">
+        <div className="flex gap-12">
           <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
           <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+          <Link to="/terms-partnership" className="hover:text-white transition-colors">Terms of Partnership</Link>
         </div>
       </div>
     </footer>

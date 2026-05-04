@@ -86,12 +86,6 @@ const IndustrialLayout = () => {
           <h1 className="font-heading font-semibold text-xl md:text-2xl uppercase tracking-tight text-mistral-black">
             {company ? `${company} — Industry Portal` : 'Industry Management Control'}
           </h1>
-          <div className="flex items-center gap-3">
-            {company && <span className="text-[10px] font-bold uppercase tracking-widest text-mistral-orange hidden md:block">{company}</span>}
-            <div className="w-10 h-10 bg-brand-yellow rounded-full border border-mistral-black/20 flex items-center justify-center font-bold text-mistral-black text-sm uppercase shrink-0 shadow-sm">
-              {initials}
-            </div>
-          </div>
         </header>
 
         {/* Scrollable Page Content */}

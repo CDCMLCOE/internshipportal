@@ -370,7 +370,12 @@ const IndustryRegister = () => {
                       <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path></svg>
                     </div>
                     <div>
-                      <span className="text-sm font-bold text-mistral-black uppercase tracking-wide">Terms of Partnership <span className="text-red-500 font-bold">*</span></span>
+                      <span className="text-sm font-bold text-mistral-black uppercase tracking-wide">
+                        <Link to="/terms-partnership" target="_blank" className="hover:text-mistral-orange underline underline-offset-4 decoration-mistral-orange/30 hover:decoration-mistral-orange transition-all">
+                          Terms of Partnership
+                        </Link>
+                        <span className="text-red-500 font-bold ml-1">*</span>
+                      </span>
                       <p className="text-xs text-mistral-black/60 mt-1 leading-relaxed">
                         I agree to the college's placement policies and confirm that I am an authorized representative of this company legally capable of registering for this partnership program.
                       </p>
