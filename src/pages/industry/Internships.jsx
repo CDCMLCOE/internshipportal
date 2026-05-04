@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../../auth/AuthContext';
+import { addPendingApproval } from '../../services/pendingApprovals';
 
 // All internships across companies (simulates a shared DB)
 const ALL_INTERNSHIPS = [
@@ -17,7 +19,8 @@ const statuses = ['Active', 'Closed'];
 const BLANK_FORM = { title: '', location: '', category: 'Software', status: 'Active' };
 
 const IndustryInternships = () => {
-  const myCompany = localStorage.getItem('industryCompany') || 'Google';
+  const { user } = useAuth();
+  const myCompany = user?.company || '';
 
   const [internships, setInternships] = useState(
     ALL_INTERNSHIPS.filter(j => j.company === myCompany)
@@ -56,13 +59,7 @@ const IndustryInternships = () => {
       // Update local state for immediate feedback (optional, or just wait for approval)
       setInternships(prev => [...prev, newJob]);
 
-      // Notify Admin via localStorage
-      const pending = JSON.parse(localStorage.getItem('pendingInternships') || '[]');
-      pending.push(newJob);
-      localStorage.setItem('pendingApprovals', JSON.stringify(pending));
-      
-      // Trigger custom event for AdminLayout to listen to if on same domain
-      window.dispatchEvent(new Event('newPendingInternship'));
+      addPendingApproval(newJob);
     }
     closeModal();
   };

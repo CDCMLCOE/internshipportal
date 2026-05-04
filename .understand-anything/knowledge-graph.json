@@ -2,45 +2,89 @@
   "version": "1.0.0",
   "project": {
     "name": "portal",
+    "description": "ML CoE Internship Portal built with React, Vite, Tailwind CSS, and role-based portal sections.",
     "languages": [
       "javascript",
       "css",
-      "html"
+      "html",
+      "json",
+      "markdown"
     ],
     "frameworks": [
       "react",
       "vite",
-      "tailwindcss"
+      "tailwindcss",
+      "react-router-dom",
+      "framer-motion"
     ],
-    "description": "ML CoE Internship Portal",
-    "analyzedAt": "2026-04-29T10:00:52.902Z",
-    "gitCommitHash": "d972221117c29b30829c04e5afb6d34a5dc339ea"
+    "analyzedAt": "2026-05-03T09:42:22.281Z",
+    "gitCommitHash": "5c7e72d10578ec07ba29adc51344e672e45d5620"
   },
   "nodes": [
     {
-      "id": "file:src/main.jsx",
-      "type": "file",
-      "name": "main.jsx",
-      "filePath": "src/main.jsx",
-      "summary": "Application entry point — mounts the React app into the DOM and wraps it with BrowserRouter.",
+      "id": "file:CHANGES_LOG.md",
+      "type": "document",
+      "name": "CHANGES_LOG.md",
+      "filePath": "CHANGES_LOG.md",
+      "summary": "Project change log describing recent portal design and functionality updates.",
       "complexity": "simple",
       "tags": [
-        "entry-point",
-        "react",
-        "jsx"
+        "md"
       ]
     },
     {
-      "id": "file:src/App.jsx",
-      "type": "file",
-      "name": "App.jsx",
-      "filePath": "src/App.jsx",
-      "summary": "Root component defining all client-side routes using react-router-dom for admin, student, and public sections.",
-      "complexity": "complex",
+      "id": "file:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Project README with setup notes from the Vite React template.",
+      "complexity": "simple",
       "tags": [
-        "routing",
-        "react",
-        "jsx"
+        "md"
+      ]
+    },
+    {
+      "id": "file:eslint.config.js",
+      "type": "config",
+      "name": "eslint.config.js",
+      "filePath": "eslint.config.js",
+      "summary": "eslint.config.js configuration for the frontend toolchain.",
+      "complexity": "simple",
+      "tags": [
+        "js"
+      ]
+    },
+    {
+      "id": "file:index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "index.html",
+      "summary": "Vite HTML shell that hosts the React root element.",
+      "complexity": "simple",
+      "tags": [
+        "html"
+      ]
+    },
+    {
+      "id": "file:package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "package.json",
+      "summary": "Project manifest with Vite scripts and React portal dependencies.",
+      "complexity": "simple",
+      "tags": [
+        "json"
+      ]
+    },
+    {
+      "id": "file:postcss.config.js",
+      "type": "config",
+      "name": "postcss.config.js",
+      "filePath": "postcss.config.js",
+      "summary": "postcss.config.js configuration for the frontend toolchain.",
+      "complexity": "simple",
+      "tags": [
+        "js"
       ]
     },
     {
@@ -48,248 +92,34 @@
       "type": "file",
       "name": "App.css",
       "filePath": "src/App.css",
-      "summary": "Component-level CSS styles for the App root component.",
-      "complexity": "simple",
+      "summary": "App-level stylesheet for root component presentation.",
+      "complexity": "moderate",
       "tags": [
-        "styles",
         "css"
       ]
     },
     {
-      "id": "file:src/index.css",
+      "id": "file:src/App.jsx",
       "type": "file",
-      "name": "index.css",
-      "filePath": "src/index.css",
-      "summary": "Global CSS styles and Tailwind CSS base directives applied to the entire application.",
+      "name": "App.jsx",
+      "filePath": "src/App.jsx",
+      "summary": "Root React component defining public, student, admin, and industry routes.",
+      "complexity": "moderate",
+      "tags": [
+        "routing",
+        "react",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/components/CustomDropdown.jsx",
+      "type": "file",
+      "name": "CustomDropdown.jsx",
+      "filePath": "src/components/CustomDropdown.jsx",
+      "summary": "CustomDropdown reusable UI component used by portal pages or layouts.",
       "complexity": "simple",
       "tags": [
-        "styles",
-        "css",
-        "tailwind"
-      ]
-    },
-    {
-      "id": "file:src/layouts/AdminLayout.jsx",
-      "type": "file",
-      "name": "AdminLayout.jsx",
-      "filePath": "src/layouts/AdminLayout.jsx",
-      "summary": "Layout wrapper for admin pages — includes admin-specific navigation sidebar and header.",
-      "complexity": "moderate",
-      "tags": [
-        "layout",
-        "admin",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/layouts/StudentLayout.jsx",
-      "type": "file",
-      "name": "StudentLayout.jsx",
-      "filePath": "src/layouts/StudentLayout.jsx",
-      "summary": "Layout wrapper for student pages — includes student navigation and shared page structure.",
-      "complexity": "moderate",
-      "tags": [
-        "layout",
-        "student",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/Home.jsx",
-      "type": "file",
-      "name": "Home.jsx",
-      "filePath": "src/pages/Home.jsx",
-      "summary": "Public landing page showcasing the internship portal with hero section and featured internships.",
-      "complexity": "moderate",
-      "tags": [
-        "page",
-        "public",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/About.jsx",
-      "type": "file",
-      "name": "About.jsx",
-      "filePath": "src/pages/About.jsx",
-      "summary": "Public About page describing the ML CoE internship program.",
-      "complexity": "simple",
-      "tags": [
-        "page",
-        "public",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/Help.jsx",
-      "type": "file",
-      "name": "Help.jsx",
-      "filePath": "src/pages/Help.jsx",
-      "summary": "Public Help & FAQ page with guidance for applicants.",
-      "complexity": "simple",
-      "tags": [
-        "page",
-        "public",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/LegalPrivacy.jsx",
-      "type": "file",
-      "name": "LegalPrivacy.jsx",
-      "filePath": "src/pages/LegalPrivacy.jsx",
-      "summary": "Privacy policy page with legal information about data usage.",
-      "complexity": "simple",
-      "tags": [
-        "page",
-        "legal",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/LegalTerms.jsx",
-      "type": "file",
-      "name": "LegalTerms.jsx",
-      "filePath": "src/pages/LegalTerms.jsx",
-      "summary": "Terms of service page with usage conditions for the portal.",
-      "complexity": "simple",
-      "tags": [
-        "page",
-        "legal",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/PrincipalMessage.jsx",
-      "type": "file",
-      "name": "PrincipalMessage.jsx",
-      "filePath": "src/pages/PrincipalMessage.jsx",
-      "summary": "Public page displaying the principal's welcome message with photo.",
-      "complexity": "simple",
-      "tags": [
-        "page",
-        "public",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/admin/Applicants.jsx",
-      "type": "file",
-      "name": "Applicants.jsx",
-      "filePath": "src/pages/admin/Applicants.jsx",
-      "summary": "Admin page for viewing and managing internship applicants.",
-      "complexity": "moderate",
-      "tags": [
-        "page",
-        "admin",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/admin/Dashboard.jsx",
-      "type": "file",
-      "name": "Dashboard.jsx",
-      "filePath": "src/pages/admin/Dashboard.jsx",
-      "summary": "Admin dashboard with overview statistics, recent applicants, and quick actions.",
-      "complexity": "complex",
-      "tags": [
-        "page",
-        "admin",
-        "dashboard",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/admin/InternshipAccess.jsx",
-      "type": "file",
-      "name": "InternshipAccess.jsx",
-      "filePath": "src/pages/admin/InternshipAccess.jsx",
-      "summary": "Admin page for controlling student access to specific internship listings.",
-      "complexity": "moderate",
-      "tags": [
-        "page",
-        "admin",
-        "access-control",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/admin/Internships.jsx",
-      "type": "file",
-      "name": "Internships.jsx",
-      "filePath": "src/pages/admin/Internships.jsx",
-      "summary": "Admin page for creating, editing, and managing internship listings.",
-      "complexity": "moderate",
-      "tags": [
-        "page",
-        "admin",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/admin/StudentsData.jsx",
-      "type": "file",
-      "name": "StudentsData.jsx",
-      "filePath": "src/pages/admin/StudentsData.jsx",
-      "summary": "Admin page for viewing and exporting student data and profiles.",
-      "complexity": "moderate",
-      "tags": [
-        "page",
-        "admin",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/admin/Users.jsx",
-      "type": "file",
-      "name": "Users.jsx",
-      "filePath": "src/pages/admin/Users.jsx",
-      "summary": "Admin page for managing portal users and their roles/permissions.",
-      "complexity": "moderate",
-      "tags": [
-        "page",
-        "admin",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/student/Application.jsx",
-      "type": "file",
-      "name": "Application.jsx",
-      "filePath": "src/pages/student/Application.jsx",
-      "summary": "Student page for submitting and tracking internship applications.",
-      "complexity": "complex",
-      "tags": [
-        "page",
-        "student",
-        "form",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/student/Dashboard.jsx",
-      "type": "file",
-      "name": "Dashboard.jsx",
-      "filePath": "src/pages/student/Dashboard.jsx",
-      "summary": "Student dashboard showing available internships, application statuses, and notifications.",
-      "complexity": "complex",
-      "tags": [
-        "page",
-        "student",
-        "dashboard",
-        "jsx"
-      ]
-    },
-    {
-      "id": "file:src/pages/student/Profile.jsx",
-      "type": "file",
-      "name": "Profile.jsx",
-      "filePath": "src/pages/student/Profile.jsx",
-      "summary": "Student profile page for managing personal info, resume, and academic details.",
-      "complexity": "moderate",
-      "tags": [
-        "page",
-        "student",
+        "component",
         "jsx"
       ]
     },
@@ -298,11 +128,10 @@
       "type": "file",
       "name": "Footer.jsx",
       "filePath": "src/components/Footer.jsx",
-      "summary": "Shared footer component with site links, social media icons, and legal page links.",
+      "summary": "Footer reusable UI component used by portal pages or layouts.",
       "complexity": "simple",
       "tags": [
         "component",
-        "shared",
         "jsx"
       ]
     },
@@ -311,11 +140,10 @@
       "type": "file",
       "name": "InternshipDetailModal.jsx",
       "filePath": "src/components/InternshipDetailModal.jsx",
-      "summary": "Modal component displaying full internship details with apply action.",
+      "summary": "InternshipDetailModal reusable UI component used by portal pages or layouts.",
       "complexity": "moderate",
       "tags": [
         "component",
-        "modal",
         "jsx"
       ]
     },
@@ -324,12 +152,10 @@
       "type": "file",
       "name": "LoginModal.jsx",
       "filePath": "src/components/LoginModal.jsx",
-      "summary": "Authentication modal for user login with role-based redirect after success.",
-      "complexity": "moderate",
+      "summary": "LoginModal reusable UI component used by portal pages or layouts.",
+      "complexity": "simple",
       "tags": [
         "component",
-        "auth",
-        "modal",
         "jsx"
       ]
     },
@@ -338,89 +164,214 @@
       "type": "file",
       "name": "Navbar.jsx",
       "filePath": "src/components/Navbar.jsx",
-      "summary": "Top navigation bar with portal logo, nav links, and login trigger. Responsive across breakpoints.",
+      "summary": "Navbar reusable UI component used by portal pages or layouts.",
       "complexity": "moderate",
       "tags": [
         "component",
-        "navigation",
         "jsx"
       ]
     },
     {
-      "id": "file:package.json",
-      "type": "config",
-      "name": "package.json",
-      "filePath": "package.json",
-      "summary": "NPM package manifest defining project dependencies including React 19, Vite 8, Tailwind, framer-motion, and react-router-dom.",
-      "complexity": "simple",
-      "tags": [
-        "config",
-        "npm",
-        "dependencies"
-      ]
-    },
-    {
-      "id": "file:vite.config.js",
-      "type": "config",
-      "name": "vite.config.js",
-      "filePath": "vite.config.js",
-      "summary": "Vite build configuration using the React plugin for fast HMR and optimized builds.",
-      "complexity": "simple",
-      "tags": [
-        "config",
-        "vite",
-        "build"
-      ]
-    },
-    {
-      "id": "file:tailwind.config.js",
-      "type": "config",
-      "name": "tailwind.config.js",
-      "filePath": "tailwind.config.js",
-      "summary": "Tailwind CSS configuration defining content paths and any custom theme extensions.",
-      "complexity": "simple",
-      "tags": [
-        "config",
-        "tailwind",
-        "styles"
-      ]
-    },
-    {
-      "id": "file:postcss.config.js",
-      "type": "config",
-      "name": "postcss.config.js",
-      "filePath": "postcss.config.js",
-      "summary": "PostCSS configuration enabling Tailwind CSS and Autoprefixer plugins.",
-      "complexity": "simple",
-      "tags": [
-        "config",
-        "postcss",
-        "styles"
-      ]
-    },
-    {
-      "id": "file:index.html",
+      "id": "file:src/index.css",
       "type": "file",
-      "name": "index.html",
-      "filePath": "index.html",
-      "summary": "HTML entry shell with custom favicon, viewport meta tags, and the root div for React to mount into.",
+      "name": "index.css",
+      "filePath": "src/index.css",
+      "summary": "Global stylesheet and Tailwind layer definitions for the application.",
       "complexity": "simple",
       "tags": [
-        "html",
-        "entry",
-        "markup"
+        "css"
       ]
     },
     {
-      "id": "file:README.md",
-      "type": "document",
-      "name": "README.md",
-      "filePath": "README.md",
-      "summary": "Project readme with setup instructions and Vite/React plugin references.",
+      "id": "file:src/layouts/AdminLayout.jsx",
+      "type": "file",
+      "name": "AdminLayout.jsx",
+      "filePath": "src/layouts/AdminLayout.jsx",
+      "summary": "AdminLayout layout wrapper providing section navigation and shared page structure.",
+      "complexity": "moderate",
+      "tags": [
+        "layout",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/layouts/IndustrialLayout.jsx",
+      "type": "file",
+      "name": "IndustrialLayout.jsx",
+      "filePath": "src/layouts/IndustrialLayout.jsx",
+      "summary": "IndustrialLayout layout wrapper providing section navigation and shared page structure.",
       "complexity": "simple",
       "tags": [
-        "documentation",
-        "readme"
+        "layout",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/layouts/StudentLayout.jsx",
+      "type": "file",
+      "name": "StudentLayout.jsx",
+      "filePath": "src/layouts/StudentLayout.jsx",
+      "summary": "StudentLayout layout wrapper providing section navigation and shared page structure.",
+      "complexity": "moderate",
+      "tags": [
+        "layout",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/main.jsx",
+      "type": "file",
+      "name": "main.jsx",
+      "filePath": "src/main.jsx",
+      "summary": "Application entry point that mounts the React app and loads global styles.",
+      "complexity": "simple",
+      "tags": [
+        "entry-point",
+        "react",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/About.jsx",
+      "type": "file",
+      "name": "About.jsx",
+      "filePath": "src/pages/About.jsx",
+      "summary": "About public-facing portal page.",
+      "complexity": "simple",
+      "tags": [
+        "public",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/Help.jsx",
+      "type": "file",
+      "name": "Help.jsx",
+      "filePath": "src/pages/Help.jsx",
+      "summary": "Help public-facing portal page.",
+      "complexity": "simple",
+      "tags": [
+        "public",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/Home.jsx",
+      "type": "file",
+      "name": "Home.jsx",
+      "filePath": "src/pages/Home.jsx",
+      "summary": "Home public-facing portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "public",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/LegalPrivacy.jsx",
+      "type": "file",
+      "name": "LegalPrivacy.jsx",
+      "filePath": "src/pages/LegalPrivacy.jsx",
+      "summary": "LegalPrivacy public-facing portal page.",
+      "complexity": "simple",
+      "tags": [
+        "public",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/LegalTerms.jsx",
+      "type": "file",
+      "name": "LegalTerms.jsx",
+      "filePath": "src/pages/LegalTerms.jsx",
+      "summary": "LegalTerms public-facing portal page.",
+      "complexity": "simple",
+      "tags": [
+        "public",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/PrincipalMessage.jsx",
+      "type": "file",
+      "name": "PrincipalMessage.jsx",
+      "filePath": "src/pages/PrincipalMessage.jsx",
+      "summary": "PrincipalMessage public-facing portal page.",
+      "complexity": "simple",
+      "tags": [
+        "public",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/StudentGuidelines.jsx",
+      "type": "file",
+      "name": "StudentGuidelines.jsx",
+      "filePath": "src/pages/StudentGuidelines.jsx",
+      "summary": "StudentGuidelines public-facing portal page.",
+      "complexity": "simple",
+      "tags": [
+        "public",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/admin/Applicants.jsx",
+      "type": "file",
+      "name": "Applicants.jsx",
+      "filePath": "src/pages/admin/Applicants.jsx",
+      "summary": "Applicants admin portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "admin",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/admin/Dashboard.jsx",
+      "type": "file",
+      "name": "Dashboard.jsx",
+      "filePath": "src/pages/admin/Dashboard.jsx",
+      "summary": "Dashboard admin portal page.",
+      "complexity": "simple",
+      "tags": [
+        "admin",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/admin/InternshipAccess.jsx",
+      "type": "file",
+      "name": "InternshipAccess.jsx",
+      "filePath": "src/pages/admin/InternshipAccess.jsx",
+      "summary": "InternshipAccess admin portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "admin",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/admin/Internships.jsx",
+      "type": "file",
+      "name": "Internships.jsx",
+      "filePath": "src/pages/admin/Internships.jsx",
+      "summary": "Internships admin portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "admin",
+        "page",
+        "jsx"
       ]
     },
     {
@@ -428,41 +379,191 @@
       "type": "file",
       "name": "ManageStudents.jsx",
       "filePath": "src/pages/admin/ManageStudents.jsx",
-      "summary": "Admin page to manage students. Allows searching, filtering by branch and task status, and assigning or evaluating tasks using a modal.",
+      "summary": "ManageStudents admin portal page.",
+      "complexity": "complex",
       "tags": [
-        "react",
         "admin",
-        "student-management",
-        "task-assignment"
-      ],
-      "complexity": "moderate"
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/admin/StudentsData.jsx",
+      "type": "file",
+      "name": "StudentsData.jsx",
+      "filePath": "src/pages/admin/StudentsData.jsx",
+      "summary": "StudentsData admin portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "admin",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/admin/Users.jsx",
+      "type": "file",
+      "name": "Users.jsx",
+      "filePath": "src/pages/admin/Users.jsx",
+      "summary": "Users admin portal page.",
+      "complexity": "simple",
+      "tags": [
+        "admin",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/industry/Applicants.jsx",
+      "type": "file",
+      "name": "Applicants.jsx",
+      "filePath": "src/pages/industry/Applicants.jsx",
+      "summary": "Applicants industry portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "industry",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/industry/Dashboard.jsx",
+      "type": "file",
+      "name": "Dashboard.jsx",
+      "filePath": "src/pages/industry/Dashboard.jsx",
+      "summary": "Dashboard industry portal page.",
+      "complexity": "simple",
+      "tags": [
+        "industry",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/industry/Internships.jsx",
+      "type": "file",
+      "name": "Internships.jsx",
+      "filePath": "src/pages/industry/Internships.jsx",
+      "summary": "Internships industry portal page.",
+      "complexity": "complex",
+      "tags": [
+        "industry",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/industry/Login.jsx",
+      "type": "file",
+      "name": "Login.jsx",
+      "filePath": "src/pages/industry/Login.jsx",
+      "summary": "Login industry portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "industry",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/industry/Register.jsx",
+      "type": "file",
+      "name": "Register.jsx",
+      "filePath": "src/pages/industry/Register.jsx",
+      "summary": "Register industry portal page.",
+      "complexity": "complex",
+      "tags": [
+        "industry",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/student/Application.jsx",
+      "type": "file",
+      "name": "Application.jsx",
+      "filePath": "src/pages/student/Application.jsx",
+      "summary": "Application student portal page.",
+      "complexity": "simple",
+      "tags": [
+        "student",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/student/Assignments.jsx",
+      "type": "file",
+      "name": "Assignments.jsx",
+      "filePath": "src/pages/student/Assignments.jsx",
+      "summary": "Assignments student portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "student",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/student/Dashboard.jsx",
+      "type": "file",
+      "name": "Dashboard.jsx",
+      "filePath": "src/pages/student/Dashboard.jsx",
+      "summary": "Dashboard student portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "student",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:src/pages/student/Profile.jsx",
+      "type": "file",
+      "name": "Profile.jsx",
+      "filePath": "src/pages/student/Profile.jsx",
+      "summary": "Profile student portal page.",
+      "complexity": "moderate",
+      "tags": [
+        "student",
+        "page",
+        "jsx"
+      ]
+    },
+    {
+      "id": "file:tailwind.config.js",
+      "type": "config",
+      "name": "tailwind.config.js",
+      "filePath": "tailwind.config.js",
+      "summary": "tailwind.config.js configuration for the frontend toolchain.",
+      "complexity": "simple",
+      "tags": [
+        "js"
+      ]
+    },
+    {
+      "id": "file:vite.config.js",
+      "type": "config",
+      "name": "vite.config.js",
+      "filePath": "vite.config.js",
+      "summary": "vite.config.js configuration for the frontend toolchain.",
+      "complexity": "simple",
+      "tags": [
+        "js"
+      ]
     }
   ],
   "edges": [
     {
-      "source": "file:src/main.jsx",
-      "target": "file:src/App.jsx",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:src/main.jsx",
-      "target": "file:src/index.css",
+      "source": "file:src/App.jsx",
+      "target": "file:src/components/Navbar.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
     },
     {
       "source": "file:src/App.jsx",
-      "target": "file:src/layouts/AdminLayout.jsx",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:src/App.jsx",
-      "target": "file:src/layouts/StudentLayout.jsx",
+      "target": "file:src/components/Footer.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -477,6 +578,13 @@
     {
       "source": "file:src/App.jsx",
       "target": "file:src/pages/About.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/PrincipalMessage.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -504,49 +612,14 @@
     },
     {
       "source": "file:src/App.jsx",
-      "target": "file:src/pages/PrincipalMessage.jsx",
+      "target": "file:src/pages/StudentGuidelines.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
     },
     {
       "source": "file:src/App.jsx",
-      "target": "file:src/pages/admin/Dashboard.jsx",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:src/App.jsx",
-      "target": "file:src/pages/admin/Applicants.jsx",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:src/App.jsx",
-      "target": "file:src/pages/admin/Internships.jsx",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:src/App.jsx",
-      "target": "file:src/pages/admin/InternshipAccess.jsx",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:src/App.jsx",
-      "target": "file:src/pages/admin/StudentsData.jsx",
-      "type": "imports",
-      "direction": "forward",
-      "weight": 0.7
-    },
-    {
-      "source": "file:src/App.jsx",
-      "target": "file:src/pages/admin/Users.jsx",
+      "target": "file:src/layouts/StudentLayout.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -573,36 +646,106 @@
       "weight": 0.7
     },
     {
-      "source": "file:src/layouts/AdminLayout.jsx",
-      "target": "file:src/components/Navbar.jsx",
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/student/Assignments.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
     },
     {
-      "source": "file:src/layouts/AdminLayout.jsx",
-      "target": "file:src/components/Footer.jsx",
+      "source": "file:src/App.jsx",
+      "target": "file:src/layouts/AdminLayout.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
     },
     {
-      "source": "file:src/layouts/StudentLayout.jsx",
-      "target": "file:src/components/Navbar.jsx",
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/admin/Dashboard.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
     },
     {
-      "source": "file:src/layouts/StudentLayout.jsx",
-      "target": "file:src/components/Footer.jsx",
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/admin/Internships.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
     },
     {
-      "source": "file:src/pages/Home.jsx",
-      "target": "file:src/components/InternshipDetailModal.jsx",
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/admin/InternshipAccess.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/admin/Applicants.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/admin/StudentsData.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/admin/Users.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/admin/ManageStudents.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/layouts/IndustrialLayout.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/industry/Login.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/industry/Dashboard.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/industry/Internships.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/industry/Applicants.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/App.jsx",
+      "target": "file:src/pages/industry/Register.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -615,29 +758,22 @@
       "weight": 0.7
     },
     {
-      "source": "file:vite.config.js",
-      "target": "file:package.json",
-      "type": "depends_on",
-      "direction": "forward",
-      "weight": 0.6
-    },
-    {
-      "source": "file:tailwind.config.js",
-      "target": "file:postcss.config.js",
-      "type": "configures",
-      "direction": "forward",
-      "weight": 0.6
-    },
-    {
-      "source": "file:index.html",
-      "target": "file:src/main.jsx",
+      "source": "file:src/main.jsx",
+      "target": "file:src/App.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
     },
     {
-      "source": "file:src/App.jsx",
-      "target": "file:src/pages/admin/ManageStudents.jsx",
+      "source": "file:src/pages/industry/Register.jsx",
+      "target": "file:src/components/CustomDropdown.jsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/pages/student/Dashboard.jsx",
+      "target": "file:src/components/InternshipDetailModal.jsx",
       "type": "imports",
       "direction": "forward",
       "weight": 0.7
@@ -647,67 +783,36 @@
     {
       "id": "layer:core",
       "name": "Core / Config",
-      "description": "Configuration and core entry points",
+      "description": "Configuration, app shell, and entry points.",
       "nodeIds": [
-        "file:package.json",
-        "file:vite.config.js",
-        "file:tailwind.config.js",
-        "file:postcss.config.js",
+        "file:CHANGES_LOG.md",
+        "file:README.md",
+        "file:eslint.config.js",
         "file:index.html",
-        "file:src/main.jsx"
+        "file:package.json",
+        "file:postcss.config.js",
+        "file:src/main.jsx",
+        "file:tailwind.config.js",
+        "file:vite.config.js"
       ]
     },
     {
       "id": "layer:routing-layouts",
       "name": "Routing & Layouts",
-      "description": "App routing and main layout wrappers",
+      "description": "Route definitions and role-specific layout wrappers.",
       "nodeIds": [
         "file:src/App.jsx",
         "file:src/layouts/AdminLayout.jsx",
+        "file:src/layouts/IndustrialLayout.jsx",
         "file:src/layouts/StudentLayout.jsx"
       ]
     },
     {
-      "id": "layer:pages-admin",
-      "name": "Admin Pages",
-      "description": "Admin interface pages",
-      "nodeIds": [
-        "file:src/pages/admin/Applicants.jsx",
-        "file:src/pages/admin/Dashboard.jsx",
-        "file:src/pages/admin/InternshipAccess.jsx",
-        "file:src/pages/admin/Internships.jsx",
-        "file:src/pages/admin/StudentsData.jsx",
-        "file:src/pages/admin/Users.jsx"
-      ]
-    },
-    {
-      "id": "layer:pages-student",
-      "name": "Student Pages",
-      "description": "Student interface pages",
-      "nodeIds": [
-        "file:src/pages/student/Application.jsx",
-        "file:src/pages/student/Dashboard.jsx",
-        "file:src/pages/student/Profile.jsx"
-      ]
-    },
-    {
-      "id": "layer:pages-public",
-      "name": "Public Pages",
-      "description": "Publicly accessible pages",
-      "nodeIds": [
-        "file:src/pages/Home.jsx",
-        "file:src/pages/About.jsx",
-        "file:src/pages/Help.jsx",
-        "file:src/pages/LegalPrivacy.jsx",
-        "file:src/pages/LegalTerms.jsx",
-        "file:src/pages/PrincipalMessage.jsx"
-      ]
-    },
-    {
       "id": "layer:components",
-      "name": "Components",
-      "description": "Reusable UI components",
+      "name": "Shared Components",
+      "description": "Reusable UI components shared across portal sections.",
       "nodeIds": [
+        "file:src/components/CustomDropdown.jsx",
         "file:src/components/Footer.jsx",
         "file:src/components/InternshipDetailModal.jsx",
         "file:src/components/LoginModal.jsx",
@@ -715,13 +820,63 @@
       ]
     },
     {
-      "id": "layer:styles-docs",
-      "name": "Styles & Docs",
-      "description": "Global styles and documentation",
+      "id": "layer:pages-public",
+      "name": "Public Pages",
+      "description": "Public-facing website pages and informational content.",
+      "nodeIds": [
+        "file:src/pages/About.jsx",
+        "file:src/pages/Help.jsx",
+        "file:src/pages/Home.jsx",
+        "file:src/pages/LegalPrivacy.jsx",
+        "file:src/pages/LegalTerms.jsx",
+        "file:src/pages/PrincipalMessage.jsx",
+        "file:src/pages/StudentGuidelines.jsx"
+      ]
+    },
+    {
+      "id": "layer:pages-admin",
+      "name": "Admin Pages",
+      "description": "Administrative dashboard and management pages.",
+      "nodeIds": [
+        "file:src/pages/admin/Applicants.jsx",
+        "file:src/pages/admin/Dashboard.jsx",
+        "file:src/pages/admin/InternshipAccess.jsx",
+        "file:src/pages/admin/Internships.jsx",
+        "file:src/pages/admin/ManageStudents.jsx",
+        "file:src/pages/admin/StudentsData.jsx",
+        "file:src/pages/admin/Users.jsx"
+      ]
+    },
+    {
+      "id": "layer:pages-student",
+      "name": "Student Pages",
+      "description": "Student dashboard, profile, application, and assignment pages.",
+      "nodeIds": [
+        "file:src/pages/student/Application.jsx",
+        "file:src/pages/student/Assignments.jsx",
+        "file:src/pages/student/Dashboard.jsx",
+        "file:src/pages/student/Profile.jsx"
+      ]
+    },
+    {
+      "id": "layer:pages-industry",
+      "name": "Industry Pages",
+      "description": "Industry registration, login, dashboard, internship, and applicant pages.",
+      "nodeIds": [
+        "file:src/pages/industry/Applicants.jsx",
+        "file:src/pages/industry/Dashboard.jsx",
+        "file:src/pages/industry/Internships.jsx",
+        "file:src/pages/industry/Login.jsx",
+        "file:src/pages/industry/Register.jsx"
+      ]
+    },
+    {
+      "id": "layer:styles",
+      "name": "Styles",
+      "description": "Global and app-level CSS styling.",
       "nodeIds": [
         "file:src/App.css",
-        "file:src/index.css",
-        "file:README.md"
+        "file:src/index.css"
       ]
     }
   ],
@@ -729,63 +884,54 @@
     {
       "order": 1,
       "title": "Project Setup",
-      "description": "Vite and Tailwind configuration for the React application.",
+      "description": "Start with the manifest, Vite shell, Tailwind setup, and change log to understand the frontend stack and recent edits.",
       "nodeIds": [
-        "file:vite.config.js",
+        "file:package.json",
+        "file:index.html",
         "file:tailwind.config.js",
-        "file:package.json"
+        "file:CHANGES_LOG.md"
       ]
     },
     {
       "order": 2,
       "title": "Entry Point",
-      "description": "The React application mounts here and loads global styles.",
+      "description": "The React app mounts in main.jsx, then App.jsx defines all client-side routing.",
       "nodeIds": [
-        "file:index.html",
         "file:src/main.jsx",
+        "file:src/App.jsx",
         "file:src/index.css"
       ]
     },
     {
       "order": 3,
-      "title": "Routing & Layouts",
-      "description": "App.jsx defines all client-side routes, while AdminLayout and StudentLayout wrap their respective sections with navigation.",
+      "title": "Role Layouts",
+      "description": "Admin, student, and industry layouts provide shared navigation and page frames for each role.",
       "nodeIds": [
-        "file:src/App.jsx",
         "file:src/layouts/AdminLayout.jsx",
+        "file:src/layouts/IndustrialLayout.jsx",
         "file:src/layouts/StudentLayout.jsx"
       ]
     },
     {
       "order": 4,
-      "title": "Shared Components",
-      "description": "Reusable elements like Navbar, Footer, and authentication/detail Modals used across the portal.",
+      "title": "Shared UI",
+      "description": "Navbar, footer, dropdowns, and modals are the reusable UI layer used by public and portal pages.",
       "nodeIds": [
-        "file:src/components/Navbar.jsx",
+        "file:src/components/CustomDropdown.jsx",
         "file:src/components/Footer.jsx",
+        "file:src/components/InternshipDetailModal.jsx",
         "file:src/components/LoginModal.jsx",
-        "file:src/components/InternshipDetailModal.jsx"
+        "file:src/components/Navbar.jsx"
       ]
     },
     {
       "order": 5,
-      "title": "Admin Section",
-      "description": "Admin dashboard and management pages for internships, applicants, students, and users.",
+      "title": "Portal Pages",
+      "description": "Review the admin, student, and industry page folders to understand the main user workflows.",
       "nodeIds": [
         "file:src/pages/admin/Dashboard.jsx",
-        "file:src/pages/admin/Internships.jsx",
-        "file:src/pages/admin/Applicants.jsx",
-        "file:src/pages/admin/Users.jsx"
-      ]
-    },
-    {
-      "order": 6,
-      "title": "Student Section",
-      "description": "Student-facing pages including the dashboard, internship application form, and profile management.",
-      "nodeIds": [
         "file:src/pages/student/Dashboard.jsx",
-        "file:src/pages/student/Application.jsx",
-        "file:src/pages/student/Profile.jsx"
+        "file:src/pages/industry/Dashboard.jsx"
       ]
     }
   ]

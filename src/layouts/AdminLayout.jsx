@@ -2,39 +2,40 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoUrl from '../assets/logo.png';
+import { useAuth } from '../auth/AuthContext';
+import { getPendingApprovals, pendingApprovalsEventName, setPendingApprovals as savePendingApprovals } from '../services/pendingApprovals';
 
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isInboxOpen, setIsInboxOpen] = useState(false);
-  const [pendingInternships, setPendingInternships] = useState([]);
+  const [pendingInternships, setPendingInternships] = useState(() => getPendingApprovals());
   const [selectedInternship, setSelectedInternship] = useState(null);
+  const [statusMessage, setStatusMessage] = useState('');
 
   const isActive = (path) => location.pathname === path;
 
   const loadPending = () => {
-    const pending = JSON.parse(localStorage.getItem('pendingApprovals') || '[]');
-    setPendingInternships(pending);
+    setPendingInternships(getPendingApprovals());
   };
 
   useEffect(() => {
-    loadPending();
-    
-    // Listen for custom event from industry side
     const handleNewPending = () => loadPending();
-    window.addEventListener('newPendingInternship', handleNewPending);
+    window.addEventListener(pendingApprovalsEventName, handleNewPending);
     
     // Also poll every 10 seconds just in case across tabs
     const interval = setInterval(loadPending, 10000);
     
     return () => {
-      window.removeEventListener('newPendingInternship', handleNewPending);
+      window.removeEventListener(pendingApprovalsEventName, handleNewPending);
       clearInterval(interval);
     };
   }, []);
 
   const handleLogout = () => {
-    window.location.href = '/';
+    logout();
+    navigate('/');
   };
 
   const handleApprove = (id) => {
@@ -44,11 +45,8 @@ const AdminLayout = () => {
     // Remove from pending
     const updatedPending = pendingInternships.filter(j => j.id !== id);
     setPendingInternships(updatedPending);
-    localStorage.setItem('pendingApprovals', JSON.stringify(updatedPending));
-
-    // In a real app, you'd add to the main internships list
-    // For this demo, we'll just show it was approved
-    alert(`Internship "${jobToApprove.title}" from ${jobToApprove.company} has been APPROVED!`);
+    savePendingApprovals(updatedPending);
+    setStatusMessage(`Internship "${jobToApprove.title}" from ${jobToApprove.company} approved.`);
   };
 
   const handleReject = (id) => {
@@ -57,9 +55,8 @@ const AdminLayout = () => {
 
     const updatedPending = pendingInternships.filter(j => j.id !== id);
     setPendingInternships(updatedPending);
-    localStorage.setItem('pendingApprovals', JSON.stringify(updatedPending));
-    
-    alert(`Internship "${jobToReject.title}" from ${jobToReject.company} has been REJECTED.`);
+    savePendingApprovals(updatedPending);
+    setStatusMessage(`Internship "${jobToReject.title}" from ${jobToReject.company} rejected.`);
   };
 
   return (
@@ -82,6 +79,7 @@ const AdminLayout = () => {
           <Link to="/admin/applicants" className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${isActive('/admin/applicants') ? 'bg-mistral-orange text-white shadow-sm' : 'text-mistral-black hover:bg-brand-yellow/30'}`}>Applicants</Link>
           <Link to="/admin/students" className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${isActive('/admin/students') ? 'bg-mistral-orange text-white shadow-sm' : 'text-mistral-black hover:bg-brand-yellow/30'}`}>Students Data</Link>
           <Link to="/admin/manage-students" className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${isActive('/admin/manage-students') ? 'bg-mistral-orange text-white shadow-sm' : 'text-mistral-black hover:bg-brand-yellow/30'}`}>Manage Students</Link>
+          <Link to="/admin/pending-approvals" className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${isActive('/admin/pending-approvals') ? 'bg-mistral-orange text-white shadow-sm' : 'text-mistral-black hover:bg-brand-yellow/30'}`}>Partner Approvals</Link>
           <Link to="/admin/users" className={`px-4 py-3 uppercase tracking-widest text-xs font-bold transition-all duration-300 ${isActive('/admin/users') ? 'bg-mistral-orange text-white shadow-sm' : 'text-mistral-black hover:bg-brand-yellow/30'}`}>User Management</Link>
         </nav>
 
@@ -123,6 +121,14 @@ const AdminLayout = () => {
 
         {/* Scrollable Page Content */}
         <div className="flex-1 overflow-y-auto p-4 md:p-8 bg-mesh-pattern">
+          {statusMessage && (
+            <div className="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-xs font-bold uppercase tracking-wide flex items-center justify-between gap-4">
+              <span>{statusMessage}</span>
+              <button type="button" onClick={() => setStatusMessage('')} className="text-emerald-700/60 hover:text-emerald-900">
+                Dismiss
+              </button>
+            </div>
+          )}
           <Outlet />
         </div>
       </main>

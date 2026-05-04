@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logoUrl from '../../assets/logo.png';
 import CustomDropdown from '../../components/CustomDropdown';
+import { addPendingApproval } from '../../services/pendingApprovals';
 
 const IndustryRegister = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -89,8 +89,28 @@ const IndustryRegister = () => {
     
     setIsSubmitting(true);
     
-    // Simulate API call
+    // Save to pending approvals
     setTimeout(() => {
+      addPendingApproval({
+        id: Date.now(),
+        companyName: formData.companyName,
+        email: formData.email,
+        industryType: formData.industryType,
+        website: formData.website,
+        yearOfEstablishment: formData.yearOfEstablishment,
+        companySize: formData.companySize,
+        cinGstin: formData.cinGstin,
+        description: formData.description,
+        primaryAddress: formData.primaryAddress,
+        hqLocation: formData.hqLocation,
+        pocName: formData.pocName,
+        pocTitle: formData.pocTitle,
+        pocMobile: formData.pocMobile,
+        pocAltMobile: formData.pocAltMobile,
+        pocLinkedin: formData.pocLinkedin,
+        status: 'Pending',
+      });
+      
       setIsSubmitting(false);
       setIsSuccess(true);
     }, 1500);

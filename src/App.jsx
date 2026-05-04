@@ -5,6 +5,8 @@ import { AnimatePresence } from 'framer-motion';
 // Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { AuthProvider } from './auth/AuthContext';
+import ProtectedRoute from './auth/ProtectedRoute';
 
 // Public Pages
 import Home from './pages/Home';
@@ -32,6 +34,7 @@ import AdminApplicants from './pages/admin/Applicants';
 import AdminStudentsData from './pages/admin/StudentsData';
 import AdminUsers from './pages/admin/Users';
 import AdminManageStudents from './pages/admin/ManageStudents';
+import PendingApprovals from './pages/admin/PendingApprovals';
 
 // Industry Pages
 import IndustrialLayout from './layouts/IndustrialLayout';
@@ -72,36 +75,42 @@ function AnimatedRoutes() {
           <Route path="/industry-register" element={<IndustryRegister />} />
         </Route>
 
-        {/* Student Dashboard Routes (No standard Navbar/Footer) */}
-        <Route path="/student" element={<StudentLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="application" element={<Application />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="assignments" element={<Assignments />} />
-
+        {/* Student Dashboard Routes */}
+        <Route element={<ProtectedRoute allowedRoles={['student']} redirectTo="/" />}>
+          <Route path="/student" element={<StudentLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="application" element={<Application />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="assignments" element={<Assignments />} />
+          </Route>
         </Route>
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="internships" element={<AdminInternships />} />
-          <Route path="internship-access" element={<AdminInternshipAccess />} />
-          <Route path="applicants" element={<AdminApplicants />} />
-          <Route path="students" element={<AdminStudentsData />} />
-          <Route path="manage-students" element={<AdminManageStudents />} />
-          <Route path="users" element={<AdminUsers />} />
+        <Route element={<ProtectedRoute allowedRoles={['admin']} redirectTo="/" />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="internships" element={<AdminInternships />} />
+            <Route path="internship-access" element={<AdminInternshipAccess />} />
+            <Route path="applicants" element={<AdminApplicants />} />
+            <Route path="students" element={<AdminStudentsData />} />
+            <Route path="manage-students" element={<AdminManageStudents />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="pending-approvals" element={<PendingApprovals />} />
+          </Route>
         </Route>
 
         {/* Industry Login (standalone, no layout) */}
         <Route path="/industry" element={<IndustryLogin />} />
 
         {/* Industry Dashboard Routes */}
-        <Route path="/industry" element={<IndustrialLayout />}>
-          <Route path="dashboard" element={<IndustryDashboard />} />
-          <Route path="internships" element={<IndustryInternships />} />
-          <Route path="applicants" element={<IndustryApplicants />} />
+        <Route element={<ProtectedRoute allowedRoles={['industry']} redirectTo="/industry" />}>
+          <Route path="/industry" element={<IndustrialLayout />}>
+            <Route path="dashboard" element={<IndustryDashboard />} />
+            <Route path="internships" element={<IndustryInternships />} />
+            <Route path="applicants" element={<IndustryApplicants />} />
+          </Route>
         </Route>
 
         {/* 404 Fallback */}
@@ -122,9 +131,11 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <Router>
-      <AnimatedRoutes />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AnimatedRoutes />
+      </Router>
+    </AuthProvider>
   );
 }
 

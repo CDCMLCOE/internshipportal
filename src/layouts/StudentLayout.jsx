@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import logoUrl from '../assets/logo.png';
+import { useAuth } from '../auth/AuthContext';
 
 const NAV_LINKS = [
   {
@@ -48,12 +49,14 @@ const NAV_LINKS = [
 const StudentLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path || (path === '/student/dashboard' && location.pathname === '/student');
 
   const handleLogout = () => {
-    window.location.href = '/';
+    logout();
+    navigate('/');
   };
 
   const closeSidebar = () => setIsSidebarOpen(false);

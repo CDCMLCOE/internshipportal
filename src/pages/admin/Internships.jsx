@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const AdminInternships = () => {
+  const location = useLocation();
+  const [statusMessage, setStatusMessage] = useState(location.state?.message || '');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,6 +33,15 @@ const AdminInternships = () => {
 
   return (
     <div className="space-y-8 pb-12">
+      {statusMessage && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 text-xs font-bold uppercase tracking-wide flex items-center justify-between gap-4">
+          <span>{statusMessage}</span>
+          <button type="button" onClick={() => setStatusMessage('')} className="text-amber-800/60 hover:text-amber-950">
+            Dismiss
+          </button>
+        </div>
+      )}
+
       {/* Header with Integrated Search and Filter */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div className="max-w-xl">

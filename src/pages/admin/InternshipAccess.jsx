@@ -17,10 +17,11 @@ const InternshipAccess = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real app, you would send this to an API
-    console.log('New Internship Listing:', formData);
-    alert('Internship Listing Created Successfully!');
-    navigate('/admin/internships');
+    navigate('/admin/internships', {
+      state: {
+        message: `Internship "${formData.title}" is ready to publish once the backend API is connected.`,
+      },
+    });
   };
 
   const handleChange = (e) => {

@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import logoUrl from '../assets/logo.png';
+import { useAuth } from '../auth/AuthContext';
 
 const IndustrialLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [company, setCompany] = useState('');
-
-  useEffect(() => {
-    setCompany(localStorage.getItem('industryCompany') || '');
-  }, []);
+  const { user, logout } = useAuth();
+  const company = user?.company || '';
 
   const initials = company ? company.slice(0, 2).toUpperCase() : 'IN';
 
   const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
-    localStorage.removeItem('industryCompany');
-    window.location.href = '/industry';
+    logout();
+    navigate('/industry');
   };
 
   return (
