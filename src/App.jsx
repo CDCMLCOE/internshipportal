@@ -3,52 +3,52 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Outlet, Link } fro
 import { AnimatePresence } from 'framer-motion';
 
 // Components
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import { AuthProvider } from './auth/AuthContext';
-import ProtectedRoute from './auth/ProtectedRoute';
+import Navbar from './frontend/components/Navbar';
+import Footer from './frontend/components/Footer';
+import { AuthProvider } from './backend/auth/AuthContext';
+import ProtectedRoute from './backend/auth/ProtectedRoute';
 
 // Public Pages
-import Home from './pages/Home';
-import About from './pages/About';
-import PrincipalMessage from './pages/PrincipalMessage';
-import Help from './pages/Help';
-import LegalPrivacy from './pages/LegalPrivacy';
-import LegalTerms from './pages/LegalTerms';
-import StudentGuidelines from './pages/StudentGuidelines';
-import LegalPartnership from './pages/LegalPartnership';
+import Home from './frontend/pages/Home';
+import About from './frontend/pages/About';
+import PrincipalMessage from './frontend/pages/PrincipalMessage';
+import Help from './frontend/pages/Help';
+import LegalPrivacy from './frontend/pages/LegalPrivacy';
+import LegalTerms from './frontend/pages/LegalTerms';
+import StudentGuidelines from './frontend/pages/StudentGuidelines';
+import LegalPartnership from './frontend/pages/LegalPartnership';
 
 // Student Dashboard
-import StudentLayout from './layouts/StudentLayout';
-import Dashboard from './pages/student/Dashboard';
-import Application from './pages/student/Application';
-import Profile from './pages/student/Profile';
-import Assignments from './pages/student/Assignments';
+import StudentLayout from './frontend/layouts/StudentLayout';
+import Dashboard from './frontend/pages/student/Dashboard';
+import Application from './frontend/pages/student/Application';
+import Profile from './frontend/pages/student/Profile';
+import Assignments from './frontend/pages/student/Assignments';
 
 
 // Admin Pages
-import AdminLayout from './layouts/AdminLayout';
-import AdminDashboard from './pages/admin/Dashboard';
-import AdminInternships from './pages/admin/Internships';
-import AdminInternshipAccess from './pages/admin/InternshipAccess';
-import AdminApplicants from './pages/admin/Applicants';
-import AdminStudentsData from './pages/admin/StudentsData';
-import AdminManageStudents from './pages/admin/ManageStudents';
-import PendingApprovals from './pages/admin/PendingApprovals';
+import AdminLayout from './frontend/layouts/AdminLayout';
+import AdminDashboard from './frontend/pages/admin/Dashboard';
+import AdminInternships from './frontend/pages/admin/Internships';
+import AdminInternshipAccess from './frontend/pages/admin/InternshipAccess';
+import AdminApplicants from './frontend/pages/admin/Applicants';
+import AdminStudentsData from './frontend/pages/admin/StudentsData';
+import AdminManageStudents from './frontend/pages/admin/ManageStudents';
+import PendingApprovals from './frontend/pages/admin/PendingApprovals';
 
 // Superadmin Pages
-import SuperadminLayout from './layouts/SuperadminLayout';
-import SuperadminDashboard from './pages/superadmin/Dashboard';
-import SuperadminUserManagement from './pages/superadmin/UserManagement';
-import SuperadminManageStudents from './pages/superadmin/ManageStudents';
+import SuperadminLayout from './frontend/layouts/SuperadminLayout';
+import SuperadminDashboard from './frontend/pages/superadmin/Dashboard';
+import SuperadminUserManagement from './frontend/pages/superadmin/UserManagement';
+import SuperadminManageStudents from './frontend/pages/superadmin/ManageStudents';
 
 // Industry Pages
-import IndustrialLayout from './layouts/IndustrialLayout';
-import IndustryLogin from './pages/industry/Login';
-import IndustryDashboard from './pages/industry/Dashboard';
-import IndustryInternships from './pages/industry/Internships';
-import IndustryApplicants from './pages/industry/Applicants';
-import IndustryRegister from './pages/industry/Register';
+import IndustrialLayout from './frontend/layouts/IndustrialLayout';
+import IndustryLogin from './frontend/pages/industry/Login';
+import IndustryDashboard from './frontend/pages/industry/Dashboard';
+import IndustryInternships from './frontend/pages/industry/Internships';
+import IndustryApplicants from './frontend/pages/industry/Applicants';
+import IndustryRegister from './frontend/pages/industry/Register';
 
 // Main Public Layout
 const MainLayout = () => {

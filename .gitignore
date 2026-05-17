@@ -27,3 +27,20 @@ student_rollno_email.json
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# GSD planning files
+.planning/
+
+# Code analysis & knowledge graph outputs
+graphify-out/
+.understand-anything/
+.vibeyardignore
+dependency-graph.html
+
+# Generated documentation (if auto-generated)
+ARCHITECTURE.md
