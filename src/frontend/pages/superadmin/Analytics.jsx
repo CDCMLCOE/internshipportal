@@ -14,8 +14,13 @@ const Analytics = () => {
   const [internships, setInternships] = useState([]);
   const [registrations, setRegistrations] = useState([]);
   const [applications, setApplications] = useState([]);
-  const [securityLogs, setSecurityLogs] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
+  const [assignments, setAssignments] = useState([]);
   const [lastRefresh, setLastRefresh] = useState(new Date());
+
+  const [dbStatus, setDbStatus] = useState({ status: 'Checking...', latency: null });
+  const [authStatus, setAuthStatus] = useState({ status: 'Checking...' });
+  const [realtimeStatus, setRealtimeStatus] = useState('Connecting...');
 
   useEffect(() => {
     fetchAllData();
@@ -26,22 +31,26 @@ const Analytics = () => {
         .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => fetchAllData())
         .on('postgres_changes', { event: '*', schema: 'public', table: 'internships' }, () => fetchAllData())
         .on('postgres_changes', { event: '*', schema: 'public', table: 'industry_registrations' }, () => fetchAllData())
-        .subscribe();
+        .subscribe((status) => {
+          setRealtimeStatus(status === 'SUBSCRIBED' ? 'Connected' : 'Disconnected');
+        });
 
       return () => supabase.removeChannel(channel);
     } catch (e) {
       console.warn('Realtime subscription failed:', e);
+      setRealtimeStatus('Error');
     }
   }, []);
 
   const fetchAllData = async () => {
+    const start = performance.now();
     try {
       const profilesRes = await supabase.from('profiles').select('id, name, email, role, branch, year, created_at').order('created_at', { ascending: true });
       setProfiles(profilesRes.data || []);
     } catch (e) { console.warn('Profiles fetch failed:', e); }
 
     try {
-      const internshipsRes = await supabase.from('internships').select('id, title, status, company_name, created_at').order('created_at', { ascending: true });
+      const internshipsRes = await supabase.from('internships').select('id, title, status, company, approval_status, created_at').order('created_at', { ascending: true });
       setInternships(internshipsRes.data || []);
     } catch (e) { console.warn('Internships fetch failed:', e); }
 
@@ -53,7 +62,32 @@ const Analytics = () => {
     try {
       const applicationsRes = await supabase.from('applications').select('id, status, created_at').order('created_at', { ascending: true });
       setApplications(applicationsRes.data || []);
-    } catch (e) { console.warn('Applications table not found, skipping.'); }
+    } catch (e) { console.warn('Applications fetch failed:', e); }
+
+    try {
+      const assignmentsRes = await supabase.from('assignments').select('id');
+      setAssignments(assignmentsRes.data || []);
+    } catch (e) { console.warn('Assignments fetch failed:', e); }
+
+    try {
+      const submissionsRes = await supabase.from('submissions').select('id, status');
+      setSubmissions(submissionsRes.data || []);
+    } catch (e) { console.warn('Submissions fetch failed:', e); }
+
+    try {
+      await supabase.from('profiles').select('id', { count: 'exact', head: true });
+      const latency = Math.round(performance.now() - start);
+      setDbStatus({ status: 'Healthy', latency });
+    } catch {
+      setDbStatus({ status: 'Error', latency: null });
+    }
+
+    try {
+      const { error } = await supabase.auth.getSession();
+      setAuthStatus({ status: error ? 'Error' : 'Online' });
+    } catch {
+      setAuthStatus({ status: 'Error' });
+    }
 
     setLastRefresh(new Date());
     setLoading(false);
@@ -89,6 +123,14 @@ const Analytics = () => {
     return Object.entries(roles).map(([name, value]) => ({ name, value }));
   }, [profiles]);
 
+  const branchDistribution = useMemo(() => {
+    const branches = {};
+    profiles.filter(p => p.role === 'student').forEach(p => {
+      branches[p.branch || 'Unknown'] = (branches[p.branch || 'Unknown'] || 0) + 1;
+    });
+    return Object.entries(branches).map(([name, value]) => ({ name, value }));
+  }, [profiles]);
+
   const industryDistribution = useMemo(() => {
     const types = {};
     registrations.forEach(r => { types[r.industry_type || 'Unknown'] = (types[r.industry_type || 'Unknown'] || 0) + 1; });
@@ -101,18 +143,26 @@ const Analytics = () => {
     return Object.entries(statuses).map(([name, value]) => ({ name, value }));
   }, [applications]);
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const newUsersToday = useMemo(() =>
+    profiles.filter(p => new Date(p.created_at) >= today).length
+  , [profiles]);
+
   const stats = useMemo(() => [
     { label: 'Total Users', value: profiles.length, sub: `${profiles.filter(p => p.role === 'student').length} students`, color: 'bg-mistral-orange' },
     { label: 'Internships', value: internships.length, sub: `${internships.filter(i => i.status === 'Active').length} active`, color: 'bg-green-500' },
     { label: 'Industry Partners', value: registrations.length, sub: `${registrations.filter(r => r.status === 'Pending').length} pending`, color: 'bg-blue-500' },
     { label: 'Applications', value: applications.length, sub: `${applications.filter(a => a.status === 'Accepted').length} accepted`, color: 'bg-purple-500' },
-  ], [profiles, internships, registrations, applications]);
+    { label: 'New Today', value: newUsersToday, sub: `${internships.filter(i => i.approval_status === 'pending').length} pending approvals`, color: 'bg-yellow-500' },
+    { label: 'Submissions', value: submissions.length, sub: `${assignments.length} assignments`, color: 'bg-pink-500' },
+  ], [profiles, internships, registrations, applications, submissions, assignments, newUsersToday]);
 
   const recentActivity = useMemo(() => {
     const logs = [];
     profiles.slice(-5).forEach(p => logs.push({ time: p.created_at, type: 'user', msg: `New user registered: ${p.name}` }));
     internships.slice(-5).forEach(i => logs.push({ time: i.created_at, type: 'internship', msg: `Internship posted: ${i.title}` }));
-    registrations.slice(-5).forEach(r => logs.push({ time: r.created_at, type: 'registration', msg: `Industry registration: ${r.company_name}` }));
+    registrations.slice(-5).forEach(r => logs.push({ time: r.created_at, type: 'registration', msg: `Industry registration: ${r.company_name || r.company || 'Unknown'}` }));
     applications.slice(-5).forEach(a => logs.push({ time: a.created_at, type: 'application', msg: `New application submitted` }));
     return logs.sort((a, b) => new Date(b.time) - new Date(a.time)).slice(0, 10);
   }, [profiles, internships, registrations, applications]);
@@ -161,7 +211,7 @@ const Analytics = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {stats.map((s, i) => (
           <motion.div
             key={i}
@@ -231,13 +281,13 @@ const Analytics = () => {
           </ResponsiveContainer>
         </motion.div>
 
-        {/* Industry Distribution */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }} className="bg-brand-ivory border border-mistral-black/10 p-6">
-          <h3 className="text-[10px] uppercase font-bold tracking-widest text-mistral-black/40 mb-4">Industry Sectors</h3>
+        {/* Branch Distribution */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.53 }} className="bg-brand-ivory border border-mistral-black/10 p-6">
+          <h3 className="text-[10px] uppercase font-bold tracking-widest text-mistral-black/40 mb-4">Students by Branch</h3>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
-              <Pie data={industryDistribution} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={4} dataKey="value">
-                {industryDistribution.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+              <Pie data={branchDistribution} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={4} dataKey="value">
+                {branchDistribution.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Pie>
               <Tooltip contentStyle={{ background: '#fcfaf6', border: '1px solid #1a1a1a10', fontSize: 12 }} />
               <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 10 }} />
@@ -293,51 +343,62 @@ const Analytics = () => {
             <div>
               <div className="flex justify-between text-xs mb-1.5">
                 <span className="font-bold text-mistral-black">Database Connection</span>
-                <span className="text-green-600 font-bold">Healthy</span>
+                <span className={`font-bold ${dbStatus.status === 'Healthy' ? 'text-green-600' : 'text-red-600'}`}>
+                  {dbStatus.status}{dbStatus.latency ? ` (${dbStatus.latency}ms)` : ''}
+                </span>
               </div>
               <div className="h-1.5 bg-mistral-black/5 rounded-full overflow-hidden">
-                <div className="h-full bg-green-500 rounded-full" style={{ width: '98%' }} />
+                <div className={`h-full rounded-full ${dbStatus.status === 'Healthy' ? 'bg-green-500' : 'bg-red-500'}`}
+                  style={{ width: dbStatus.latency ? `${Math.min(100, Math.max(10, 100 - dbStatus.latency / 5))}%` : '50%' }} />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-xs mb-1.5">
                 <span className="font-bold text-mistral-black">Auth Service</span>
-                <span className="text-green-600 font-bold">Online</span>
+                <span className={`font-bold ${authStatus.status === 'Online' ? 'text-green-600' : 'text-red-600'}`}>
+                  {authStatus.status}
+                </span>
               </div>
               <div className="h-1.5 bg-mistral-black/5 rounded-full overflow-hidden">
-                <div className="h-full bg-mistral-orange rounded-full" style={{ width: '100%' }} />
+                <div className={`h-full rounded-full ${authStatus.status === 'Online' ? 'bg-green-500' : 'bg-red-500'}`}
+                  style={{ width: authStatus.status === 'Online' ? '100%' : '50%' }} />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-xs mb-1.5">
                 <span className="font-bold text-mistral-black">Realtime Channels</span>
-                <span className="text-green-600 font-bold">Active</span>
+                <span className={`font-bold ${realtimeStatus === 'Connected' ? 'text-green-600' : 'text-amber-600'}`}>
+                  {realtimeStatus}
+                </span>
               </div>
               <div className="h-1.5 bg-mistral-black/5 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-500 rounded-full" style={{ width: '100%' }} />
+                <div className={`h-full rounded-full ${realtimeStatus === 'Connected' ? 'bg-green-500' : 'bg-amber-500'}`}
+                  style={{ width: realtimeStatus === 'Connected' ? '100%' : '50%' }} />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-xs mb-1.5">
-                <span className="font-bold text-mistral-black">API Rate Limit</span>
-                <span className="font-bold text-mistral-black/60">245 / 500 requests</span>
+                <span className="font-bold text-mistral-black">API Usage</span>
+                <a href="https://supabase.com/dashboard/project/uzmfxxfbphfzdtspflro/settings/usage" target="_blank" rel="noopener noreferrer" className="text-mistral-orange font-bold hover:underline">
+                  View Dashboard ↗
+                </a>
               </div>
-              <div className="h-1.5 bg-mistral-black/5 rounded-full overflow-hidden">
-                <div className="h-full bg-yellow-500 rounded-full" style={{ width: '49%' }} />
-              </div>
+              <p className="text-[10px] text-mistral-black/40 mt-1">
+                Rate limit and quota details available in the Supabase Dashboard.
+              </p>
             </div>
           </div>
 
           <div className="pt-4 border-t border-mistral-black/5 grid grid-cols-2 gap-4">
             <div className="text-center">
-              <p className="text-2xl font-heading font-bold text-mistral-black">{profiles.length + internships.length + registrations.length + applications.length}</p>
+              <p className="text-2xl font-heading font-bold text-mistral-black">{profiles.length + internships.length + registrations.length + applications.length + submissions.length + assignments.length}</p>
               <p className="text-[9px] uppercase tracking-widest text-mistral-black/40 font-bold">Total Records</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-heading font-bold text-mistral-orange">4</p>
+              <p className="text-2xl font-heading font-bold text-mistral-orange">7</p>
               <p className="text-[9px] uppercase tracking-widest text-mistral-black/40 font-bold">Live Tables</p>
             </div>
           </div>
