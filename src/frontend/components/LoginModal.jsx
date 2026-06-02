@@ -15,6 +15,10 @@ const LoginModal = ({ isOpen, onClose }) => {
 
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const roleRef = useRef(null);
+  const [mustChange, setMustChange] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
