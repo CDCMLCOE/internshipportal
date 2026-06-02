@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../backend/auth/AuthContext';
@@ -13,10 +13,18 @@ const LoginModal = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const [mustChange, setMustChange] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRoleDropdown, setShowRoleDropdown] = useState(false);
+  const roleRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (roleRef.current && !roleRef.current.contains(event.target)) {
+        setShowRoleDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleNavigate = useCallback((role) => {
     if (role === 'superadmin') {
@@ -182,29 +190,41 @@ const LoginModal = ({ isOpen, onClose }) => {
                   </div>
 
                   <form className="space-y-6" onSubmit={handleLogin}>
-                    <div>
+                    <div className="relative" ref={roleRef}>
                       <label className="block text-[10px] uppercase tracking-widest font-bold text-mistral-black/40 mb-2">Portal</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {[
-                          { value: 'student', label: 'Student' },
-                          { value: 'admin', label: 'Admin' },
-                          { value: 'industry', label: 'Industry' },
-                          { value: 'superadmin', label: 'Superadmin' },
-                        ].map((opt) => (
-                          <button
-                            key={opt.value}
-                            type="button"
-                            onClick={() => { setRole(opt.value); setError(''); }}
-                            className={`px-4 py-3 text-sm font-semibold uppercase tracking-wider transition-colors duration-200 ${
-                              role === opt.value
-                                ? 'bg-mistral-black text-white'
-                                : 'bg-brand-cream/50 text-mistral-black/60 border border-mistral-black/10 hover:border-mistral-orange hover:text-mistral-orange'
-                            }`}
-                          >
-                            {opt.label}
-                          </button>
-                        ))}
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowRoleDropdown(!showRoleDropdown)}
+                        className="w-full bg-brand-cream/50 border border-mistral-black/10 px-4 py-3 flex items-center justify-between focus:outline-none focus:border-mistral-orange transition-colors font-sans text-sm"
+                      >
+                        <span className={role === 'student' || role === 'admin' || role === 'industry' || role === 'superadmin' ? 'text-mistral-black' : 'text-mistral-black/40'}>
+                          {role === 'student' ? 'Student Portal' : role === 'admin' ? 'Admin Portal' : role === 'industry' ? 'Industry Portal' : role === 'superadmin' ? 'Superadmin Portal' : 'Select Portal'}
+                        </span>
+                        <svg className={`w-4 h-4 transition-transform ${showRoleDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {showRoleDropdown && (
+                        <div className="absolute z-50 w-full mt-1 bg-brand-ivory border border-mistral-black/10 shadow-lg">
+                          {[
+                            { value: 'student', label: 'Student Portal' },
+                            { value: 'admin', label: 'Admin Portal' },
+                            { value: 'industry', label: 'Industry Portal' },
+                            { value: 'superadmin', label: 'Superadmin Portal' },
+                          ].map((opt) => (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => { setRole(opt.value); setShowRoleDropdown(false); setError(''); }}
+                              className={`w-full text-left px-4 py-3 text-sm font-sans transition-colors hover:bg-brand-cream/80 ${
+                                role === opt.value ? 'bg-mistral-black text-white hover:bg-mistral-black' : 'text-mistral-black/70'
+                              }`}
+                            >
+                              {opt.label}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     <div>
