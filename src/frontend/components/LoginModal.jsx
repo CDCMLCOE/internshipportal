@@ -184,19 +184,27 @@ const LoginModal = ({ isOpen, onClose }) => {
                   <form className="space-y-6" onSubmit={handleLogin}>
                     <div>
                       <label className="block text-[10px] uppercase tracking-widest font-bold text-mistral-black/40 mb-2">Portal</label>
-                      <select
-                        value={role}
-                        onChange={(event) => {
-                          setRole(event.target.value);
-                          setError('');
-                        }}
-                        className="w-full bg-brand-cream/50 border border-mistral-black/10 px-4 py-3 focus:outline-none focus:border-mistral-orange transition-colors font-sans text-sm"
-                      >
-                        <option value="student">Student Portal</option>
-                        <option value="admin">Admin Portal</option>
-                        <option value="industry">Industry Portal</option>
-                        <option value="superadmin">Superadmin Portal</option>
-                      </select>
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { value: 'student', label: 'Student' },
+                          { value: 'admin', label: 'Admin' },
+                          { value: 'industry', label: 'Industry' },
+                          { value: 'superadmin', label: 'Superadmin' },
+                        ].map((opt) => (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => { setRole(opt.value); setError(''); }}
+                            className={`px-4 py-3 text-sm font-semibold uppercase tracking-wider transition-colors duration-200 ${
+                              role === opt.value
+                                ? 'bg-mistral-black text-white'
+                                : 'bg-brand-cream/50 text-mistral-black/60 border border-mistral-black/10 hover:border-mistral-orange hover:text-mistral-orange'
+                            }`}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
                     <div>
