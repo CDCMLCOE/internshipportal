@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import InternshipDetailModal from '../../../frontend/components/InternshipDetailModal';
 import { supabase } from '../../../backend/services/supabaseClient';
+import { useAuth } from '../../../backend/auth/AuthContext';
 
 const CATEGORIES = ["All", "Software", "Web Development", "Data Science", "Hardware", "UI/UX Design", "Marketing"];
 
@@ -13,6 +14,8 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [internships, setInternships] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const firstName = user?.name?.split(' ')[0] || 'Student';
 
   useEffect(() => {
     const fetchInternships = async () => {
@@ -21,6 +24,7 @@ const Dashboard = () => {
         .from('internships')
         .select('*')
         .eq('status', 'Active')
+        .eq('approval_status', 'approved')
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -64,7 +68,7 @@ const Dashboard = () => {
       >
         <div className="pt-2 pb-2">
           <h2 className="font-heading font-bold text-3xl md:text-4xl uppercase tracking-tight mb-2 text-mistral-black leading-tight">
-            Welcome Back, <span className="text-mistral-orange">Student</span>
+            Welcome Back, <span className="text-mistral-orange">{firstName}</span>
           </h2>
           <p className="text-mistral-black/70 font-sans text-sm sm:text-base md:text-lg lg:text-xl font-medium">
             What are you looking for today?

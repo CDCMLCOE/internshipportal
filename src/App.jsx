@@ -39,15 +39,16 @@ import PendingApprovals from './frontend/pages/admin/PendingApprovals';
 // Superadmin Pages
 import SuperadminLayout from './frontend/layouts/SuperadminLayout';
 import SuperadminDashboard from './frontend/pages/superadmin/Dashboard';
+import SuperadminAnalytics from './frontend/pages/superadmin/Analytics';
 import SuperadminUserManagement from './frontend/pages/superadmin/UserManagement';
 import SuperadminManageStudents from './frontend/pages/superadmin/ManageStudents';
 
 // Industry Pages
 import IndustrialLayout from './frontend/layouts/IndustrialLayout';
-import IndustryLogin from './frontend/pages/industry/Login';
 import IndustryDashboard from './frontend/pages/industry/Dashboard';
 import IndustryInternships from './frontend/pages/industry/Internships';
 import IndustryApplicants from './frontend/pages/industry/Applicants';
+import IndustryInfo from './frontend/pages/industry/IndustryInfo';
 import IndustryRegister from './frontend/pages/industry/Register';
 
 // Main Public Layout
@@ -79,7 +80,8 @@ function AnimatedRoutes() {
           <Route path="/terms" element={<LegalTerms />} />
           <Route path="/terms-partnership" element={<LegalPartnership />} />
           <Route path="/student-guidelines" element={<StudentGuidelines />} />
-          <Route path="/industry-register" element={<IndustryRegister />} />
+          <Route path="/industry-register" element={<IndustryInfo />} />
+          <Route path="/industry-register/form" element={<IndustryRegister />} />
         </Route>
 
         {/* Student Dashboard Routes */}
@@ -112,17 +114,16 @@ function AnimatedRoutes() {
           <Route path="/superadmin" element={<SuperadminLayout />}>
             <Route index element={<SuperadminDashboard />} />
             <Route path="dashboard" element={<SuperadminDashboard />} />
+            <Route path="analytics" element={<SuperadminAnalytics />} />
             <Route path="users" element={<SuperadminUserManagement />} />
             <Route path="students" element={<SuperadminManageStudents />} />
           </Route>
         </Route>
 
-        {/* Industry Login (standalone, no layout) */}
-        <Route path="/industry" element={<IndustryLogin />} />
-
         {/* Industry Dashboard Routes */}
-        <Route element={<ProtectedRoute allowedRoles={['industry']} redirectTo="/industry" />}>
+        <Route element={<ProtectedRoute allowedRoles={['industry']} redirectTo="/" />}>
           <Route path="/industry" element={<IndustrialLayout />}>
+            <Route index element={<IndustryDashboard />} />
             <Route path="dashboard" element={<IndustryDashboard />} />
             <Route path="internships" element={<IndustryInternships />} />
             <Route path="applicants" element={<IndustryApplicants />} />

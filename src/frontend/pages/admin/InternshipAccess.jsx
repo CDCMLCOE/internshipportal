@@ -36,6 +36,7 @@ const InternshipAccess = () => {
           description: formData.description,
           requirements: formData.requirements,
           status: 'Active',
+          approval_status: 'approved',
           created_by: user.id
         }]);
 

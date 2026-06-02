@@ -4,6 +4,7 @@ import logoUrl from '../../assets/logo.png';
 
 const NAV_LINKS = [
   { to: '/superadmin/dashboard', label: 'Dashboard' },
+  { to: '/superadmin/analytics', label: 'Analytics' },
   { to: '/superadmin/users', label: 'User Management' },
   { to: '/superadmin/students', label: 'Manage Students' },
 ];

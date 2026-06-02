@@ -50,7 +50,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = 
       }
     } catch (error) {
       console.error('Apply error:', error);
-      alert('Failed to apply. Please try again.');
+      alert(`Failed to apply: ${error.message}`);
     } finally {
       setIsApplying(false);
     }

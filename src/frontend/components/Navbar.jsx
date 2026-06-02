@@ -98,7 +98,7 @@ const Navbar = () => {
             to="/industry-register"
             className="hidden md:block border border-mistral-black/20 text-mistral-black px-5 md:px-6 py-2.5 md:py-3 uppercase tracking-wide font-normal text-xs md:text-sm hover:bg-mistral-black hover:text-white transition-all duration-300"
           >
-            Company Register
+            Industry Partner
           </Link>
           <button 
             onClick={() => setIsLoginOpen(true)}
@@ -198,7 +198,7 @@ const Navbar = () => {
                 onClick={closeMobileMenu}
                 className="uppercase tracking-widest text-sm font-semibold px-8 py-5 text-mistral-orange hover:bg-mistral-orange/5 transition-colors"
               >
-                Company Register
+                Industry Partner
               </Link>
             </div>
           </motion.div>

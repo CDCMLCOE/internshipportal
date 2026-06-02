@@ -14,7 +14,7 @@ const IndustryApplicants = () => {
   const [loading, setLoading] = useState(true);
 
   const statusFilters = ['Shortlisted', 'Pending Review', 'Rejected'];
-  const branches = ['Computer Engineering', 'CSE - ai&ml', 'Information Technology', 'E&TC'];
+  const branches = ['Computer Engineering', 'AI & ML', 'Information Technology', 'Electronics & Telecommunication'];
 
   useEffect(() => {
     fetchApplicants();
@@ -182,7 +182,11 @@ const IndustryApplicants = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        {filteredApplicants.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-20 bg-brand-ivory border border-dashed border-mistral-black/20">
+            <p className="text-mistral-black/40 font-bold uppercase tracking-widest">Loading applicants...</p>
+          </div>
+        ) : filteredApplicants.length > 0 ? (
           filteredApplicants.map((applicant, index) => (
             <motion.div key={applicant.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}

@@ -44,3 +44,6 @@ dependency-graph.html
 
 # Generated documentation (if auto-generated)
 ARCHITECTURE.md
+
+# OpenCode local config (contains personal access tokens)
+opencode.json

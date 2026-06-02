@@ -18,7 +18,7 @@ const IndustrialLayout = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/industry');
+    navigate('/');
   };
 
   const sidebarElements = (

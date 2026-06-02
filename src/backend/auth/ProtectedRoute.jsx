@@ -3,7 +3,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 const defaultRedirectFor = (role) => {
-  if (role === 'industry') return '/industry';
+  if (role === 'industry') return '/';
   return '/';
 };
 

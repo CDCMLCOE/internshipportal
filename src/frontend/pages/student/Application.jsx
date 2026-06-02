@@ -56,8 +56,23 @@ const Application = () => {
       case 'Pending Review': return 'bg-brand-yellow/30 text-mistral-black';
       case 'Shortlisted': return 'bg-emerald-100 text-emerald-700';
       case 'Rejected': return 'bg-red-100 text-red-700';
+      case 'Withdrawn': return 'bg-gray-100 text-gray-600';
       default: return 'bg-mistral-black/5 text-mistral-black/60';
     }
+  };
+
+  const handleWithdraw = async (applicationId) => {
+    if (!window.confirm('Are you sure you want to withdraw this application?')) return;
+    const { error } = await supabase
+      .from('applications')
+      .delete()
+      .eq('id', applicationId);
+    if (error) {
+      console.error('Error withdrawing application:', error);
+      alert('Failed to withdraw application.');
+      return;
+    }
+    setApplications(prev => prev.filter(app => app.application_id !== applicationId));
   };
 
   const handleViewDetails = (app) => {
@@ -108,12 +123,22 @@ const Application = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button 
-                      onClick={() => handleViewDetails(app)}
-                      className="text-mistral-orange hover:underline text-xs font-semibold uppercase tracking-wider"
-                    >
-                      View Details
-                    </button>
+                    <div className="flex items-center justify-end gap-3">
+                      {app.status === 'Pending Review' && (
+                        <button
+                          onClick={() => handleWithdraw(app.application_id)}
+                          className="px-3 py-1.5 border border-mistral-black/10 text-mistral-black text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-black hover:text-white transition-colors"
+                        >
+                          Withdraw
+                        </button>
+                      )}
+                      <button 
+                        onClick={() => handleViewDetails(app)}
+                        className="px-4 py-1.5 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors"
+                      >
+                        View Details
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -136,12 +161,22 @@ const Application = () => {
               </div>
               <div className="flex items-center justify-between text-xs text-mistral-black/50 border-t border-mistral-black/5 pt-3">
                 <span>Applied: {app.date}</span>
-                <button 
-                  onClick={() => handleViewDetails(app)}
-                  className="text-mistral-orange font-semibold uppercase tracking-wider hover:underline"
-                >
-                  View Details
-                </button>
+                <div className="flex items-center gap-3">
+                  {app.status === 'Pending Review' && (
+                    <button
+                      onClick={() => handleWithdraw(app.application_id)}
+                      className="px-3 py-1.5 border border-mistral-black/10 text-mistral-black text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-black hover:text-white transition-colors"
+                    >
+                      Withdraw
+                    </button>
+                  )}
+                  <button 
+                    onClick={() => handleViewDetails(app)}
+                    className="px-4 py-1.5 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors"
+                  >
+                    View Details
+                  </button>
+                </div>
               </div>
             </div>
           ))}

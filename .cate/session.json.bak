@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "workspaceId": "ebcf1321-5cdf-4c18-bc00-a422d4daef26",
+  "focusedNodeId": null,
+  "nodes": {
+    "3b1d7ede-c07f-4810-83d8-fc11b29fa34f": {
+      "panelId": "3b1d7ede-c07f-4810-83d8-fc11b29fa34f",
+      "zOrder": 0,
+      "creationIndex": 0,
+      "ptyId": "terminal-1780153013948-8dx1dck"
+    }
+  }
+}

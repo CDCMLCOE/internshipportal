@@ -14,7 +14,7 @@ const AdminApplicants = () => {
   const [loading, setLoading] = useState(true);
 
   const statusFilters = ['Shortlisted', 'Pending Review', 'Rejected'];
-  const branches = ['Computer Engineering', 'CSE - ai&ml', 'Information Technology', 'E&TC'];
+  const branches = ['Computer Engineering', 'AI & ML', 'Information Technology', 'Electronics & Telecommunication'];
 
   useEffect(() => {
     fetchApplicants();
@@ -41,10 +41,10 @@ const AdminApplicants = () => {
         role: app.internships?.title || 'Unknown',
         college: app.profiles?.college || 'N/A',
         prn: app.profiles?.prn_no || 'N/A',
-        gpa: 'N/A',
         status: app.status,
         branch: app.profiles?.branch || 'N/A',
-        student_id: app.student_id
+        student_id: app.student_id,
+        profile: app.profiles
       }));
 
       setApplicants(formatted);
@@ -78,6 +78,24 @@ const AdminApplicants = () => {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  const updateStatus = async (id, newStatus) => {
+    const { error } = await supabase
+      .from('applications')
+      .update({ status: newStatus })
+      .eq('id', id);
+    if (error) {
+      if (import.meta.env.VITE_USE_MOCK_AUTH === 'true') {
+        setApplicants(prev => prev.map(app => app.id === id ? { ...app, status: newStatus } : app));
+        return;
+      }
+      console.error(error); alert('Failed to update status'); return;
+    }
+    fetchApplicants();
+  };
+
+  const handleShortlist = (id) => updateStatus(id, 'Shortlisted');
+  const handleReject = (id) => updateStatus(id, 'Rejected');
 
   const handleNext = () => {
     const currentIndex = filteredApplicants.findIndex(app => app.id === selectedStudent?.id);
@@ -229,7 +247,11 @@ const AdminApplicants = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        {filteredApplicants.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-20 bg-brand-ivory border border-dashed border-mistral-black/20">
+            <p className="text-mistral-black/40 font-bold uppercase tracking-widest">Loading applicants...</p>
+          </div>
+        ) : filteredApplicants.length > 0 ? (
           filteredApplicants.map((applicant, index) => (
             <motion.div
               key={applicant.id}
@@ -248,11 +270,11 @@ const AdminApplicants = () => {
                     <span className="text-xs font-bold text-mistral-orange uppercase tracking-widest">{applicant.role}</span>
                     <span className="text-[10px] text-mistral-black/40 uppercase font-bold tracking-tighter">[{applicant.branch}]</span>
                   </div>
-                  <span className="text-xs text-mistral-black/60 mt-1">{applicant.college} • GPA: {applicant.gpa}</span>
+                  <span className="text-xs text-mistral-black/60 mt-1">{applicant.college}</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 w-full md:w-auto">
+                <div className="flex items-center gap-4 w-full md:w-auto">
                 <span className={`px-4 py-1.5 uppercase tracking-widest text-[10px] font-bold ${getStatusStyle(applicant.status)}`}>
                   {applicant.status}
                 </span>
@@ -283,6 +305,8 @@ const AdminApplicants = () => {
         student={selectedStudent}
         onNext={filteredApplicants.findIndex(app => app.id === selectedStudent?.id) < filteredApplicants.length - 1 ? handleNext : null}
         onPrev={filteredApplicants.findIndex(app => app.id === selectedStudent?.id) > 0 ? handlePrev : null}
+        onShortlist={() => { if (selectedStudent) { handleShortlist(selectedStudent.id); setIsProfileModalOpen(false); } }}
+        onReject={() => { if (selectedStudent) { handleReject(selectedStudent.id); setIsProfileModalOpen(false); } }}
       />
     </div>
   );

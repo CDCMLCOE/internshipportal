@@ -107,7 +107,8 @@ const IndustryInternships = () => {
         role_description: form.role_description,
         requirements: form.requirements.split('\n').filter(r => r.trim()),
         skills: form.skills.split(',').map(s => s.trim()).filter(s => s),
-        created_by: currentUser.id
+        created_by: currentUser.id,
+        approval_status: 'pending'
       };
 
       if (editingJob) {
@@ -226,6 +227,7 @@ const IndustryInternships = () => {
               <th className="p-4 uppercase tracking-widest text-[10px] font-bold text-mistral-black/60 border-b border-mistral-black/10">Category</th>
               <th className="p-4 uppercase tracking-widest text-[10px] font-bold text-mistral-black/60 border-b border-mistral-black/10">Location</th>
               <th className="p-4 uppercase tracking-widest text-[10px] font-bold text-mistral-black/60 border-b border-mistral-black/10">Status</th>
+              <th className="p-4 uppercase tracking-widest text-[10px] font-bold text-mistral-black/60 border-b border-mistral-black/10">Approval</th>
               <th className="p-4 uppercase tracking-widest text-[10px] font-bold text-mistral-black/60 border-b border-mistral-black/10 text-right">Actions</th>
             </tr>
           </thead>
@@ -236,13 +238,20 @@ const IndustryInternships = () => {
                   <span className="font-bold text-sm uppercase tracking-tight">{job.title}</span>
                 </td>
                 <td className="p-4 border-b border-mistral-black/5">
-                  <span className="text-[10px] uppercase font-bold px-2 py-1 bg-brand-yellow/30 text-mistral-black">{job.category}</span>
+                  <span className="text-[10px] uppercase font-bold px-2 py-1 bg-brand-yellow/30 text-mistral-black">{job.type}</span>
                 </td>
                 <td className="p-4 border-b border-mistral-black/5">
                   <span className="text-xs font-medium">{job.location}</span>
                 </td>
                 <td className="p-4 border-b border-mistral-black/5">
                   <span className={`text-[10px] uppercase font-bold ${job.status === 'Active' ? 'text-green-600' : 'text-red-500'}`}>{job.status}</span>
+                </td>
+                <td className="p-4 border-b border-mistral-black/5">
+                  <span className={`text-[10px] uppercase font-bold px-2 py-1 ${
+                    job.approval_status === 'approved' ? 'bg-green-100 text-green-700' :
+                    job.approval_status === 'rejected' ? 'bg-red-100 text-red-700' :
+                    'bg-amber-100 text-amber-700'
+                  }`}>{job.approval_status || 'pending'}</span>
                 </td>
                 <td className="p-4 border-b border-mistral-black/5 text-right">
                   <div className="flex justify-end gap-2">

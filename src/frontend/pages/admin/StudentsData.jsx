@@ -212,7 +212,17 @@ const StudentsData = () => {
                 <div className="flex-grow md:flex-grow-0 flex gap-2">
                   <button 
                     onClick={() => {
-                      setSelectedStudent(student);
+                      setSelectedStudent({
+                        id: student.id,
+                        name: student.name,
+                        branch: student.branch,
+                        college: student.college,
+                        prn: student.prn_no,
+                        role: student.preferred_role || 'Student',
+                        status: 'Active',
+                        student_id: student.id,
+                        profile: student
+                      });
                       setIsProfileModalOpen(true);
                     }}
                     className="flex-1 md:flex-none px-4 py-2 bg-mistral-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-mistral-orange transition-colors"

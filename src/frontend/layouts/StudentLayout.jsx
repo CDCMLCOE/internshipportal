@@ -69,7 +69,7 @@ const StudentLayout = () => {
           <img src={logoUrl} alt="MES MLCOE Logo" className="h-10 object-contain group-hover:opacity-80 transition-opacity" />
           <div className="flex flex-col text-left">
             <span className="font-heading font-bold text-sm uppercase tracking-wider text-mistral-black leading-tight group-hover:text-mistral-orange transition-colors">MES MLCOE</span>
-            <span className="text-[9px] uppercase tracking-widest text-mistral-black/60 font-semibold group-hover:text-mistral-orange transition-colors">Internship Portal</span>
+            <span className="text-[9px] uppercase tracking-widest text-mistral-black/60 font-semibold group-hover:text-mistral-orange transition-colors">Student Portal</span>
           </div>
         </Link>
         {/* Close button – only visible inside mobile drawer */}

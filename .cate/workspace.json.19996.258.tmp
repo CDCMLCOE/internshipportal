@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "name": "G:\\portal",
+  "color": "",
+  "canvas": {
+    "nodes": [
+      {
+        "panelId": "3b1d7ede-c07f-4810-83d8-fc11b29fa34f",
+        "panelType": "terminal",
+        "title": "C:\\WINDOWS\\system32\\cmd.exe",
+        "origin": {
+          "x": 100,
+          "y": 100
+        },
+        "size": {
+          "width": 640,
+          "height": 400
+        }
+      }
+    ],
+    "regions": [],
+    "zoomLevel": 0.3,
+    "viewportOffset": {
+      "x": 103.7421875,
+      "y": 88.6640625
+    }
+  },
+  "dockState": {
+    "zones": {
+      "left": {
+        "position": "left",
+        "visible": false,
+        "size": 260,
+        "layout": null
+      },
+      "right": {
+        "position": "right",
+        "visible": false,
+        "size": 260,
+        "layout": null
+      },
+      "bottom": {
+        "position": "bottom",
+        "visible": false,
+        "size": 240,
+        "layout": null
+      },
+      "center": {
+        "position": "center",
+        "visible": true,
+        "size": 0,
+        "layout": {
+          "type": "split",
+          "id": "5c0c8ae0-1f8c-41e7-97fe-0bcfeee65f87",
+          "direction": "horizontal",
+          "children": [
+            {
+              "type": "tabs",
+              "id": "e40e37a1-e03c-4c72-bd4e-1ea9cb475912",
+              "panelIds": [
+                "136c7de4-8e5e-4f35-84cd-c4d988591cdb"
+              ],
+              "activeIndex": 0
+            },
+            {
+              "type": "tabs",
+              "id": "e9f1f5a6-185e-4271-ad61-9723e6e28eb0",
+              "panelIds": [
+                "ec795528-780e-4a06-b433-603318a4cb57",
+                "3b1d7ede-c07f-4810-83d8-fc11b29fa34f",
+                "dbc70aa2-ae4a-4868-b52f-7db610212419"
+              ],
+              "activeIndex": 2
+            }
+          ],
+          "ratios": [
+            0.6109375000000004,
+            0.38906249999999964
+          ]
+        }
+      }
+    },
+    "locations": {
+      "ec795528-780e-4a06-b433-603318a4cb57": {
+        "type": "dock",
+        "zone": "center",
+        "stackId": "e9f1f5a6-185e-4271-ad61-9723e6e28eb0"
+      },
+      "136c7de4-8e5e-4f35-84cd-c4d988591cdb": {
+        "type": "dock",
+        "zone": "center",
+        "stackId": "e40e37a1-e03c-4c72-bd4e-1ea9cb475912"
+      },
+      "3b1d7ede-c07f-4810-83d8-fc11b29fa34f": {
+        "type": "dock",
+        "zone": "center",
+        "stackId": "e9f1f5a6-185e-4271-ad61-9723e6e28eb0"
+      },
+      "dbc70aa2-ae4a-4868-b52f-7db610212419": {
+        "type": "dock",
+        "zone": "center",
+        "stackId": "e9f1f5a6-185e-4271-ad61-9723e6e28eb0"
+      }
+    }
+  },
+  "dockPanels": {
+    "136c7de4-8e5e-4f35-84cd-c4d988591cdb": {
+      "type": "browser",
+      "title": "MLCOE Internship Portal",
+      "url": "http://localhost:5174/"
+    },
+    "ec795528-780e-4a06-b433-603318a4cb57": {
+      "type": "canvas",
+      "title": "Canvas"
+    },
+    "dbc70aa2-ae4a-4868-b52f-7db610212419": {
+      "type": "terminal",
+      "title": "C:\\WINDOWS\\system32\\cmd.exe"
+    }
+  }
+}
