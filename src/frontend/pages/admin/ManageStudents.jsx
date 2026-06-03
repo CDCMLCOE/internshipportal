@@ -7,6 +7,7 @@ import { supabase } from '../../../backend/services/supabaseClient';
 import { SearchBar, PageHeader, ToastNotification, StatusBadge } from '../../../frontend/components';
 import Modal from '../../../frontend/components/Modal';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
+import { BRANCHES, getBranchLabel } from '../../../backend/constants';
 
 const ManageStudents = () => {
   const [activeBranchFilter, setActiveBranchFilter] = useState('All');
@@ -52,13 +53,7 @@ const ManageStudents = () => {
     fetchStudents();
   }, []);
 
-  const branches = ['Computer_Engineering', 'AI_ML', 'Information_Technology', 'Electronics_and_Telecommunication_Engineering'];
-  const branchLabels = {
-    'Computer_Engineering': 'Computer Engineering',
-    'AI_ML': 'AI & ML',
-    'Information_Technology': 'Information Technology',
-    'Electronics_and_Telecommunication_Engineering': 'E&TC',
-  };
+  const branches = BRANCHES;
   const statuses = ['Task Complete', 'Task Incomplete', 'Pending', 'No Task'];
 
   const handleDownloadPDF = (student, task) => {
@@ -86,7 +81,7 @@ const ManageStudents = () => {
     doc.setTextColor(0, 0, 0);
     doc.text(`Student: ${student.name}`, 20, 60);
     doc.setFontSize(12);
-    doc.text(`Branch: ${branchLabels[student.branch] || student.branch}`, 20, 68);
+    doc.text(`Branch: ${getBranchLabel(student.branch)}`, 20, 68);
     doc.setFontSize(10);
     doc.setTextColor(150, 150, 150);
     doc.text(`Record Generated: ${new Date().toLocaleDateString()}`, 190, 50, { align: 'right' });
@@ -147,7 +142,7 @@ const ManageStudents = () => {
                   activeBranchFilter !== 'All' ? 'bg-mistral-black text-white' : 'text-mistral-black hover:bg-brand-yellow'
                 }`}
               >
-                Branch: {activeBranchFilter === 'All' ? 'All' : branchLabels[activeBranchFilter] || activeBranchFilter}
+                Branch: {activeBranchFilter === 'All' ? 'All' : getBranchLabel(activeBranchFilter)}
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                 </svg>
@@ -176,7 +171,7 @@ const ManageStudents = () => {
                           activeBranchFilter === branch ? 'bg-mistral-black text-white' : 'text-mistral-black hover:bg-brand-yellow'
                         }`}
                       >
-                        {branchLabels[branch] || branch}
+                        {getBranchLabel(branch)}
                       </button>
                     ))}
                   </motion.div>
@@ -272,7 +267,7 @@ const ManageStudents = () => {
                   <td className="p-4 text-center border-r border-mistral-black/10">
                     <div className="flex flex-col items-center">
                       <span className="font-bold uppercase tracking-tight text-base text-mistral-black">{student.name}</span>
-                      <span className="text-[10px] uppercase tracking-widest text-mistral-black/40 font-bold mt-1">[{branchLabels[student.branch] || student.branch}]</span>
+                      <span className="text-[10px] uppercase tracking-widest text-mistral-black/40 font-bold mt-1">[{getBranchLabel(student.branch)}]</span>
                     </div>
                   </td>
                   <td className="p-4 align-middle border-r border-mistral-black/10">
@@ -343,7 +338,7 @@ const ManageStudents = () => {
             <div className="flex flex-col space-y-2 text-center sm:text-left pt-2 sm:pt-8 flex-1">
               <div>
                 <h3 className="font-heading font-bold text-2xl text-mistral-black tracking-tight">{selectedStudentForTask?.name}</h3>
-                <p className="text-mistral-orange font-medium text-xs mt-1 uppercase tracking-wider">{branchLabels[selectedStudentForTask?.branch] || selectedStudentForTask?.branch}</p>
+                <p className="text-mistral-orange font-medium text-xs mt-1 uppercase tracking-wider">{getBranchLabel(selectedStudentForTask?.branch)}</p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 mt-1">
                 <div className="flex items-center justify-center sm:justify-start gap-1.5 text-mistral-black/70">

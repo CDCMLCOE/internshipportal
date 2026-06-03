@@ -4,6 +4,7 @@ import StudentProfileReviewModal from '../../../frontend/components/StudentProfi
 import { supabase } from '../../../backend/services/supabaseClient';
 import { SearchBar, PageHeader, StatusBadge } from '../../../frontend/components';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
+import { BRANCHES } from '../../../backend/constants';
 
 const AdminApplicants = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -16,7 +17,7 @@ const AdminApplicants = () => {
   const [loading, setLoading] = useState(true);
 
   const statusFilters = ['Shortlisted', 'Pending', 'Rejected'];
-  const branches = ['Computer Engineering', 'AI & ML', 'Information Technology', 'Electronics & Telecommunication'];
+  const branches = BRANCHES;
 
   useEffect(() => { fetchApplicants(); }, []);
 

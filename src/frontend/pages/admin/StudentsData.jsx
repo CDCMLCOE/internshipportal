@@ -4,6 +4,7 @@ import StudentProfileReviewModal from '../../../frontend/components/StudentProfi
 import { supabase } from '../../../backend/services/supabaseClient';
 import { SearchBar, PageHeader } from '../../../frontend/components';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
+import { BRANCHES, getBranchLabel } from '../../../backend/constants';
 
 const StudentsData = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -15,12 +16,7 @@ const StudentsData = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const branches = [
-    { value: 'Computer_Engineering', label: 'Computer Engineering' },
-    { value: 'AI_ML', label: 'AI & ML' },
-    { value: 'Information_Technology', label: 'Information Technology' },
-    { value: 'Electronics_and_Telecommunication_Engineering', label: 'E&TC' },
-  ];
+  const branches = BRANCHES.map(b => ({ value: b, label: getBranchLabel(b) }));
 
   useEffect(() => {
     const fetchStudents = async () => {
