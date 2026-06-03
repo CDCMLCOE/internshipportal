@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../../../backend/services/supabaseClient';
+import { normalizeBranch } from '../../../backend/constants';
 import { AreaChart } from '@tremor/react';
 
 const BeautifulBarChart = ({ data }) => {
@@ -212,7 +213,8 @@ const Analytics = () => {
   const branchDistribution = useMemo(() => {
     const branches = {};
     profiles.filter(p => p.role === 'student').forEach(p => {
-      branches[p.branch || 'Unknown'] = (branches[p.branch || 'Unknown'] || 0) + 1;
+      const b = normalizeBranch(p.branch) || 'Unknown';
+      branches[b] = (branches[b] || 0) + 1;
     });
     return Object.entries(branches).map(([name, value]) => ({ name, value }));
   }, [profiles]);

@@ -7,7 +7,7 @@ import { supabase } from '../../../backend/services/supabaseClient';
 import { SearchBar, PageHeader, ToastNotification, StatusBadge, EmptyState } from '../../../frontend/components';
 import Modal from '../../../frontend/components/Modal';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
-import { BRANCHES, getBranchLabel } from '../../../backend/constants';
+import { BRANCHES, getBranchLabel, normalizeBranch } from '../../../backend/constants';
 
 const ManageStudents = () => {
   const [activeBranchFilter, setActiveBranchFilter] = useState('All');
@@ -106,7 +106,7 @@ const ManageStudents = () => {
   };
 
   const filteredStudents = students.filter(student => {
-    const matchesBranch = activeBranchFilter === 'All' || student.branch === activeBranchFilter;
+    const matchesBranch = activeBranchFilter === 'All' || normalizeBranch(student.branch) === activeBranchFilter;
     const matchesStatus = activeStatusFilter === 'All' || student.status === activeStatusFilter;
     const matchesSearch = student.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           student.branch.toLowerCase().includes(searchQuery.toLowerCase());

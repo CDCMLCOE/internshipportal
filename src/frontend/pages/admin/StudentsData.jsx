@@ -4,7 +4,7 @@ import StudentProfileReviewModal from '../../../frontend/components/StudentProfi
 import { supabase } from '../../../backend/services/supabaseClient';
 import { SearchBar, PageHeader, EmptyState } from '../../../frontend/components';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
-import { BRANCHES, getBranchLabel } from '../../../backend/constants';
+import { BRANCHES, getBranchLabel, normalizeBranch } from '../../../backend/constants';
 
 const StudentsData = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -33,7 +33,7 @@ const StudentsData = () => {
   }, []);
 
   const filteredStudents = students.filter(student => {
-    const matchesFilter = activeFilter === 'All' || student.branch === activeFilter;
+    const matchesFilter = activeFilter === 'All' || normalizeBranch(student.branch) === activeFilter;
     const matchesSearch =
       (student.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (student.branch || '').toLowerCase().includes(searchQuery.toLowerCase()) ||

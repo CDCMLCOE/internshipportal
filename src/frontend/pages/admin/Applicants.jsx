@@ -4,7 +4,7 @@ import StudentProfileReviewModal from '../../../frontend/components/StudentProfi
 import { supabase } from '../../../backend/services/supabaseClient';
 import { SearchBar, PageHeader, StatusBadge, EmptyState } from '../../../frontend/components';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
-import { BRANCHES } from '../../../backend/constants';
+import { BRANCHES, normalizeBranch } from '../../../backend/constants';
 
 const AdminApplicants = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -40,7 +40,7 @@ const AdminApplicants = () => {
 
   const filteredApplicants = applicants.filter(app => {
     const matchesFilter = activeFilter === 'All' 
-      ? true : branches.includes(activeFilter) ? app.branch === activeFilter : app.status === activeFilter;
+      ? true : branches.includes(activeFilter) ? normalizeBranch(app.branch) === activeFilter : app.status === activeFilter;
     const matchesSearch = app.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           app.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           app.branch.toLowerCase().includes(searchQuery.toLowerCase());

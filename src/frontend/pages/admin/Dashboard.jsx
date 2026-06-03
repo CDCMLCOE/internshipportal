@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Users, UserCheck, TrendingUp } from 'lucide-react';
 import { supabase } from '../../../backend/services/supabaseClient';
-import { BRANCHES, getBranchLabel } from '../../../backend/constants';
+import { BRANCHES, getBranchLabel, normalizeBranch } from '../../../backend/constants';
 import { EmptyState } from '../../../frontend/components';
 
 const AdminDashboard = () => {
@@ -29,10 +29,10 @@ const AdminDashboard = () => {
         .order('created_at', { ascending: false });
 
       if (allProfiles) {
-        const ce = allProfiles.filter(p => p.branch === BRANCHES[0]).length;
-        const it = allProfiles.filter(p => p.branch === BRANCHES[1]).length;
-        const aiml = allProfiles.filter(p => p.branch === BRANCHES[3]).length;
-        const etc = allProfiles.filter(p => p.branch === BRANCHES[2]).length;
+        const ce = allProfiles.filter(p => normalizeBranch(p.branch) === BRANCHES[0]).length;
+        const it = allProfiles.filter(p => normalizeBranch(p.branch) === BRANCHES[1]).length;
+        const aiml = allProfiles.filter(p => normalizeBranch(p.branch) === BRANCHES[3]).length;
+        const etc = allProfiles.filter(p => normalizeBranch(p.branch) === BRANCHES[2]).length;
 
         setStats({
           totalStudents: allProfiles.length,
