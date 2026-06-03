@@ -115,14 +115,8 @@ const Dashboard = () => {
         <div className="p-6 border-b border-mistral-black/5">
           <h3 className="font-heading font-bold text-lg uppercase tracking-tight text-mistral-black">System Activity Log</h3>
         </div>
-        <div className="p-6 space-y-4">
-          {[1, 2, 3].map((_, i) => (
-            <div key={i} className="flex items-center gap-4 text-sm font-sans">
-              <div className="w-2 h-2 bg-mistral-orange rounded-full" />
-              <span className="text-mistral-black/40 font-bold uppercase tracking-widest text-[9px]">10:4{i} AM</span>
-              <span className="text-mistral-black font-medium">Administrator modified user permissions for <span className="font-bold">staff@mlcoe.in</span></span>
-            </div>
-          ))}
+        <div className="p-6">
+          <p className="text-mistral-black/40 font-bold uppercase tracking-widest text-xs text-center py-8">Real-time activity log coming soon</p>
         </div>
       </div>
     </div>

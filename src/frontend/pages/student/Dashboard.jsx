@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import InternshipDetailModal from '../../../frontend/components/InternshipDetailModal';
 import { supabase } from '../../../backend/services/supabaseClient';
 import { useAuth } from '../../../backend/auth/AuthContext';
+import { SearchBar, PageHeader } from '../../../frontend/components';
+import FilterDropdown from '../../../frontend/components/FilterDropdown';
 
 const CATEGORIES = ["All", "Software", "Web Development", "Data Science", "Hardware", "UI/UX Design", "Marketing"];
 
@@ -21,20 +23,13 @@ const Dashboard = () => {
     const fetchInternships = async () => {
       setLoading(true);
       const { data, error } = await supabase
-        .from('internships')
-        .select('*')
-        .eq('status', 'Active')
-        .eq('approval_status', 'approved')
+        .from('internships').select('*')
+        .eq('status', 'Active').eq('approval_status', 'approved')
         .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error fetching internships:', error);
-      } else {
-        setInternships(data || []);
-      }
+      if (error) console.error('Error fetching internships:', error);
+      else setInternships(data || []);
       setLoading(false);
     };
-
     fetchInternships();
   }, []);
 
@@ -60,12 +55,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        className="space-y-6"
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
         <div className="pt-2 pb-2">
           <h2 className="font-heading font-bold text-3xl md:text-4xl uppercase tracking-tight mb-2 text-mistral-black leading-tight">
             Welcome Back, <span className="text-mistral-orange">{firstName}</span>
@@ -79,77 +69,37 @@ const Dashboard = () => {
           <h3 className="font-heading font-bold text-xl sm:text-2xl text-mistral-black tracking-tight whitespace-nowrap">
             Available Opportunities
           </h3>
-          
           <div className="flex flex-col md:flex-row items-center gap-4 w-full lg:w-auto">
-            <div className="relative w-full md:w-72 group">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="h-4 w-4 text-mistral-black/40 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <input
-                type="text"
-                placeholder="Search roles or skills..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full pl-10 pr-3 py-2.5 bg-brand-ivory border border-mistral-black/10 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-mistral-orange transition-all placeholder:text-mistral-black/20 shadow-sm"
-              />
-            </div>
+            <SearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search roles or skills..." wrapperClassName="relative w-full md:w-72 group"
+              iconColor="text-mistral-black/40 group-focus-within:text-blue-500" />
 
-            <div className="relative w-full md:w-auto">
-              <button 
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="w-full md:w-auto px-6 py-2.5 bg-mistral-orange text-white text-xs font-bold uppercase tracking-widest border border-mistral-black/10 hover:bg-mistral-black transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                </svg>
-                Filter: <span className="text-white/80">{activeFilter}</span>
-              </button>
-
-              <AnimatePresence>
-                {isFilterOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-56 bg-brand-ivory border border-mistral-black/10 shadow-xl z-50 overflow-hidden"
-                  >
-                    <div className="flex justify-end p-2 border-b border-mistral-black/5 bg-brand-cream/20">
-                      <button 
-                        onClick={() => setIsFilterOpen(false)}
-                        className="p-1 hover:bg-mistral-black/5 rounded-full transition-colors text-mistral-black/40 hover:text-blue-600"
-                      >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                      </button>
-                    </div>
-                    <div className="py-1">
-                      <div className="px-4 py-2 text-[8px] uppercase tracking-widest font-bold text-mistral-black/40 border-b border-mistral-black/5">Categories</div>
-                      {CATEGORIES.map((cat) => (
-                        <button
-                          key={cat}
-                          onClick={() => {
-                            setActiveFilter(cat);
-                            setIsFilterOpen(false);
-                          }}
-                          className={`w-full text-left px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors border-b border-mistral-black/5 last:border-0 ${
-                            activeFilter === cat ? 'bg-mistral-black text-white' : 'text-mistral-black hover:bg-brand-yellow'
-                          }`}
-                        >
-                          {cat}
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            <FilterDropdown
+              isOpen={isFilterOpen}
+              onToggle={() => setIsFilterOpen(!isFilterOpen)}
+              onClose={() => setIsFilterOpen(false)}
+              triggerLabel={<>Filter: <span className="text-white/80">{activeFilter}</span></>}
+              buttonClassName="w-full md:w-auto px-6 py-2.5 bg-mistral-orange text-white text-xs font-bold uppercase tracking-widest border border-mistral-black/10 hover:bg-mistral-black transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
+              closeButtonColor="text-mistral-black/40 hover:text-blue-600"
+            >
+              <div className="px-4 py-2 text-[8px] uppercase tracking-widest font-bold text-mistral-black/40 border-b border-mistral-black/5">Categories</div>
+              {CATEGORIES.map((cat) => (
+                <button key={cat} onClick={() => { setActiveFilter(cat); setIsFilterOpen(false); }}
+                  className={`w-full text-left px-4 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors border-b border-mistral-black/5 last:border-0 ${
+                    activeFilter === cat ? 'bg-mistral-black text-white' : 'text-mistral-black hover:bg-brand-yellow'
+                  }`}>{cat}</button>
+              ))}
+            </FilterDropdown>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredInternships.map((job) => (
+          {!loading && filteredInternships.length === 0 ? (
+            <div className="col-span-full text-center py-20 bg-brand-ivory border border-dashed border-mistral-black/20">
+              <p className="text-mistral-black/40 font-bold uppercase tracking-widest">No opportunities found</p>
+              <p className="text-mistral-black/30 text-xs mt-2 uppercase tracking-wider">Try adjusting your search or filter criteria</p>
+            </div>
+          ) : filteredInternships.map((job) => (
             <div key={job.id} className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm hover:border-mistral-orange hover:-translate-y-1 transition-all duration-300 flex flex-col group">
               <div className="flex justify-between items-start mb-1">
                 <div className="flex-1 min-w-0">
@@ -160,7 +110,6 @@ const Dashboard = () => {
                   {job.company.charAt(0)}
                 </div>
               </div>
-
               <div className="flex-grow flex flex-col justify-center space-y-3 mt-4">
                 <div className="flex items-center gap-3 text-sm text-mistral-black/70">
                   <svg className="w-4 h-4 text-mistral-black/30 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -182,15 +131,12 @@ const Dashboard = () => {
                   <span>{job.duration}</span>
                 </div>
               </div>
-
               <div className="flex items-center justify-between pt-4 mt-4 border-t border-mistral-black/5">
                 <span className="bg-mistral-black/5 text-mistral-black px-3 py-1 text-[10px] uppercase tracking-widest font-bold border border-mistral-black/5">
                   {job.type}
                 </span>
-                <button 
-                  onClick={() => handleViewDetails(job)}
-                  className="text-mistral-orange text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 hover:gap-2 hover:text-mistral-black transition-all"
-                >
+                <button onClick={() => handleViewDetails(job)}
+                  className="text-mistral-orange text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 hover:gap-2 hover:text-mistral-black transition-all">
                   View details 
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -202,11 +148,7 @@ const Dashboard = () => {
         </div>
       </motion.div>
 
-      <InternshipDetailModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        internship={selectedInternship}
-      />
+      <InternshipDetailModal isOpen={isModalOpen} onClose={handleCloseModal} internship={selectedInternship} />
     </>
   );
 };

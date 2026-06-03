@@ -55,6 +55,7 @@ const AdminDashboard = () => {
     { label: 'Computer Engineering', value: stats.computerEng, icon: GraduationCap, color: 'bg-mistral-orange text-white' },
     { label: 'Information Technology', value: stats.infoTech, icon: UserCheck, color: 'bg-mistral-orange text-white' },
     { label: 'AI & ML', value: stats.aiml, icon: TrendingUp, color: 'bg-mistral-orange text-white' },
+    { label: 'E&TC', value: stats.etc, icon: GraduationCap, color: 'bg-mistral-orange text-white' },
   ];
 
   return (
@@ -66,7 +67,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {statCards.map((stat, index) => (
           <motion.div
             key={index}

@@ -18,6 +18,11 @@ const Profile = () => {
   const [portfolio, setPortfolio] = useState('');
   const [additionalLinks, setAdditionalLinks] = useState([]);
 
+  // File upload state
+  const [profilePicFile, setProfilePicFile] = useState(null);
+  const [resumeFile, setResumeFile] = useState(null);
+  const [certificateFile, setCertificateFile] = useState(null);
+
   // UI state
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState('');
@@ -63,26 +68,52 @@ const Profile = () => {
     setTimeout(() => setToast(''), 3500);
   };
 
+  const uploadFile = async (file, bucket, path) => {
+    const { error } = await supabase.storage.from(bucket).upload(path, file, { upsert: true });
+    if (error && !error.message?.includes('bucket')) throw error;
+    const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(path);
+    return publicUrl;
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     if (!user?.id) return;
     setSaving(true);
 
+    const updates = {
+      dob,
+      gender,
+      mobile,
+      preferred_role: preferredRole,
+      address,
+      about,
+      linkedin,
+      github,
+      portfolio,
+      other_links: additionalLinks,
+      updated_at: new Date().toISOString(),
+    };
+
+    try {
+      if (profilePicFile) {
+        updates.profile_pic_url = await uploadFile(profilePicFile, 'profile-pictures', `${user.id}/profile.${profilePicFile.name.split('.').pop()}`);
+      }
+      if (resumeFile) {
+        updates.resume_url = await uploadFile(resumeFile, 'resumes', `${user.id}/resume.${resumeFile.name.split('.').pop()}`);
+      }
+      if (certificateFile) {
+        updates.certificate_url = await uploadFile(certificateFile, 'certificates', `${user.id}/certificate.${certificateFile.name.split('.').pop()}`);
+      }
+    } catch (uploadError) {
+      console.error('Upload error:', uploadError);
+      showToast('File upload failed. Check storage buckets and try again.', 'error');
+      setSaving(false);
+      return;
+    }
+
     const { error } = await supabase
       .from('profiles')
-      .update({
-        dob,
-        gender,
-        mobile,
-        preferred_role: preferredRole,
-        address,
-        about,
-        linkedin,
-        github,
-        portfolio,
-        other_links: additionalLinks,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updates)
       .eq('id', user.id);
 
     setSaving(false);
@@ -90,6 +121,9 @@ const Profile = () => {
       console.error('Save error:', error);
       showToast('Failed to save changes. Please try again.', 'error');
     } else {
+      setProfilePicFile(null);
+      setResumeFile(null);
+      setCertificateFile(null);
       showToast('Profile saved successfully!', 'success');
     }
   };
@@ -117,6 +151,7 @@ const Profile = () => {
             <input 
               type="file" 
               accept="image/*"
+              onChange={(e) => setProfilePicFile(e.target.files[0] || null)}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               title="Upload Profile Picture"
             />
@@ -332,6 +367,7 @@ const Profile = () => {
                     <input 
                       type="file" 
                       accept=".pdf"
+                      onChange={(e) => setResumeFile(e.target.files[0] || null)}
                       className="block w-full text-base text-mistral-black/60
                         file:mr-4 file:py-2.5 file:px-6
                         file:border-0
@@ -349,6 +385,7 @@ const Profile = () => {
                     <input 
                       type="file" 
                       accept=".pdf,image/*"
+                      onChange={(e) => setCertificateFile(e.target.files[0] || null)}
                       className="block w-full text-base text-mistral-black/60
                         file:mr-4 file:py-2.5 file:px-6
                         file:border-0

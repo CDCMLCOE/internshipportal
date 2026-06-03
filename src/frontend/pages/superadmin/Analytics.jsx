@@ -1,12 +1,108 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../../../backend/services/supabaseClient';
-import {
-  AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
-} from 'recharts';
+import { AreaChart } from '@tremor/react';
 
-const COLORS = ['#ea580c', '#1a1a1a', '#ffe8a1', '#f4f0e6', '#22c55e', '#3b82f6'];
+const BeautifulBarChart = ({ data }) => {
+  if (!data || data.length === 0) {
+    return (
+      <div className="w-full h-56 flex flex-col items-center justify-center border border-dashed border-mistral-black/10 bg-brand-cream/5 rounded">
+        <p className="text-xs uppercase font-bold tracking-widest text-mistral-black/30">No Data Available</p>
+      </div>
+    );
+  }
+
+  const maxValue = Math.max(...data.map(d => d.value), 0);
+  
+  const getYAxisTicks = (max) => {
+    if (max <= 0) return [0, 2, 4, 6, 8, 10];
+    if (max <= 5) return [0, 1, 2, 3, 4, 5];
+    if (max <= 10) return [0, 2, 4, 6, 8, 10];
+    
+    const rawStep = max / 4;
+    const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
+    const normalizedStep = rawStep / magnitude;
+    
+    let step;
+    if (normalizedStep <= 1) step = 1 * magnitude;
+    else if (normalizedStep <= 2) step = 2 * magnitude;
+    else if (normalizedStep <= 2.5) step = 2.5 * magnitude;
+    else if (normalizedStep <= 5) step = 5 * magnitude;
+    else step = 10 * magnitude;
+    
+    return [0, step, step * 2, step * 3, step * 4];
+  };
+
+  const ticks = getYAxisTicks(maxValue);
+  const maxTick = ticks[ticks.length - 1] || 1;
+
+  const gradients = [
+    { from: 'from-orange-500', to: 'to-amber-500', glow: 'shadow-orange-500/20' },
+    { from: 'from-blue-500', to: 'to-indigo-500', glow: 'shadow-blue-500/20' },
+    { from: 'from-emerald-500', to: 'to-teal-500', glow: 'shadow-emerald-500/20' },
+    { from: 'from-violet-500', to: 'to-purple-500', glow: 'shadow-violet-500/20' },
+    { from: 'from-rose-500', to: 'to-pink-500', glow: 'shadow-rose-500/20' },
+    { from: 'from-cyan-500', to: 'to-sky-500', glow: 'shadow-cyan-500/20' },
+    { from: 'from-amber-500', to: 'to-yellow-500', glow: 'shadow-amber-500/20' },
+  ];
+
+  return (
+    <div className="flex flex-col h-56 w-full font-sans select-none">
+      {/* Chart Plot Area */}
+      <div className="flex-1 relative min-h-0">
+        {/* Grid lines in background */}
+        <div className="absolute inset-0 pl-10 pr-2 flex flex-col justify-between pointer-events-none">
+          {ticks.slice().reverse().map((tick, idx) => (
+            <div key={idx} className="w-full flex items-center h-0 relative">
+              <span className="absolute -left-10 text-[9px] font-mono text-mistral-black/40 w-8 text-right pr-1">
+                {tick}
+              </span>
+              <div className="w-full border-t border-mistral-black/5" />
+            </div>
+          ))}
+        </div>
+
+        {/* Bar columns */}
+        <div className="absolute inset-0 pl-10 pr-2 flex items-end justify-around gap-2">
+          {data.map((item, idx) => {
+            const pct = Math.max(0, Math.min(100, (item.value / maxTick) * 100));
+            const color = gradients[idx % gradients.length];
+            return (
+              <div key={item.name} className="flex flex-col items-center flex-1 max-w-[48px] group relative h-full justify-end">
+                {/* Custom Tooltip */}
+                <div className="absolute bottom-[calc(100%-4px)] left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-translate-y-1.5 pointer-events-none transition-all duration-200 z-30 bg-mistral-black text-white px-2.5 py-1.5 text-[9px] uppercase font-bold tracking-wider shadow-xl rounded flex flex-col items-center gap-0.5">
+                  <span className="text-white/60 text-[8px] tracking-normal font-medium whitespace-nowrap">{item.name}</span>
+                  <span className="text-xs font-heading tracking-tight text-brand-yellow">{item.value}</span>
+                  <div className="w-1.5 h-1.5 bg-mistral-black rotate-45 absolute -bottom-0.5 left-1/2 -translate-x-1/2" />
+                </div>
+
+                {/* The Bar */}
+                <motion.div
+                  initial={{ height: 0 }}
+                  animate={{ height: `${pct}%` }}
+                  transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: idx * 0.05 }}
+                  className={`w-6 sm:w-7 md:w-8 bg-gradient-to-t ${color.from} ${color.to} rounded-t-sm shadow-sm hover:shadow-md ${color.glow} transition-all duration-200 cursor-pointer hover:scale-x-105 hover:-translate-y-0.5 origin-bottom`}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* X-Axis Ticks & Labels */}
+      <div className="h-8 mt-1 border-t border-mistral-black/10 flex justify-around pl-10 pr-2">
+        {data.map((item, idx) => (
+          <div key={item.name} className="flex-1 max-w-[48px] text-center pt-2.5 overflow-hidden">
+            <p className="text-[9px] uppercase font-bold tracking-wider text-mistral-black/50 hover:text-mistral-black transition-colors truncate" title={item.name}>
+              {item.name}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 
 const Analytics = () => {
   const [loading, setLoading] = useState(true);
@@ -106,16 +202,6 @@ const Analytics = () => {
       return { month, total: cumulative, new: count };
     });
   }, [profiles]);
-
-  const internshipTrends = useMemo(() => {
-    const monthly = {};
-    internships.forEach(i => {
-      const d = new Date(i.created_at);
-      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-      monthly[key] = (monthly[key] || 0) + 1;
-    });
-    return Object.entries(monthly).slice(-6).map(([month, count]) => ({ month, count }));
-  }, [internships]);
 
   const roleDistribution = useMemo(() => {
     const roles = {};
@@ -233,35 +319,46 @@ const Analytics = () => {
         {/* User Growth */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-brand-ivory border border-mistral-black/10 p-6">
           <h3 className="text-[10px] uppercase font-bold tracking-widest text-mistral-black/40 mb-4">User Growth (Cumulative)</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <AreaChart data={userGrowthData}>
-              <defs>
-                <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ea580c" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#ea580c" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a10" />
-              <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#1a1a1a60' }} />
-              <YAxis tick={{ fontSize: 10, fill: '#1a1a1a60' }} />
-              <Tooltip contentStyle={{ background: '#fcfaf6', border: '1px solid #1a1a1a10', fontSize: 12 }} />
-              <Area type="monotone" dataKey="total" stroke="#ea580c" fillOpacity={1} fill="url(#colorUsers)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
+          <AreaChart
+            data={userGrowthData}
+            index="month"
+            categories={["total"]}
+            colors={["orange"]}
+            showLegend={false}
+            showAnimation
+            className="h-64"
+          />
         </motion.div>
 
-        {/* Internship Trends */}
+        {/* Internship Overview */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-brand-ivory border border-mistral-black/10 p-6">
-          <h3 className="text-[10px] uppercase font-bold tracking-widest text-mistral-black/40 mb-4">Internships Posted</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={internshipTrends}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a10" />
-              <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#1a1a1a60' }} />
-              <YAxis tick={{ fontSize: 10, fill: '#1a1a1a60' }} />
-              <Tooltip contentStyle={{ background: '#fcfaf6', border: '1px solid #1a1a1a10', fontSize: 12 }} />
-              <Bar dataKey="count" fill="#1a1a1a" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          <h3 className="text-[10px] uppercase font-bold tracking-widest text-mistral-black/40 mb-4">Internships Overview</h3>
+          <div className="space-y-5">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-4 bg-mistral-black/5">
+                <p className="text-3xl font-heading font-bold text-mistral-black">{internships.length}</p>
+                <p className="text-[9px] uppercase tracking-widest text-mistral-black/40 font-bold mt-1">Total</p>
+              </div>
+              <div className="text-center p-4 bg-green-50">
+                <p className="text-3xl font-heading font-bold text-green-700">{internships.filter(i => i.status === 'Active').length}</p>
+                <p className="text-[9px] uppercase tracking-widest text-green-600 font-bold mt-1">Active</p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[9px] uppercase font-bold tracking-widest text-mistral-black/40 mb-2">Companies</p>
+              <div className="space-y-1.5 max-h-[140px] overflow-y-auto">
+                {internships.map(i => (
+                  <div key={i.id} className="flex items-center justify-between text-xs px-3 py-2 bg-mistral-black/5">
+                    <span className="font-medium text-mistral-black">{i.company || 'Unknown'}</span>
+                    <span className="text-mistral-black/40">{i.title}</span>
+                  </div>
+                ))}
+                {internships.length === 0 && (
+                  <p className="text-xs text-mistral-black/30 italic text-center py-4">No internships posted yet</p>
+                )}
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
 
@@ -270,43 +367,19 @@ const Analytics = () => {
         {/* Role Distribution */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-brand-ivory border border-mistral-black/10 p-6">
           <h3 className="text-[10px] uppercase font-bold tracking-widest text-mistral-black/40 mb-4">User Roles</h3>
-          <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie data={roleDistribution} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={4} dataKey="value">
-                {roleDistribution.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-              </Pie>
-              <Tooltip contentStyle={{ background: '#fcfaf6', border: '1px solid #1a1a1a10', fontSize: 12 }} />
-              <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 10 }} />
-            </PieChart>
-          </ResponsiveContainer>
+          <BeautifulBarChart data={roleDistribution} />
         </motion.div>
 
         {/* Branch Distribution */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.53 }} className="bg-brand-ivory border border-mistral-black/10 p-6">
           <h3 className="text-[10px] uppercase font-bold tracking-widest text-mistral-black/40 mb-4">Students by Branch</h3>
-          <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie data={branchDistribution} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={4} dataKey="value">
-                {branchDistribution.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-              </Pie>
-              <Tooltip contentStyle={{ background: '#fcfaf6', border: '1px solid #1a1a1a10', fontSize: 12 }} />
-              <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 10 }} />
-            </PieChart>
-          </ResponsiveContainer>
+          <BeautifulBarChart data={branchDistribution} />
         </motion.div>
 
         {/* Application Status */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-brand-ivory border border-mistral-black/10 p-6">
           <h3 className="text-[10px] uppercase font-bold tracking-widest text-mistral-black/40 mb-4">Application Status</h3>
-          <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie data={applicationStatusData} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={4} dataKey="value">
-                {applicationStatusData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-              </Pie>
-              <Tooltip contentStyle={{ background: '#fcfaf6', border: '1px solid #1a1a1a10', fontSize: 12 }} />
-              <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 10 }} />
-            </PieChart>
-          </ResponsiveContainer>
+          <BeautifulBarChart data={applicationStatusData} />
         </motion.div>
       </div>
 

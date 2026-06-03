@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import logoUrl from '../../assets/logo.png';
+import { useAuth } from '../../backend/auth/AuthContext';
 
 const NAV_LINKS = [
   { to: '/superadmin/dashboard', label: 'Dashboard' },
@@ -11,6 +12,8 @@ const NAV_LINKS = [
 
 const SuperadminLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const closeSidebar = () => setIsSidebarOpen(false);
@@ -18,7 +21,8 @@ const SuperadminLayout = () => {
   const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
-    window.location.href = '/';
+    logout();
+    navigate('/', { replace: true });
   };
 
   const sidebarElements = (

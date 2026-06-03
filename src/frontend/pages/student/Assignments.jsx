@@ -9,6 +9,7 @@ const AssignmentPage = () => {
   const [submissions, setSubmissions] = useState({});
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionFile, setSubmissionFile] = useState(null);
 
   useEffect(() => {
     fetchAssignments();
@@ -58,12 +59,23 @@ const AssignmentPage = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
+      let fileUrl = null;
+      if (submissionFile) {
+        const ext = submissionFile.name.split('.').pop();
+        const path = `${user.id}/${selectedAssignment.id}_${Date.now()}.${ext}`;
+        const { error: uploadError } = await supabase.storage.from('submissions').upload(path, submissionFile);
+        if (uploadError) throw uploadError;
+        const { data: { publicUrl } } = supabase.storage.from('submissions').getPublicUrl(path);
+        fileUrl = publicUrl;
+      }
+
       const { error } = await supabase
         .from('submissions')
         .insert([{
           assignment_id: selectedAssignment.id,
           student_id: user.id,
           format: selectedFormat,
+          file_url: fileUrl,
           status: 'Submitted'
         }]);
 
@@ -72,6 +84,7 @@ const AssignmentPage = () => {
       alert('Assignment submitted successfully!');
       setSubmissions(prev => ({ ...prev, [selectedAssignment.id]: 'Submitted' }));
       setSelectedAssignment(null);
+      setSubmissionFile(null);
     } catch (error) {
       console.error('Error submitting assignment:', error);
       alert('Failed to submit assignment.');
@@ -198,6 +211,7 @@ const AssignmentPage = () => {
                 </div>
                 <input 
                   type="file" 
+                  onChange={(e) => setSubmissionFile(e.target.files[0] || null)}
                   className="w-full border border-mistral-black/10 p-4 text-sm font-medium focus:outline-none focus:border-mistral-orange bg-brand-cream/10" 
                 />
               </motion.div>
