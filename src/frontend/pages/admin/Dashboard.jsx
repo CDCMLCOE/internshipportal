@@ -27,10 +27,10 @@ const AdminDashboard = () => {
         .order('created_at', { ascending: false });
 
       if (allProfiles) {
-        const ce = allProfiles.filter(p => p.branch === 'Computer_Engineering').length;
-        const it = allProfiles.filter(p => p.branch === 'Information_Technology').length;
-        const aiml = allProfiles.filter(p => p.branch === 'AI_ML').length;
-        const etc = allProfiles.filter(p => p.branch === 'Electronics_and_Telecommunication_Engineering').length;
+        const ce = allProfiles.filter(p => p.branch === 'Computer Engineering').length;
+        const it = allProfiles.filter(p => p.branch === 'Information Technology').length;
+        const aiml = allProfiles.filter(p => p.branch === 'CSE - ai&ml').length;
+        const etc = allProfiles.filter(p => p.branch === 'E&TC').length;
 
         setStats({
           totalStudents: allProfiles.length,
@@ -104,10 +104,10 @@ const AdminDashboard = () => {
             ) : (
               recentStudents.map((student) => {
                 const branchLabels = {
-                  'Computer_Engineering': 'Computer Engineering',
-                  'AI_ML': 'AI & ML',
-                  'Information_Technology': 'Information Technology',
-                  'Electronics_and_Telecommunication_Engineering': 'E&TC',
+                  'Computer Engineering': 'Computer Engineering',
+                  'CSE - ai&ml': 'CSE - AI & ML',
+                  'Information Technology': 'Information Technology',
+                  'E&TC': 'E&TC',
                 };
                 return (
                   <div key={student.id} className="flex justify-between items-start p-4 hover:bg-brand-cream/50 transition-colors border-l-2 border-transparent hover:border-mistral-orange">
