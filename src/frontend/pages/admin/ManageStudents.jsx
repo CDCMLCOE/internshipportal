@@ -4,7 +4,7 @@ import { ClipboardList, CheckSquare, FileText, Download } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import logoUrl from '../../../assets/logo.png';
 import { supabase } from '../../../backend/services/supabaseClient';
-import { SearchBar, PageHeader, ToastNotification, StatusBadge } from '../../../frontend/components';
+import { SearchBar, PageHeader, ToastNotification, StatusBadge, EmptyState } from '../../../frontend/components';
 import Modal from '../../../frontend/components/Modal';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
 import { BRANCHES, getBranchLabel } from '../../../backend/constants';
@@ -314,11 +314,7 @@ const ManageStudents = () => {
                 </motion.tr>
               ))
             ) : (
-              <tr>
-                <td colSpan="6" className="p-8 text-center text-mistral-black/40 font-bold uppercase tracking-widest border-t border-dashed border-mistral-black/20">
-                  No students found matching your criteria
-                </td>
-              </tr>
+              <EmptyState message="No students found matching your criteria" colSpan={6} />
             )}
           </tbody>
         </table>

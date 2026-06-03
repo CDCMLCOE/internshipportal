@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import InternshipDetailModal from '../../../frontend/components/InternshipDetailModal';
 import { supabase } from '../../../backend/services/supabaseClient';
 import { useAuth } from '../../../backend/auth/AuthContext';
-import { SearchBar, PageHeader } from '../../../frontend/components';
+import { SearchBar, PageHeader, EmptyState } from '../../../frontend/components';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
 
 const CATEGORIES = ["All", "Software", "Web Development", "Data Science", "Hardware", "UI/UX Design", "Marketing"];
@@ -95,10 +95,7 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
           {!loading && filteredInternships.length === 0 ? (
-            <div className="col-span-full text-center py-20 bg-brand-ivory border border-dashed border-mistral-black/20">
-              <p className="text-mistral-black/40 font-bold uppercase tracking-widest">No opportunities found</p>
-              <p className="text-mistral-black/30 text-xs mt-2 uppercase tracking-wider">Try adjusting your search or filter criteria</p>
-            </div>
+            <EmptyState message="No opportunities found" submessage="Try adjusting your search or filter criteria" className="col-span-full text-center py-20 bg-brand-ivory border border-dashed border-mistral-black/20" />
           ) : filteredInternships.map((job) => (
             <div key={job.id} className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm hover:border-mistral-orange hover:-translate-y-1 transition-all duration-300 flex flex-col group">
               <div className="flex justify-between items-start mb-1">

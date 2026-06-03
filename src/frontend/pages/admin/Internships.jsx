@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../../backend/services/supabaseClient';
-import { SearchBar, PageHeader, StatusBadge } from '../../../frontend/components';
+import { SearchBar, PageHeader, StatusBadge, EmptyState } from '../../../frontend/components';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
 import Modal from '../../../frontend/components/Modal';
 
@@ -215,7 +215,7 @@ const AdminInternships = () => {
                 </motion.tr>
               ))
             ) : (
-              <tr><td colSpan="5" className="p-20 text-center"><p className="text-mistral-black/40 font-bold uppercase tracking-widest">No internships found matching your criteria</p></td></tr>
+              <EmptyState message="No internships found matching your criteria" colSpan={5} />
             )}
           </tbody>
         </table>

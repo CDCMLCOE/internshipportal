@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { GraduationCap, Users, UserCheck, TrendingUp } from 'lucide-react';
 import { supabase } from '../../../backend/services/supabaseClient';
 import { BRANCHES, getBranchLabel } from '../../../backend/constants';
+import { EmptyState } from '../../../frontend/components';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -101,20 +102,14 @@ const AdminDashboard = () => {
             {loading ? (
               <p className="text-xs text-mistral-black/40 uppercase tracking-widest font-bold">Loading...</p>
             ) : recentStudents.length === 0 ? (
-              <p className="text-xs text-mistral-black/40 uppercase tracking-widest font-bold">No students found.</p>
+              <EmptyState message="No students found" />
             ) : (
               recentStudents.map((student) => {
-                const branchLabels = {
-                  'Computer Engineering': 'Computer Engineering',
-                  'CSE - ai&ml': 'CSE - AI & ML',
-                  'Information Technology': 'Information Technology',
-                  'E&TC': 'E&TC',
-                };
                 return (
                   <div key={student.id} className="flex justify-between items-start p-4 hover:bg-brand-cream/50 transition-colors border-l-2 border-transparent hover:border-mistral-orange">
                     <div>
                       <p className="font-bold text-sm uppercase tracking-tight">{student.name}</p>
-                      <p className="text-xs text-mistral-black/60">{student.email} • {branchLabels[student.branch] || student.branch}</p>
+                      <p className="text-xs text-mistral-black/60">{student.email} • {getBranchLabel(student.branch)}</p>
                     </div>
                     <span className="text-[10px] uppercase font-bold text-mistral-black/30">
                       {new Date(student.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StudentProfileReviewModal from '../../../frontend/components/StudentProfileReviewModal';
 import { supabase } from '../../../backend/services/supabaseClient';
-import { SearchBar, PageHeader, StatusBadge } from '../../../frontend/components';
+import { SearchBar, PageHeader, StatusBadge, EmptyState } from '../../../frontend/components';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
 import { BRANCHES } from '../../../backend/constants';
 
@@ -16,7 +16,7 @@ const IndustryApplicants = () => {
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const statusFilters = ['Shortlisted', 'Pending', 'Rejected'];
+  const statusFilters = ['Shortlisted', 'Pending Review', 'Rejected'];
   const branches = BRANCHES;
 
   useEffect(() => { fetchApplicants(); }, []);
@@ -137,10 +137,7 @@ const IndustryApplicants = () => {
             </motion.div>
           ))
         ) : (
-          <div className="text-center py-20 bg-brand-ivory border border-dashed border-mistral-black/20">
-            <p className="text-mistral-black/40 font-bold uppercase tracking-widest">No applicants found</p>
-            <p className="text-mistral-black/30 text-xs mt-2 uppercase tracking-wider">Try adjusting your search or filter criteria</p>
-          </div>
+          <EmptyState message="No applicants found" submessage="Try adjusting your search or filter criteria" />
         )}
       </div>
 

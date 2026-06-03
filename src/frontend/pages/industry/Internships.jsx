@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../backend/auth/AuthContext';
 import { supabase } from '../../../backend/services/supabaseClient';
-import { SearchBar, PageHeader, StatusBadge } from '../../../frontend/components';
+import { SearchBar, PageHeader, StatusBadge, EmptyState } from '../../../frontend/components';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
 import Modal from '../../../frontend/components/Modal';
 import ConfirmModal from '../../../frontend/components/ConfirmModal';
@@ -187,7 +187,7 @@ const IndustryInternships = () => {
                 </td>
               </motion.tr>
             )) : (
-              <tr><td colSpan="5" className="p-20 text-center"><p className="text-mistral-black/40 font-bold uppercase tracking-widest">No listings found</p></td></tr>
+              <EmptyState message="No listings found" colSpan={5} />
             )}
           </tbody>
         </table>

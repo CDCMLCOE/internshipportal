@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StudentProfileReviewModal from '../../../frontend/components/StudentProfileReviewModal';
 import { supabase } from '../../../backend/services/supabaseClient';
-import { SearchBar, PageHeader } from '../../../frontend/components';
+import { SearchBar, PageHeader, EmptyState } from '../../../frontend/components';
 import FilterDropdown from '../../../frontend/components/FilterDropdown';
 import { BRANCHES, getBranchLabel } from '../../../backend/constants';
 
@@ -98,7 +98,7 @@ const StudentsData = () => {
                 </td>
               </motion.tr>
             )) : (
-              <tr><td colSpan="5" className="p-20 text-center"><p className="text-mistral-black/40 font-bold uppercase tracking-widest">No students found</p></td></tr>
+              <EmptyState message="No students found" colSpan={5} />
             )}
           </tbody>
         </table>
