@@ -162,7 +162,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = 
                 <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-mistral-black/40 mb-3">Requirements</h3>
                 <ul className="space-y-2.5">
                   {internship.requirements?.map((req, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-mistral-black/70 font-sans">
+                    <li key={`req-${i}`} className="flex items-start gap-3 text-sm text-mistral-black/70 font-sans">
                       <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-mistral-orange shrink-0" />
                       {req}
                     </li>
@@ -175,7 +175,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = 
                 <h3 className="text-[10px] uppercase tracking-[0.2em] font-bold text-mistral-black/40 mb-4">Perks & Benefits</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {internship.perks?.map((perk, i) => (
-                    <div key={i} className="flex items-center gap-2.5 bg-white border border-mistral-black/5 px-3.5 py-2.5 rounded-lg">
+                    <div key={`perk-${i}`} className="flex items-center gap-2.5 bg-white border border-mistral-black/5 px-3.5 py-2.5 rounded-lg">
                       <svg className="w-4 h-4 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                       </svg>
@@ -192,7 +192,7 @@ const InternshipDetailModal = ({ isOpen, onClose, internship, showApplyButton = 
                   <div className="flex flex-wrap gap-2">
                     {internship.skills.map((skill, i) => (
                       <span
-                        key={i}
+                        key={`skill-${i}`}
                         className="bg-mistral-orange/8 text-mistral-orange border border-mistral-orange/15 px-3 py-1.5 text-xs font-semibold rounded-lg"
                       >
                         {skill}

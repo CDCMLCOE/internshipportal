@@ -47,19 +47,17 @@ const Profile = () => {
       setLinkedin(data.linkedin || '');
       setGithub(data.github || '');
       setPortfolio(data.portfolio || '');
-      setAdditionalLinks(data.other_links || []);
+      setAdditionalLinks((data.other_links || []).map(l => ({ ...l, id: l.id || Date.now() + Math.random() })));
     };
     fetchProfile();
   }, [user?.id]);
 
-  const addLink = () => setAdditionalLinks([...additionalLinks, { platform: '', url: '' }]);
+  const addLink = () => setAdditionalLinks([...additionalLinks, { id: Date.now(), platform: '', url: '' }]);
 
-  const removeLink = (index) => setAdditionalLinks(additionalLinks.filter((_, i) => i !== index));
+  const removeLink = (id) => setAdditionalLinks(additionalLinks.filter(l => l.id !== id));
 
-  const updateLink = (index, field, value) => {
-    const updated = [...additionalLinks];
-    updated[index] = { ...updated[index], [field]: value };
-    setAdditionalLinks(updated);
+  const updateLink = (id, field, value) => {
+    setAdditionalLinks(additionalLinks.map(l => l.id === id ? { ...l, [field]: value } : l));
   };
 
   const showToast = (msg, type = 'success') => {
@@ -315,9 +313,9 @@ const Profile = () => {
                 </div>
 
                 <AnimatePresence>
-                  {additionalLinks.map((link, index) => (
+                  {additionalLinks.map((link) => (
                     <motion.div 
-                      key={index}
+                      key={link.id}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
@@ -328,7 +326,7 @@ const Profile = () => {
                         <input 
                           type="text"
                           value={link.platform}
-                          onChange={(e) => updateLink(index, 'platform', e.target.value)}
+                          onChange={(e) => updateLink(link.id, 'platform', e.target.value)}
                           placeholder="e.g. Behance"
                           className="w-full bg-white border border-mistral-black/15 px-4 py-2.5 focus:outline-none focus:border-mistral-orange transition-all text-sm"
                         />
@@ -339,13 +337,13 @@ const Profile = () => {
                           <input 
                             type="url"
                             value={link.url}
-                            onChange={(e) => updateLink(index, 'url', e.target.value)}
+                            onChange={(e) => updateLink(link.id, 'url', e.target.value)}
                             placeholder="https://..."
                             className="flex-1 bg-white border border-mistral-black/15 px-4 py-2.5 focus:outline-none focus:border-mistral-orange transition-all text-sm"
                           />
                           <button 
                             type="button"
-                            onClick={() => removeLink(index)}
+                            onClick={() => removeLink(link.id)}
                             className="text-mistral-black/20 hover:text-red-500 transition-colors"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>

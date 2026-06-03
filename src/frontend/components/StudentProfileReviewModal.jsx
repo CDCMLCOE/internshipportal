@@ -175,7 +175,7 @@ const StudentProfileReviewModal = ({ isOpen, onClose, student, onNext, onPrev, o
                       </a>
                     )}
                     {Array.isArray(profile.other_links) && profile.other_links.map((link, i) => (
-                      <a key={i} href={link.url} target="_blank" className="flex items-center gap-2 px-4 py-2 bg-white border border-mistral-black/5 text-[10px] font-bold uppercase tracking-widest text-mistral-black/60 hover:border-mistral-orange hover:text-mistral-black transition-all">
+                      <a key={`link-${i}`} href={link.url} target="_blank" className="flex items-center gap-2 px-4 py-2 bg-white border border-mistral-black/5 text-[10px] font-bold uppercase tracking-widest text-mistral-black/60 hover:border-mistral-orange hover:text-mistral-black transition-all">
                         {link.platform || 'Link'}
                       </a>
                     ))}

@@ -113,7 +113,7 @@ const Application = () => {
             </thead>
             <tbody className="divide-y divide-mistral-black/5 text-mistral-black">
               {applications.map((app, i) => (
-                <tr key={i} className="hover:bg-brand-yellow/10 transition-colors">
+                <tr key={app.application_id} className="hover:bg-brand-yellow/10 transition-colors">
                   <td className="px-6 py-4 font-semibold">{app.company}</td>
                   <td className="px-6 py-4 text-mistral-black/70">{app.title}</td>
                   <td className="px-6 py-4 text-mistral-black/70">{app.date}</td>
@@ -149,7 +149,7 @@ const Application = () => {
         {/* ── Mobile Cards (< md) ── */}
         <div className="flex flex-col gap-4 md:hidden">
           {applications.map((app, i) => (
-            <div key={i} className="bg-brand-ivory border border-mistral-black/10 p-5 shadow-sm space-y-3">
+            <div key={app.application_id} className="bg-brand-ivory border border-mistral-black/10 p-5 shadow-sm space-y-3">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-heading font-bold text-base text-mistral-black leading-tight">{app.company}</p>

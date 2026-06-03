@@ -100,8 +100,8 @@ const IndustryInfo = () => {
       <div className="mb-24">
         <h2 className="font-heading font-semibold text-2xl uppercase tracking-wider text-mistral-orange italic mb-10"># Why Partner With Us</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {benefits.map((b, i) => (
-            <div key={i} className="flex gap-5">
+          {benefits.map((b) => (
+            <div key={b.title} className="flex gap-5">
               <div className="flex-shrink-0 w-12 h-12 bg-mistral-orange/10 text-mistral-orange flex items-center justify-center rounded-lg">
                 {b.icon}
               </div>
@@ -118,8 +118,8 @@ const IndustryInfo = () => {
       <div className="mb-24">
         <h2 className="font-heading font-semibold text-2xl uppercase tracking-wider text-mistral-orange italic mb-10"># How It Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {steps.map((s, i) => (
-            <div key={i} className="text-center md:text-left">
+          {steps.map((s) => (
+            <div key={s.title} className="text-center md:text-left">
               <div className="text-4xl font-bold font-portal text-mistral-orange/20 mb-3">{s.num}</div>
               <h3 className="font-heading font-semibold text-lg text-mistral-black mb-2">{s.title}</h3>
               <p className="text-mistral-black/60 leading-relaxed text-sm">{s.desc}</p>
