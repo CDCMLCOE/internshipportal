@@ -93,11 +93,11 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {!loading && filteredInternships.length === 0 ? (
             <EmptyState message="No opportunities found" submessage="Try adjusting your search or filter criteria" className="col-span-full text-center py-20 bg-brand-ivory border border-dashed border-mistral-black/20" />
           ) : filteredInternships.map((job) => (
-            <div key={job.id} className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm hover:border-mistral-orange hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+            <div key={job.id} className="bg-brand-ivory p-6 border border-mistral-black/10 shadow-sm hover:border-mistral-orange hover:-translate-y-1 transition-all duration-300 flex flex-col group min-h-[280px] lg:min-h-[300px]">
               <div className="flex justify-between items-start mb-1">
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] text-mistral-black/40 font-bold uppercase tracking-widest mb-2">{job.company}</p>
